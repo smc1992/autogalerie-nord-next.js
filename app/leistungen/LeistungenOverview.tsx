@@ -16,7 +16,7 @@ export default function LeistungenOverview() {
         'Flexible Laufzeiten',
         'Schnelle Zusage'
       ],
-      image: '/images/finanzierung-service.jpg'
+      image: '/images/Finanzierung-Autogalerie Nord.webp'
     },
     {
       title: 'Zulassungsservice',
@@ -29,7 +29,7 @@ export default function LeistungenOverview() {
         'Ummeldung bei Umzug',
         'Stilllegung von Fahrzeugen'
       ],
-      image: '/images/zulassung-service.jpg'
+      image: '/images/Zulassungsservice-Autogalerie Nord.webp'
     },
     {
       title: 'Import & Export',
@@ -42,7 +42,7 @@ export default function LeistungenOverview() {
         'Verzollungsservice',
         'Logistikabwicklung'
       ],
-      image: '/images/import-export-service.jpg'
+      image: '/images/Import und Export- Autogalerie Nord.webp'
     },
     {
       title: 'Kommissionsverkauf',
@@ -55,7 +55,7 @@ export default function LeistungenOverview() {
         'Komplette Verkaufsabwicklung',
         'Transparente Abrechnung'
       ],
-      image: '/images/kommission-service.jpg'
+      image: '/images/Kommisionsverkauf-Autogalerie Nord.webp'
     }
   ];
 

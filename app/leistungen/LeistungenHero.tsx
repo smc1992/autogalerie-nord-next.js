@@ -6,7 +6,7 @@ export default function LeistungenHero() {
       <div 
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
         style={{
-          backgroundImage: `url('/images/leistungen-hero.jpg')`
+          backgroundImage: `url('/images/Leistungen Hero Sektion.webp')`
         }}
       >
         <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/60 to-black/40"></div>
