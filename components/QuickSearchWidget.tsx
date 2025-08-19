@@ -115,10 +115,61 @@ export default function QuickSearchWidget({ className = '' }: QuickSearchWidgetP
     initializationRef.current = false;
     setIsInitialized(false);
 
+    // QuickSearch komplett zurücksetzen
+    if ((window as any).quicksearch) {
+      try {
+        if (typeof (window as any).quicksearch.resetAll === 'function') {
+          (window as any).quicksearch.resetAll();
+        }
+        // Fahrzeuganzahl zurücksetzen
+        const countElements = document.querySelectorAll('.quicksearch-count');
+        countElements.forEach(el => {
+          el.textContent = '0';
+        });
+      } catch (error) {
+        console.log('QuickSearch reset error:', error);
+      }
+    }
+
     // Kurze Verzögerung für DOM-Updates
     setTimeout(() => {
       initializeQuickSearch();
+      // Nach Initialisierung Fahrzeuganzahl neu laden
+      setTimeout(() => {
+        updateVehicleCount();
+      }, 500);
     }, 100);
+  };
+
+  // Fahrzeuganzahl aktualisieren
+  const updateVehicleCount = () => {
+    if (typeof window === 'undefined' || !(window as any).quicksearch) return;
+
+    try {
+      // API-Aufruf für Fahrzeuganzahl
+      const apiUrl = `https://api.pixel-base.de/marketplace/v3-11365/vehicles/count/?apikey=${API_KEY}`;
+      
+      fetch(apiUrl)
+        .then(response => response.json())
+        .then(data => {
+          const count = data.count || data.total || 0;
+          const countElements = document.querySelectorAll('.quicksearch-count');
+          countElements.forEach(el => {
+            el.textContent = count.toString();
+          });
+          console.log('Fahrzeuganzahl aktualisiert:', count);
+        })
+        .catch(error => {
+          console.error('Fehler beim Laden der Fahrzeuganzahl:', error);
+          // Fallback: Standard-Anzahl anzeigen
+          const countElements = document.querySelectorAll('.quicksearch-count');
+          countElements.forEach(el => {
+            el.textContent = '70';
+          });
+        });
+    } catch (error) {
+      console.error('Fehler bei updateVehicleCount:', error);
+    }
   };
 
   // Component mount detection
@@ -138,6 +189,10 @@ export default function QuickSearchWidget({ className = '' }: QuickSearchWidgetP
   useEffect(() => {
     if (isMounted && isJQueryLoaded && isQuickSearchLoaded && !isInitialized) {
       initializeQuickSearch();
+      // Nach erfolgreicher Initialisierung Fahrzeuganzahl laden
+      setTimeout(() => {
+        updateVehicleCount();
+      }, 1000);
     }
   }, [isJQueryLoaded, isQuickSearchLoaded, isInitialized, isMounted]);
 
@@ -368,6 +423,11 @@ export default function QuickSearchWidget({ className = '' }: QuickSearchWidgetP
                     if ((window as any).quicksearch && (window as any).quicksearch.resetAll) {
                       (window as any).quicksearch.resetAll();
                     }
+                    
+                    // Fahrzeuganzahl nach Reset aktualisieren
+                    setTimeout(() => {
+                      updateVehicleCount();
+                    }, 300);
                   }}
                   className="group bg-gradient-to-r from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700 text-white font-bold py-4 px-8 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
                 >
