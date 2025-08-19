@@ -122,65 +122,80 @@ export default function QuickSearchWidget({ className = '' }: QuickSearchWidgetP
     }
   };
 
-  // Re-initialisierung bei Seitenwechsel
-  const reinitializeQuickSearch = () => {
+  // Komplette Skript-Neuladung bei Seitenwechsel
+  const reloadQuickSearchScript = () => {
     if (typeof window === 'undefined') return;
 
-    console.log('Starte komplette QuickSearch-Reinitialisierung...');
+    console.log('Starte komplette QuickSearch-Skript-Neuladung...');
     
-    // Reset der Initialisierung
+    // Reset aller States
     initializationRef.current = false;
     setIsInitialized(false);
+    setIsQuickSearchLoaded(false);
 
-    // QuickSearch komplett zurücksetzen und DOM bereinigen
-    if ((window as any).quicksearch) {
-      try {
-        // Alle QuickSearch-Instanzen zerstören
-        if (typeof (window as any).quicksearch.destroy === 'function') {
-          (window as any).quicksearch.destroy();
-        }
-        if (typeof (window as any).quicksearch.resetAll === 'function') {
-          (window as any).quicksearch.resetAll();
-        }
-        
-        // DOM-Elemente zurücksetzen
-        const selects = document.querySelectorAll('.quicksearch select');
-        selects.forEach(select => {
-          (select as HTMLSelectElement).innerHTML = '<option value="">Laden...</option>';
-          (select as HTMLSelectElement).selectedIndex = 0;
-        });
-        
-        // Fahrzeuganzahl zurücksetzen
-        const countElements = document.querySelectorAll('.quicksearch-count');
-        countElements.forEach(el => {
-          el.textContent = '0';
-        });
-        
+    // Komplette Bereinigung
+    try {
+      // QuickSearch-Objekt komplett entfernen
+      delete (window as any).quicksearch;
+      delete (window as any).marketplace;
+      delete (window as any).settings;
+      delete (window as any).baseUri;
+      delete (window as any).culture;
+      delete (window as any).apikey;
+      
+      // Alle bestehenden QuickSearch-Skripte entfernen
+      const existingScripts = document.querySelectorAll('script[src*="quicksearch"]');
+      existingScripts.forEach(script => {
+        script.remove();
+      });
+      
+      // DOM-Elemente zurücksetzen
+      const selects = document.querySelectorAll('.quicksearch select');
+      selects.forEach(select => {
+        (select as HTMLSelectElement).innerHTML = '<option value="">Laden...</option>';
+        (select as HTMLSelectElement).selectedIndex = 0;
         // Event-Handler entfernen
-        selects.forEach(select => {
-          const newSelect = select.cloneNode(true);
-          select.parentNode?.replaceChild(newSelect, select);
-        });
-        
-      } catch (error) {
-        console.log('QuickSearch reset error:', error);
-      }
+        const newSelect = select.cloneNode(true);
+        select.parentNode?.replaceChild(newSelect, select);
+      });
+      
+      // Fahrzeuganzahl zurücksetzen
+      const countElements = document.querySelectorAll('.quicksearch-count');
+      countElements.forEach(el => {
+        el.textContent = '0';
+      });
+      
+    } catch (error) {
+      console.log('QuickSearch cleanup error:', error);
     }
 
-    // Globale Variablen zurücksetzen
-    delete (window as any).marketplace;
-    delete (window as any).settings;
-    
-    // Längere Verzögerung für komplette DOM-Bereinigung
+    // Skript neu laden nach Bereinigung
     setTimeout(() => {
-      console.log('Starte Neuinitialisierung...');
-      initializeQuickSearch();
+      console.log('Lade QuickSearch-Skript neu...');
       
-      // Nach Initialisierung mehrere Update-Versuche
-      setTimeout(() => {
-        forceUpdateVehicleCount();
-      }, 1000);
-    }, 300);
+      // Neues Skript-Element erstellen
+      const script = document.createElement('script');
+      script.src = '/quicksearch-norequire_1.4.2.min.js';
+      script.onload = () => {
+        console.log('QuickSearch-Skript neu geladen');
+        setIsQuickSearchLoaded(true);
+        
+        // Nach Skript-Ladung initialisieren
+        setTimeout(() => {
+          initializeQuickSearch();
+          
+          // Fahrzeuganzahl laden
+          setTimeout(() => {
+            forceUpdateVehicleCount();
+          }, 1500);
+        }, 500);
+      };
+      script.onerror = () => {
+        console.error('Fehler beim Neuladen des QuickSearch-Skripts');
+      };
+      
+      document.head.appendChild(script);
+    }, 500);
   };
 
   // Fahrzeuganzahl aktualisieren
@@ -238,15 +253,11 @@ export default function QuickSearchWidget({ className = '' }: QuickSearchWidgetP
 
   // Überwachung von Seitenwechseln
   useEffect(() => {
-    if (isMounted && isJQueryLoaded && isQuickSearchLoaded) {
-      console.log('Seitenwechsel erkannt, re-initialisiere QuickSearch');
-      reinitializeQuickSearch();
-      // Zusätzliche forcierte Aktualisierung
-      setTimeout(() => {
-        forceUpdateVehicleCount();
-      }, 1000);
+    if (isMounted && isJQueryLoaded && pathname === '/' && !isInitialized) {
+      console.log('Rückkehr zur Startseite erkannt, lade QuickSearch-Skript neu');
+      reloadQuickSearchScript();
     }
-  }, [pathname, isJQueryLoaded, isQuickSearchLoaded, isMounted]);
+  }, [pathname, isJQueryLoaded, isMounted, isInitialized]);
 
   // Initialisierung wenn beide Skripte geladen sind
   useEffect(() => {
