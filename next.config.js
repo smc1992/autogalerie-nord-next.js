@@ -21,6 +21,7 @@ const nextConfig = {
   typescript: {
     // ignoreBuildErrors: true,
   },
+  assetPrefix: process.env.NODE_ENV === 'production' ? 'https://autogalerie-nord.de' : '',
   async headers() {
     return [
       {
@@ -30,7 +31,19 @@ const nextConfig = {
             key: 'Cache-Control',
             value: 'public, max-age=31536000, immutable',
           },
+          {
+            key: 'Access-Control-Allow-Origin',
+            value: '*',
+          },
         ],
+      },
+    ];
+  },
+  async rewrites() {
+    return [
+      {
+        source: '/images/:path*',
+        destination: '/images/:path*',
       },
     ];
   },
