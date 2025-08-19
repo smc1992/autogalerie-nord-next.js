@@ -21,7 +21,7 @@ const nextConfig = {
   typescript: {
     // ignoreBuildErrors: true,
   },
-  assetPrefix: process.env.NODE_ENV === 'production' ? 'https://autogalerie-nord.de' : '',
+  // assetPrefix: process.env.NODE_ENV === 'production' ? 'https://autogalerie-nord.de' : '',
   async headers() {
     return [
       {
