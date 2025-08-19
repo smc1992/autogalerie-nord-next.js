@@ -143,7 +143,7 @@ export default function QuickSearchWidget({ className = '' }: QuickSearchWidgetP
 
   // Fahrzeuganzahl aktualisieren
   const updateVehicleCount = () => {
-    if (typeof window === 'undefined' || !(window as any).quicksearch) return;
+    if (typeof window === 'undefined') return;
 
     try {
       // API-Aufruf für Fahrzeuganzahl
@@ -172,6 +172,23 @@ export default function QuickSearchWidget({ className = '' }: QuickSearchWidgetP
     }
   };
 
+  // Forcierte Fahrzeuganzahl-Aktualisierung bei Seitenwechsel
+  const forceUpdateVehicleCount = () => {
+    // Sofort die Anzahl auf 0 setzen
+    const countElements = document.querySelectorAll('.quicksearch-count');
+    countElements.forEach(el => {
+      el.textContent = '0';
+    });
+    
+    // Mehrere Versuche mit verschiedenen Verzögerungen
+    const delays = [500, 1000, 1500, 2000];
+    delays.forEach(delay => {
+      setTimeout(() => {
+        updateVehicleCount();
+      }, delay);
+    });
+  };
+
   // Component mount detection
   useEffect(() => {
     setIsMounted(true);
@@ -182,6 +199,10 @@ export default function QuickSearchWidget({ className = '' }: QuickSearchWidgetP
     if (isMounted && isJQueryLoaded && isQuickSearchLoaded) {
       console.log('Seitenwechsel erkannt, re-initialisiere QuickSearch');
       reinitializeQuickSearch();
+      // Zusätzliche forcierte Aktualisierung
+      setTimeout(() => {
+        forceUpdateVehicleCount();
+      }, 1000);
     }
   }, [pathname, isJQueryLoaded, isQuickSearchLoaded, isMounted]);
 
@@ -191,7 +212,7 @@ export default function QuickSearchWidget({ className = '' }: QuickSearchWidgetP
       initializeQuickSearch();
       // Nach erfolgreicher Initialisierung Fahrzeuganzahl laden
       setTimeout(() => {
-        updateVehicleCount();
+        forceUpdateVehicleCount();
       }, 1000);
     }
   }, [isJQueryLoaded, isQuickSearchLoaded, isInitialized, isMounted]);
@@ -426,7 +447,7 @@ export default function QuickSearchWidget({ className = '' }: QuickSearchWidgetP
                     
                     // Fahrzeuganzahl nach Reset aktualisieren
                     setTimeout(() => {
-                      updateVehicleCount();
+                      forceUpdateVehicleCount();
                     }, 300);
                   }}
                   className="group bg-gradient-to-r from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700 text-white font-bold py-4 px-8 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
