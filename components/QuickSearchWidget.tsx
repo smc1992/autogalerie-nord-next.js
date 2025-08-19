@@ -138,12 +138,51 @@ export default function QuickSearchWidget({ className = '' }: QuickSearchWidgetP
         
         initializeDropdowns();
         
+        // QuickSearch-Event-Listener für automatische Fahrzeuganzahl-Updates
+        setTimeout(() => {
+          if ((window as any).quicksearch) {
+            // Überwache QuickSearch-Events
+            const originalQueryCount = (window as any).quicksearch.queryCount;
+            if (originalQueryCount) {
+              (window as any).quicksearch.queryCount = function() {
+                console.log('QuickSearch queryCount() aufgerufen');
+                const result = originalQueryCount.apply(this, arguments);
+                
+                // Fahrzeuganzahl nach queryCount aktualisieren
+                setTimeout(() => {
+                  updateVehicleCountFromQuickSearch();
+                }, 500);
+                
+                return result;
+              };
+            }
+          }
+        }, 2500);
+        
       }, 1500);
           
           initializationRef.current = true;
           setIsInitialized(true);
           console.log('QuickSearch erfolgreich initialisiert mit lokalen URLs');
           console.log('Konfiguration:', config);
+          
+          // Fallback-UI ausblenden wenn QuickSearch erfolgreich geladen wurde
+          setTimeout(() => {
+            const quicksearchForm = document.querySelector('.quicksearch-form');
+            const fallbackUI = document.querySelector('#custom-quicksearch-fallback');
+            
+            if (quicksearchForm && quicksearchForm.children.length > 0) {
+              console.log('QuickSearch-Form gefunden, blende Fallback-UI aus');
+              if (fallbackUI) {
+                (fallbackUI as HTMLElement).style.display = 'none';
+              }
+            } else {
+              console.log('QuickSearch-Form leer, zeige Fallback-UI');
+              if (fallbackUI) {
+                (fallbackUI as HTMLElement).style.display = 'grid';
+              }
+            }
+          }, 2000);
         }
       });
     } catch (error) {
@@ -310,6 +349,30 @@ export default function QuickSearchWidget({ className = '' }: QuickSearchWidgetP
     }
   };
 
+  // QuickSearch-spezifische Fahrzeuganzahl-Aktualisierung
+  const updateVehicleCountFromQuickSearch = () => {
+    if (typeof window === 'undefined') return;
+
+    try {
+      // Versuche die Fahrzeuganzahl direkt aus QuickSearch zu lesen
+      if ((window as any).quicksearch && (window as any).quicksearch.vehicleCount) {
+        const count = (window as any).quicksearch.vehicleCount;
+        const countElements = document.querySelectorAll('.quicksearch-count');
+        countElements.forEach(el => {
+          el.textContent = count.toString();
+        });
+        console.log('Fahrzeuganzahl von QuickSearch aktualisiert:', count);
+        return;
+      }
+      
+      // Fallback: Verwende die robuste API-Methode
+      updateVehicleCount();
+    } catch (error) {
+      console.error('Fehler bei updateVehicleCountFromQuickSearch:', error);
+      updateVehicleCount();
+    }
+  };
+
   // Forcierte Fahrzeuganzahl-Aktualisierung bei Seitenwechsel
   const forceUpdateVehicleCount = () => {
     // Sofort die Anzahl auf 0 setzen
@@ -422,7 +485,7 @@ export default function QuickSearchWidget({ className = '' }: QuickSearchWidgetP
         />
       )}
 
-      {/* QuickSearch Widget HTML */}
+      {/* QuickSearch Widget HTML - Kompatible Struktur */}
       <div ref={widgetRef} className={`quicksearch ${className}`}>
         <section className="py-16 pb-24 md:pb-16 bg-gradient-to-br from-gray-50 to-gray-100 relative overflow-hidden">
         {/* Background decoration */}
@@ -444,7 +507,11 @@ export default function QuickSearchWidget({ className = '' }: QuickSearchWidgetP
             </div>
             
             <div className="bg-white rounded-2xl shadow-2xl p-8 backdrop-blur-sm bg-white/95">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              {/* QuickSearch-kompatible Form-Struktur */}
+              <div className="quicksearch-form"></div>
+              
+              {/* Fallback: Custom UI falls QuickSearch nicht lädt */}
+              <div id="custom-quicksearch-fallback" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                 {/* Fahrzeugart */}
                 <div className="group">
                   <label htmlFor="fahrzeugart" className="block text-sm font-semibold text-gray-700 mb-3 group-hover:text-red-600 transition-colors">
@@ -554,7 +621,6 @@ export default function QuickSearchWidget({ className = '' }: QuickSearchWidgetP
                 </div>
               </div>
 
-              
               {/* Buttons */}
               <div className="flex flex-col sm:flex-row justify-center gap-4 mt-8 pt-6 border-t border-gray-100">
                 {isMounted ? (
@@ -594,7 +660,7 @@ export default function QuickSearchWidget({ className = '' }: QuickSearchWidgetP
                   type="button"
                   onClick={() => {
                     // Reset all select elements
-                    const selects = document.querySelectorAll('.quicksearch select');
+                    const selects = document.querySelectorAll('.quicksearch select, #custom-quicksearch-fallback select');
                     selects.forEach(select => {
                       (select as HTMLSelectElement).selectedIndex = 0;
                     });
