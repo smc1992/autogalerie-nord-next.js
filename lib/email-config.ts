@@ -1,11 +1,11 @@
 export const emailConfig = {
-  host: 'smtp.strato.de',
-  port: 465,
-  secure: true,
+  host: process.env.SMTP_HOST || 'smtp.strato.de',
+  port: parseInt(process.env.SMTP_PORT || '465'),
+  secure: process.env.SMTP_SECURE === 'true' || true,
   auth: {
-    user: 'info@lacktastic.de',
-    pass: 'Balotelli1'
+    user: process.env.SMTP_USER || '',
+    pass: process.env.SMTP_PASS || ''
   },
-  from: 'info@lacktastic.de',
-  to: 'info@autogalerie-nord.de'
+  from: process.env.SMTP_FROM || '',
+  to: process.env.SMTP_TO || 'info@autogalerie-nord.de'
 };
