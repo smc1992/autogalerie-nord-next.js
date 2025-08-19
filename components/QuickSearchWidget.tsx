@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import Script from 'next/script';
 
 interface QuickSearchWidgetProps {
@@ -14,6 +14,7 @@ export default function QuickSearchWidget({ className = '' }: QuickSearchWidgetP
   const [isInitialized, setIsInitialized] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
   const pathname = usePathname();
+  const router = useRouter();
   const initializationRef = useRef(false);
   const widgetRef = useRef<HTMLDivElement>(null);
 
@@ -380,22 +381,81 @@ export default function QuickSearchWidget({ className = '' }: QuickSearchWidgetP
     setIsMounted(true);
   }, []);
 
-  // Aggressive Reinitialisierung bei jedem Startseiten-Besuch
+  // Next.js Router-Events-Lösung für externe JavaScript-Bibliotheken
   useEffect(() => {
-    if (isMounted && isJQueryLoaded && pathname === '/') {
-      console.log('Startseite besucht - erzwinge sofortige QuickSearch-Neuladung');
+    if (!isMounted || !isJQueryLoaded) return;
+    
+    const handleRouteChange = () => {
+      console.log('Route geändert - reinitialisiere QuickSearch');
       
-      // IMMER neu laden bei Startseiten-Besuch
-      // Dies ist die einzige zuverlässige Methode
-      reloadQuickSearchScript();
+      // Kurze Verzögerung um sicherzustellen, dass DOM bereit ist
+      setTimeout(() => {
+        if (pathname === '/' && typeof window !== 'undefined') {
+          console.log('Startseite erkannt - initialisiere QuickSearch');
+          
+          // Prüfe ob QuickSearch verfügbar ist
+          if ((window as any).quicksearch) {
+            try {
+              // QuickSearch mit korrekter Konfiguration neu initialisieren
+              const config = {
+                culture: 'de-DE',
+                url: window.location.origin + '/fahrzeuge/',
+                target: '/fahrzeuge',
+                hash: '',
+                hideOtherManufactueres: false,
+                renameManufacturers: true,
+                modelsWithoutFinds: 'hide',
+                modelsWithCounter: false,
+                sortManAlphabetic: false,
+                api: {
+                  url: 'https://api.pixel-base.de/marketplace/v3-11365/',
+                  key: API_KEY
+                }
+              };
+              
+              // Globale Variablen setzen
+              (window as any).marketplace = config;
+              (window as any).baseUri = config.api.url;
+              (window as any).culture = config.culture;
+              (window as any).apikey = config.api.key;
+              
+              // QuickSearch initialisieren
+              (window as any).quicksearch.init(config);
+              console.log('QuickSearch erfolgreich reinitialisiert');
+              
+              // Fahrzeuganzahl nach Initialisierung aktualisieren
+              setTimeout(() => {
+                updateVehicleCount();
+              }, 1000);
+              
+            } catch (error) {
+              console.error('Fehler bei QuickSearch-Reinitialisierung:', error);
+            }
+          } else {
+            console.log('QuickSearch nicht verfügbar - lade Skript neu');
+            reloadQuickSearchScript();
+          }
+        }
+      }, 100);
+    };
+    
+    // Initial-Initialisierung
+    if (pathname === '/') {
+      handleRouteChange();
     }
-  }, [pathname, isJQueryLoaded, isMounted]);
+    
+    // Router-Events für Navigation überwachen
+    // Da Next.js App Router keine Router-Events hat, verwenden wir Pathname-Änderungen
+    return () => {
+      // Cleanup falls nötig
+    };
+  }, [pathname, isMounted, isJQueryLoaded]);
   
-  // Zusätzliche Sicherheitsüberprüfung nach Initialisierung
+  // Zusätzliche Sicherheitsüberprüfung für Fahrzeuganzahl
   useEffect(() => {
     if (isMounted && isJQueryLoaded && pathname === '/' && isInitialized) {
-      // Doppelte Sicherheit: Prüfe nach 3 Sekunden nochmals
-      setTimeout(() => {
+      // Prüfe nach 3 Sekunden ob Fahrzeuganzahl korrekt angezeigt wird
+      const checkTimer = setTimeout(() => {
         const countElements = document.querySelectorAll('.quicksearch-count');
         let hasZeroCount = false;
         
@@ -406,10 +466,12 @@ export default function QuickSearchWidget({ className = '' }: QuickSearchWidgetP
         });
         
         if (hasZeroCount) {
-          console.log('Fahrzeuganzahl ist immer noch 0 - erzwinge erneute Neuladung');
-          reloadQuickSearchScript();
+          console.log('Fahrzeuganzahl ist immer noch 0 - aktualisiere erneut');
+          updateVehicleCount();
         }
       }, 3000);
+      
+      return () => clearTimeout(checkTimer);
     }
   }, [pathname, isJQueryLoaded, isMounted, isInitialized]);
 
