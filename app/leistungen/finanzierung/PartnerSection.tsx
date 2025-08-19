@@ -5,13 +5,13 @@ export default function PartnerSection() {
   const partner = [
     {
       name: 'Santander Consumer Bank',
-      logo: 'https://readdy.ai/api/search-image?query=Santander%20Consumer%20Bank%20logo%20red%20corporate%20branding%2C%20professional%20banking%20logo%2C%20financial%20services%20branding%2C%20clean%20corporate%20design%20with%20red%20color%20scheme&width=300&height=120&seq=santander-logo&orientation=landscape',
+      logo: '/images/santander-logo.jpg',
       description: 'Einer der führenden Anbieter für Autofinanzierung in Deutschland',
       features: ['Testsieger Autokredit 2023', 'Über 60 Jahre Erfahrung', 'Millionen zufriedene Kunden']
     },
     {
       name: 'Credit.de',
-      logo: 'https://readdy.ai/api/search-image?query=Credit.de%20logo%20professional%20financial%20services%20branding%2C%20modern%20banking%20logo%20design%2C%20digital%20finance%20company%20branding%2C%20clean%20corporate%20identity&width=300&height=120&seq=credit-logo&orientation=landscape',
+      logo: '/images/credit-logo.jpg',
       description: 'Spezialist für maßgeschneiderte Finanzierungslösungen',
       features: ['Flexible Konditionen', 'Schnelle Bearbeitung', 'Individuelle Lösungen']
     }

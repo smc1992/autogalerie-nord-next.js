@@ -7,28 +7,28 @@ export default function ProzessSchritte() {
       title: 'Kontaktaufnahme',
       description: 'Wir kümmern uns um die professionelle Vermarktung, die Verhandlungen und den gesamten Papierkram. Sie erhalten am Ende den bestmöglichen Preis für Ihr Fahrzeug, ohne den üblichen Stress.',
       icon: 'ri-phone-line',
-      image: 'https://readdy.ai/api/search-image?query=Professional%20phone%20consultation%20for%20car%20sales%2C%20customer%20service%20representative%20discussing%20vehicle%20sale%2C%20automotive%20consultation%20call%2C%20professional%20car%20sales%20contact%2C%20friendly%20automotive%20advisor%20on%20phone%20call&width=500&height=350&seq=kontakt-schritt&orientation=landscape'
+      image: '/images/kontakt-schritt.jpg'
     },
     {
       nummer: '2',
       title: 'Vor-Ort Bewertung',
       description: 'Wir erstellen hochwertige Fotos und eine detaillierte Beschreibung, um Ihr Fahrzeug im "besten Licht" zu präsentieren. Unsere Online-Präsenz auf allen großen Plattformen garantiert maximale Reichweite.',
       icon: 'ri-camera-line',
-      image: 'https://readdy.ai/api/search-image?query=Professional%20automotive%20photographer%20taking%20high-quality%20car%20photos%2C%20vehicle%20inspection%20and%20photo%20session%2C%20professional%20car%20photography%20for%20sales%2C%20detailed%20vehicle%20documentation%20process%2C%20premium%20car%20photo%20shoot&width=500&height=350&seq=bewertung-schritt&orientation=landscape'
+      image: '/images/bewertung-schritt.jpg'
     },
     {
       nummer: '3',
       title: 'Vertragsabschluss',
       description: 'Bei Einverständnis schließen wir einen transparenten Kommissionsvertrag ab und übernehmen den Verkauf.',
       icon: 'ri-file-text-line',
-      image: 'https://readdy.ai/api/search-image?query=Professional%20contract%20signing%20for%20car%20consignment%20sale%2C%20automotive%20business%20agreement%2C%20transparent%20car%20sales%20contract%2C%20professional%20document%20signing%2C%20automotive%20legal%20paperwork%20process&width=500&height=350&seq=vertrag-schritt&orientation=landscape'
+      image: '/images/vertrag-schritt.jpg'
     },
     {
       nummer: '4',
       title: 'Auszahlung',
       description: 'Nach erfolgreichem Verkauf erhalten Sie umgehend Ihren Erlös - abzüglich unserer fairen Provision.',
       icon: 'ri-money-euro-circle-line',
-      image: 'https://readdy.ai/api/search-image?query=Successful%20car%20sale%20payment%2C%20automotive%20transaction%20completion%2C%20car%20sales%20payment%20process%2C%20professional%20vehicle%20sale%20payout%2C%20satisfied%20customer%20receiving%20car%20sale%20proceeds&width=500&height=350&seq=auszahlung-schritt&orientation=landscape'
+      image: '/images/auszahlung-schritt.jpg'
     }
   ];
 

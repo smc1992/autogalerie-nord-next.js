@@ -7,7 +7,7 @@ export default function WarumSection() {
       icon: 'ri-price-tag-3-line',
       title: 'Beste Konditionen',
       description: 'Durch unsere langjährigen Partnerschaften erhalten Sie besonders günstige Zinssätze und faire Konditionen für Ihre Autofinanzierung. Wir vergleichen für Sie und finden das beste Angebot.',
-      image: 'https://readdy.ai/api/search-image?query=Best%20car%20financing%20conditions%20with%20low%20interest%20rates%2C%20financial%20calculator%20showing%20attractive%20numbers%2C%20professional%20banking%20consultation%2C%20competitive%20loan%20rates%20display%2C%20premium%20financial%20services%20office&width=600&height=400&seq=beste-konditionen&orientation=landscape',
+      image: '/images/beste-konditionen.jpg',
       stats: [
         { value: 'ab 2,99%', label: 'eff. Jahreszins' },
         { value: '100%', label: 'Finanzierung möglich' },
@@ -18,7 +18,7 @@ export default function WarumSection() {
       icon: 'ri-speed-line',
       title: 'Schnelle Abwicklung',
       description: 'Von der ersten Beratung bis zur Zusage - wir sorgen für eine schnelle und unkomplizierte Abwicklung Ihrer Finanzierung. Ihr Traumauto steht schon bereit!',
-      image: 'https://readdy.ai/api/search-image?query=Fast%20car%20loan%20processing%20and%20approval%2C%20efficient%20digital%20banking%20service%2C%20quick%20financial%20application%20process%2C%20rapid%20loan%20processing%20with%20modern%20technology%2C%20streamlined%20car%20financing%20workflow&width=600&height=400&seq=schnelle-abwicklung&orientation=landscape',
+      image: '/images/schnelle-abwicklung.jpg',
       stats: [
         { value: '24h', label: 'Bearbeitungszeit' },
         { value: '15 Min.', label: 'Beratungstermin' },
@@ -29,7 +29,7 @@ export default function WarumSection() {
       icon: 'ri-user-heart-line',
       title: 'Persönliche Beratung',
       description: 'Unser erfahrenes Finanzierungsteam berät Sie persönlich und findet die optimale Finanzierungslösung für Ihre individuellen Bedürfnisse und Ihre finanzielle Situation.',
-      image: 'https://readdy.ai/api/search-image?query=Personal%20car%20financing%20consultation%20with%20professional%20advisor%2C%20friendly%20customer%20meeting%20in%20modern%20office%2C%20expert%20financial%20guidance%20session%2C%20personalized%20banking%20service%20consultation%2C%20one-on-one%20financial%20planning&width=600&height=400&seq=beratung&orientation=landscape',
+      image: '/images/finanzierung-beratung.jpg',
       stats: [
         { value: '15+', label: 'Jahre Erfahrung' },
         { value: '1.500+', label: 'Finanzierte Fahrzeuge' },

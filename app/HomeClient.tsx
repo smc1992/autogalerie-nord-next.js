@@ -392,7 +392,7 @@ export default function HomeClient() {
                 <div className="absolute inset-0 bg-gradient-to-r from-red-500 to-blue-500 rounded-2xl transform rotate-3 group-hover:rotate-6 transition-transform duration-500 opacity-20"></div>
                 <div className="relative rounded-2xl overflow-hidden shadow-2xl transform transition-all duration-500 group-hover:scale-105">
                   <img 
-                    src="https://static.readdy.ai/image/5cb98375ce345c7331a1619afba21cba/77669189defb295efffb1e1a300f738f.jfif" 
+                    src="/images/standort.jpg" 
                     alt="Autogalerie Nord Fahrzeuge" 
                     className="w-full h-auto object-cover transform transition-transform duration-700 group-hover:scale-110"
                   />

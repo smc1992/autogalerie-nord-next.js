@@ -16,7 +16,7 @@ export default function LeistungenOverview() {
         'Flexible Laufzeiten',
         'Schnelle Zusage'
       ],
-      image: 'https://readdy.ai/api/search-image?query=Professional%20car%20financing%20consultation%2C%20financial%20advisor%20discussing%20car%20loan%20with%20customer%2C%20modern%20banking%20environment%2C%20calculator%20and%20car%20keys%20on%20desk%2C%20premium%20automotive%20financing%20service%2C%20professional%20consultation%20scene&width=600&height=400&seq=finanzierung-service&orientation=landscape'
+      image: '/images/finanzierung-service.jpg'
     },
     {
       title: 'Zulassungsservice',
@@ -29,7 +29,7 @@ export default function LeistungenOverview() {
         'Ummeldung bei Umzug',
         'Stilllegung von Fahrzeugen'
       ],
-      image: 'https://readdy.ai/api/search-image?query=Professional%20automotive%20registration%20service%2C%20car%20registration%20documents%20and%20license%20plates%2C%20modern%20administrative%20office%2C%20official%20paperwork%20processing%2C%20vehicle%20registration%20procedure%2C%20clean%20organized%20office%20environment&width=600&height=400&seq=zulassung-service&orientation=landscape'
+      image: '/images/zulassung-service.jpg'
     },
     {
       title: 'Import & Export',
@@ -42,7 +42,7 @@ export default function LeistungenOverview() {
         'Verzollungsservice',
         'Logistikabwicklung'
       ],
-      image: 'https://readdy.ai/api/search-image?query=International%20car%20shipping%20and%20export%2C%20luxury%20cars%20being%20loaded%20onto%20transport%20truck%2C%20professional%20automotive%20logistics%2C%20car%20carrier%20truck%20with%20premium%20vehicles%2C%20global%20car%20export%20operation%2C%20modern%20shipping%20facility&width=600&height=400&seq=import-export-service&orientation=landscape'
+      image: '/images/import-export-service.jpg'
     },
     {
       title: 'Kommissionsverkauf',
@@ -55,7 +55,7 @@ export default function LeistungenOverview() {
         'Komplette Verkaufsabwicklung',
         'Transparente Abrechnung'
       ],
-      image: 'https://readdy.ai/api/search-image?query=Professional%20car%20consignment%20sale%20service%2C%20luxury%20car%20displayed%20in%20modern%20showroom%2C%20professional%20car%20sales%20presentation%2C%20premium%20vehicle%20showcase%2C%20elegant%20automotive%20retail%20environment%2C%20sophisticated%20car%20dealership%20interior&width=600&height=400&seq=kommission-service&orientation=landscape'
+      image: '/images/kommission-service.jpg'
     }
   ];
 

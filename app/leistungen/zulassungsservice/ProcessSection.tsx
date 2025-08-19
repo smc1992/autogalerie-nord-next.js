@@ -6,19 +6,19 @@ export default function ProcessSection() {
       title: 'Komplette Abwicklung',
       description: 'Autogalerie Nord GmbH kümmert sich für Sie um alles, damit Sie zügig mit Ihrem neuen gebrauchten Fahrzeug starten können.',
       icon: 'ri-checkbox-circle-line',
-      image: 'https://readdy.ai/api/search-image?query=Professional%20car%20registration%20service%2C%20automotive%20paperwork%20being%20processed%2C%20official%20documents%20and%20stamps%2C%20modern%20administrative%20office%2C%20car%20registration%20forms%20being%20completed%2C%20professional%20service%20desk%20with%20vehicle%20documents&width=600&height=400&seq=komplett-abwicklung&orientation=landscape'
+      image: '/images/komplett-abwicklung.jpg'
     },
     {
       title: 'Minimaler Aufwand',
       description: 'Sie stellen uns nur die notwendigen Unterlagen zur Verfügung - den gesamten Papierkram übernehmen wir für Sie.',
       icon: 'ri-time-line',
-      image: 'https://readdy.ai/api/search-image?query=Minimal%20effort%20car%20registration%2C%20customer%20providing%20documents%20to%20professional%20service%2C%20simple%20paperwork%20handover%2C%20stress-free%20car%20registration%20experience%2C%20customer-friendly%20automotive%20service%2C%20easy%20document%20submission%20process&width=600&height=400&seq=minimal-aufwand&orientation=landscape'
+      image: '/images/minimal-aufwand.jpg'
     },
     {
       title: 'Alle Kennzeichen-Arten',
       description: 'Ob normale Zulassung, Kurzzeit- oder Ausfuhrkennzeichen - wir haben die passende Lösung für Ihre Bedürfnisse.',
       icon: 'ri-car-line',
-      image: 'https://readdy.ai/api/search-image?query=Different%20types%20of%20car%20license%20plates%2C%20German%20vehicle%20registration%20plates%2C%20export%20license%20plates%2C%20temporary%20license%20plates%2C%20various%20automotive%20registration%20options%2C%20professional%20license%20plate%20service%20display&width=600&height=400&seq=kennzeichen-arten&orientation=landscape'
+      image: '/images/kennzeichen-arten.jpg'
     }
   ];
 

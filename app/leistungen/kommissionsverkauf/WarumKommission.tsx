@@ -6,37 +6,37 @@ export default function WarumKommission() {
       icon: 'ri-money-euro-circle-line',
       title: 'Höchstmöglicher Preis',
       description: 'Durch unsere Expertise und unser Netzwerk erzielen wir für Ihr Fahrzeug den bestmöglichen Verkaufspreis.',
-      image: 'https://readdy.ai/api/search-image?query=Professional%20car%20valuation%20with%20calculator%20and%20money%2C%20automotive%20pricing%20expertise%2C%20car%20appraisal%20process%2C%20vehicle%20value%20assessment%2C%20professional%20automotive%20evaluation%2C%20premium%20car%20pricing%20service&width=400&height=300&seq=hoechster-preis&orientation=landscape'
+      image: '/images/hoechster-preis.jpg'
     },
     {
       icon: 'ri-timer-2-line',
       title: 'Schnell & Unkompliziert',
       description: 'Keine langen Wartezeiten oder komplizierte Abwicklung. Wir kümmern uns um alles für Sie.',
-      image: 'https://readdy.ai/api/search-image?query=Fast%20car%20sale%20process%2C%20quick%20automotive%20transaction%2C%20efficient%20car%20selling%20service%2C%20streamlined%20vehicle%20sale%20procedure%2C%20rapid%20car%20sales%20process%2C%20professional%20automotive%20efficiency&width=400&height=300&seq=schnell-unkompliziert&orientation=landscape'
+      image: '/images/schnell-unkompliziert.jpg'
     },
     {
       icon: 'ri-shield-check-line',
       title: 'Sicher & Seriös',
       description: 'Vertrauen Sie auf unsere langjährige Erfahrung und seriöse Abwicklung ohne versteckte Kosten.',
-      image: 'https://readdy.ai/api/search-image?query=Secure%20car%20transaction%2C%20professional%20automotive%20contract%20signing%2C%20trusted%20car%20sales%20service%2C%20reliable%20vehicle%20sale%20process%2C%20safe%20automotive%20transaction%2C%20professional%20car%20dealership%20security&width=400&height=300&seq=sicher-serioes&orientation=landscape'
+      image: '/images/sicher-serioes.jpg'
     },
     {
       icon: 'ri-search-line',
       title: 'Professionelle Bewertung',
       description: 'Unsere Experten bewerten Ihr Fahrzeug vor Ort und erstellen eine faire, marktgerechte Einschätzung.',
-      image: 'https://readdy.ai/api/search-image?query=Professional%20car%20inspection%20and%20evaluation%2C%20automotive%20expert%20examining%20vehicle%2C%20detailed%20car%20appraisal%20process%2C%20professional%20vehicle%20assessment%2C%20expert%20car%20evaluation%20service&width=400&height=300&seq=bewertung&orientation=landscape'
+      image: '/images/kommission-bewertung.jpg'
     },
     {
       icon: 'ri-customer-service-2-line',
       title: 'Komplette Abwicklung',
       description: 'Alle Verhandlungen mit potenziellen Käufern werden von unserem erfahrenen Team geführt. Wir filtern "unseriöse Anfragen" heraus und sorgen für einen reibungslosen und sicheren Verkaufsprozess.',
-      image: 'https://readdy.ai/api/search-image?query=Professional%20car%20sales%20negotiation%2C%20automotive%20sales%20team%20working%20with%20customers%2C%20complete%20car%20sales%20service%2C%20professional%20vehicle%20transaction%20management%2C%20expert%20car%20sales%20handling&width=400&height=300&seq=abwicklung&orientation=landscape'
+      image: '/images/kommission-abwicklung.jpg'
     },
     {
       icon: 'ri-user-heart-line',
       title: 'Persönliche Betreuung',
       description: 'Ein fester Ansprechpartner begleitet Sie durch den gesamten Verkaufsprozess.',
-      image: 'https://readdy.ai/api/search-image?query=Personal%20car%20sales%20consultation%2C%20dedicated%20automotive%20advisor%20with%20customer%2C%20one-on-one%20car%20selling%20support%2C%20personal%20vehicle%20sales%20assistance%2C%20professional%20customer%20service%20in%20automotive&width=400&height=300&seq=betreuung&orientation=landscape'
+      image: '/images/kommission-betreuung.jpg'
     }
   ];
 

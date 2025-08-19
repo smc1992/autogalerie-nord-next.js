@@ -12,7 +12,7 @@ export default function ServiceKategorien() {
         'Ölwechsel',
         'Filterwechsel'
       ],
-      image: 'https://readdy.ai/api/search-image?query=Professional%20car%20maintenance%20and%20inspection%20service%2C%20experienced%20mechanic%20performing%20vehicle%20inspection%2C%20modern%20automotive%20diagnostic%20equipment%2C%20car%20being%20inspected%20in%20clean%20service%20bay%2C%20professional%20maintenance%20tools%20and%20equipment%2C%20detailed%20vehicle%20inspection%20process&width=600&height=400&seq=wartung-inspektion&orientation=landscape'
+      image: '/images/wartung-inspektion.jpg'
     },
     {
       title: 'Reparaturen',
@@ -24,7 +24,7 @@ export default function ServiceKategorien() {
         'Elektronik Diagnose',
         'Karosserie Arbeiten'
       ],
-      image: 'https://readdy.ai/api/search-image?query=Professional%20automotive%20repair%20service%2C%20skilled%20mechanic%20repairing%20car%20engine%2C%20modern%20car%20repair%20workshop%20with%20advanced%20tools%2C%20engine%20repair%20and%20maintenance%20work%2C%20professional%20automotive%20technician%20working%20on%20vehicle%20components%2C%20clean%20organized%20repair%20facility&width=600&height=400&seq=reparaturen&orientation=landscape'
+      image: '/images/reparaturen.jpg'
     },
     {
       title: 'Reifenservice',
@@ -36,7 +36,7 @@ export default function ServiceKategorien() {
         'Auswuchtung',
         'Reifenverkauf'
       ],
-      image: 'https://readdy.ai/api/search-image?query=Professional%20tire%20service%20center%2C%20mechanic%20changing%20car%20tires%2C%20tire%20mounting%20and%20balancing%20equipment%2C%20organized%20tire%20storage%20facility%2C%20professional%20tire%20service%20bay%20with%20wheel%20alignment%20tools%2C%20premium%20tire%20service%20environment&width=600&height=400&seq=reifenservice&orientation=landscape'
+      image: '/images/reifenservice.jpg'
     },
     {
       title: 'Fahrzeugpflege',
@@ -48,7 +48,7 @@ export default function ServiceKategorien() {
         'Lackversiegelung',
         'Polsterreinigung'
       ],
-      image: 'https://readdy.ai/api/search-image?query=Professional%20car%20detailing%20and%20cleaning%20service%2C%20luxury%20car%20being%20professionally%20washed%20and%20detailed%2C%20modern%20car%20wash%20facility%20with%20premium%20cleaning%20equipment%2C%20professional%20automotive%20cleaning%20bay%2C%20car%20detailing%20specialists%20at%20work&width=600&height=400&seq=fahrzeugpflege&orientation=landscape'
+      image: '/images/fahrzeugpflege.jpg'
     }
   ];
 

@@ -14,35 +14,35 @@ export default function BusinessServices() {
       icon: 'ri-dashboard-line',
       title: 'Flottenmanagement',
       description: 'Komplette Verwaltung Ihres Fuhrparks mit digitalen Tools und professionellem Service.',
-      image: 'https://readdy.ai/api/search-image?query=Digital%20fleet%20management%20dashboard%20with%20multiple%20luxury%20vehicles%20displayed%20on%20computer%20screens%2C%20modern%20office%20technology%2C%20professional%20workspace&width=400&height=300&seq=fleet-management&orientation=landscape',
+      image: '/images/fleet-management.jpg',
       link: '/leistungen'
     },
     {
       icon: 'ri-bank-card-line',
       title: 'Leasing & Finanzierung',
       description: 'Flexible Leasing-Optionen und maßgeschneiderte Finanzierungslösungen für Geschäftskunden.',
-      image: 'https://readdy.ai/api/search-image?query=Business%20leasing%20contract%20signing%20with%20luxury%20car%20keys%20and%20financial%20documents%20on%20desk%2C%20professional%20business%20meeting%2C%20corporate%20finance&width=400&height=300&seq=leasing-finance&orientation=landscape',
+      image: '/images/leasing-finance.jpg',
       link: '/leistungen/finanzierung'
     },
     {
       icon: 'ri-tools-line',
       title: 'Wartung & Service',
       description: 'Professionelle Wartung und Reparatur direkt in unserer zertifizierten Werkstatt.',
-      image: 'https://readdy.ai/api/search-image?query=Professional%20automotive%20workshop%20with%20certified%20mechanics%20working%20on%20luxury%20vehicles%2C%20modern%20service%20bay%2C%20quality%20tools%20and%20equipment&width=400&height=300&seq=maintenance-service&orientation=landscape',
+      image: '/images/maintenance-service.jpg',
       link: '/service'
     },
     {
       icon: 'ri-shield-check-line',
       title: 'Versicherung & Garantie',
       description: 'Umfassende Versicherungspakete und erweiterte Garantien für maximale Sicherheit.',
-      image: 'https://readdy.ai/api/search-image?query=Insurance%20and%20warranty%20documents%20with%20luxury%20car%20in%20background%2C%20professional%20insurance%20consultation%2C%20security%20and%20protection%20concept&width=400&height=300&seq=insurance-warranty&orientation=landscape',
+      image: '/images/insurance-warranty.jpg',
       link: '/leistungen'
     },
     {
       icon: 'ri-discount-percent-line',
       title: 'Großkunden-Rabatte',
       description: 'Attraktive Mengenrabatte und Sonderkonditionen für Firmenkunden ab 5 Fahrzeugen.',
-      image: 'https://readdy.ai/api/search-image?query=Multiple%20luxury%20vehicles%20lined%20up%20for%20corporate%20fleet%20discount%20program%2C%20business%20parking%20lot%2C%20volume%20discount%20concept%2C%20professional%20presentation&width=400&height=300&seq=bulk-discounts&orientation=landscape',
+      image: '/images/bulk-discounts.jpg',
       link: '/kontakt'
     }
   ];
