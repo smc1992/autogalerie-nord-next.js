@@ -8,7 +8,7 @@ export default function ImportExportHero() {
       <div 
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
         style={{
-          backgroundImage: `url('https://readdy.ai/api/search-image?query=International%20car%20shipping%20and%20export%20operation%2C%20luxury%20cars%20being%20loaded%20onto%20transport%20truck%20at%20modern%20logistics%20facility%2C%20professional%20automotive%20export%20business%2C%20car%20carrier%20with%20premium%20vehicles%2C%20global%20automotive%20trade%2C%20international%20shipping%20port%20with%20cars%2C%20modern%20logistics%20center%20with%20vehicles%20being%20prepared%20for%20export&width=1920&height=1080&seq=import-export-hero&orientation=landscape')`
+          backgroundImage: `url('/images/import-export-hero.jpg')`
         }}
       >
         <div className="absolute inset-0 bg-black/60"></div>

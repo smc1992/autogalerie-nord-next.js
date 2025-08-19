@@ -60,7 +60,7 @@ export default function HeroSection() {
     <section 
       className="relative h-screen bg-cover bg-center bg-no-repeat overflow-hidden"
       style={{
-        backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('https://readdy.ai/api/search-image?query=Luxury%20premium%20automotive%20dealership%20showroom%20with%20BMW%20Mercedes%20Audi%20vehicles%2C%20elegant%20high-end%20car%20dealership%20interior%2C%20modern%20sophisticated%20automotive%20showroom%2C%20premium%20German%20luxury%20cars%20displayed%2C%20professional%20automotive%20business%20environment%2C%20sleek%20contemporary%20design&width=1920&height=1080&seq=hero-premium&orientation=landscape')`
+        backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('/images/hero-premium.jpg')`
       }}
     >
       {/* Static background overlay */}

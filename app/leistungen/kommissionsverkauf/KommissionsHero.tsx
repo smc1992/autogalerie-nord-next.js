@@ -5,7 +5,7 @@ export default function KommissionsHero() {
     <section 
       className="relative min-h-[600px] flex items-center overflow-hidden"
       style={{
-        backgroundImage: `url('https://readdy.ai/api/search-image?query=Professional%20luxury%20car%20showroom%20with%20premium%20vehicles%20displayed%20for%20sale%2C%20elegant%20automotive%20dealership%20interior%2C%20sophisticated%20lighting%2C%20luxury%20cars%20arranged%20for%20consignment%20sale%2C%20modern%20car%20sales%20environment%2C%20premium%20vehicle%20showcase%2C%20professional%20automotive%20retail%20space%20with%20high-end%20cars&width=1920&height=800&seq=kommission-hero&orientation=landscape')`
+        backgroundImage: `url('/images/kommission-hero.jpg')`
       }}
     >
       <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/60 to-black/30"></div>

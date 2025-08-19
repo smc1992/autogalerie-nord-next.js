@@ -7,7 +7,7 @@ export default function ZulassungsHero() {
       <div 
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
         style={{
-          backgroundImage: `url('https://readdy.ai/api/search-image?query=Professional%20automotive%20registration%20office%2C%20car%20registration%20documents%20and%20license%20plates%20on%20desk%2C%20modern%20administrative%20office%20environment%2C%20official%20vehicle%20registration%20paperwork%2C%20clean%20organized%20government%20office%2C%20professional%20car%20registration%20service%20desk%20with%20documents%20and%20stamps&width=1920&height=800&seq=zulassung-hero&orientation=landscape')`
+          backgroundImage: `url('/images/zulassung-hero.jpg')`
         }}
       >
         <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/60 to-black/40"></div>
