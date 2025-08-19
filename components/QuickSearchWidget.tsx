@@ -251,11 +251,36 @@ export default function QuickSearchWidget({ className = '' }: QuickSearchWidgetP
     setIsMounted(true);
   }, []);
 
-  // Überwachung von Seitenwechseln
+  // Überwachung von Seitenwechseln und erzwungene Reinitialisierung
   useEffect(() => {
-    if (isMounted && isJQueryLoaded && pathname === '/' && !isInitialized) {
-      console.log('Rückkehr zur Startseite erkannt, lade QuickSearch-Skript neu');
-      reloadQuickSearchScript();
+    if (isMounted && isJQueryLoaded && pathname === '/') {
+      console.log('Startseite besucht, prüfe QuickSearch-Status...');
+      
+      // Immer reinitialisieren wenn nicht initialisiert
+      if (!isInitialized) {
+        console.log('QuickSearch nicht initialisiert, lade Skript neu');
+        reloadQuickSearchScript();
+        return;
+      }
+      
+      // Prüfe ob QuickSearch funktioniert (Dropdown-Test)
+      setTimeout(() => {
+        const selects = document.querySelectorAll('.quicksearch select');
+        let hasEmptyDropdowns = false;
+        
+        selects.forEach(select => {
+          if ((select as HTMLSelectElement).options.length <= 1) {
+            hasEmptyDropdowns = true;
+          }
+        });
+        
+        if (hasEmptyDropdowns) {
+          console.log('QuickSearch-Dropdowns sind leer, erzwinge Neuladung');
+          reloadQuickSearchScript();
+        } else {
+          console.log('QuickSearch funktioniert korrekt');
+        }
+      }, 2000);
     }
   }, [pathname, isJQueryLoaded, isMounted, isInitialized]);
 
