@@ -1,333 +1,37 @@
 'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
-import { usePathname, useRouter } from 'next/navigation';
-import Script from 'next/script';
+import { usePathname } from 'next/navigation';
 
 interface QuickSearchWidgetProps {
   className?: string;
 }
 
 export default function QuickSearchWidget({ className = '' }: QuickSearchWidgetProps) {
-  const [isJQueryLoaded, setIsJQueryLoaded] = useState(false);
-  const [isQuickSearchLoaded, setIsQuickSearchLoaded] = useState(false);
-  const [isInitialized, setIsInitialized] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
-  const pathname = usePathname();
-  const router = useRouter();
-  const initializationRef = useRef(false);
+  const [isInitialized, setIsInitialized] = useState(false);
   const widgetRef = useRef<HTMLDivElement>(null);
+  const pathname = usePathname();
 
   const API_KEY = '0536fa11-99df-43f8-bf26-42af233f5478';
 
-  // QuickSearch Konfiguration
-  const getMarketplaceConfig = () => {
-    const baseUrl = window.location.origin;
-    return {
-      url: baseUrl + '/fahrzeuge/',
-      renameManufacturers: true,
-      culture: 'de-DE',
-      hideOtherManufactueres: false,
-      modelsWithoutFinds: 'hide',
-      modelsWithCounter: false,
-      sortManAlphabetic: false,
-      target: '/fahrzeuge',
-      hash: '',
-      newWindow: false,
-      debug: false,
-      api: {
-        url: 'https://api.pixel-base.de/marketplace/v3-11365/',
-        key: API_KEY
-      }
-    };
-  };
-
-  // QuickSearch initialisieren
-  const initializeQuickSearch = () => {
-    if (typeof window === 'undefined' || !(window as any).jQuery || !(window as any).quicksearch) {
-      console.log('jQuery oder QuickSearch noch nicht verfügbar');
-      return;
-    }
-
-    if (initializationRef.current) {
-      console.log('QuickSearch bereits initialisiert');
-      return;
-    }
-
-    try {
-      console.log('Initialisiere QuickSearch Widget...');
-      
-      // Globale Marketplace-Konfiguration setzen
-      const config = getMarketplaceConfig();
-      (window as any).marketplace = config;
-      
-      // Explizit alle URL-Parameter überschreiben
-      (window as any).baseUri = 'https://api.pixel-base.de/marketplace/v3-11365';
-      (window as any).culture = 'de-DE';
-      (window as any).apikey = API_KEY;
-      
-      // QuickSearch initialisieren
-      (window as any).jQuery(document).ready(() => {
-        if ((window as any).quicksearch && (window as any).quicksearch.init) {
-          // Konfiguration nochmals explizit setzen
-          config.url = window.location.origin + '/fahrzeuge/';
-          config.target = '/fahrzeuge';
-          config.hash = '';
-          
-          // Globale settings überschreiben
-          (window as any).settings = config;
-          (window as any).target = '/fahrzeuge';
-          
-          // QuickSearch mit vollständiger Konfiguration initialisieren
-      (window as any).quicksearch.init(config);
-      
-      // Erweiterte Initialisierung mit Fehlerbehandlung
-      setTimeout(() => {
-        // Links korrigieren
-        const searchLink = document.querySelector('#carsearchlink');
-        if (searchLink) {
-          const currentHref = searchLink.getAttribute('href');
-          if (currentHref && currentHref.includes('vogelsang')) {
-            searchLink.setAttribute('href', '/fahrzeuge');
-            console.log('Vogelsang-Link korrigiert zu:', '/fahrzeuge');
-          }
-        }
-        
-        const detailLink = document.querySelector('#car-search-detail');
-        if (detailLink) {
-          detailLink.setAttribute('href', '/fahrzeuge');
-        }
-        
-        // Robuste Dropdown-Initialisierung
-        const initializeDropdowns = async () => {
-          const selects = document.querySelectorAll('.quicksearch select');
-          
-          for (let i = 0; i < selects.length; i++) {
-            const select = selects[i] as HTMLSelectElement;
-            
-            if (select.options.length <= 1) {
-              console.log(`Dropdown ${i} hat keine Optionen, lade manuell...`);
-              
-              try {
-                // Versuche verschiedene Methoden zur Dropdown-Initialisierung
-                if ((window as any).quicksearch) {
-                  if ((window as any).quicksearch.loadCriteria) {
-                    (window as any).quicksearch.loadCriteria();
-                  }
-                  if ((window as any).quicksearch.refresh) {
-                    (window as any).quicksearch.refresh();
-                  }
-                  if ((window as any).quicksearch.reload) {
-                    (window as any).quicksearch.reload();
-                  }
-                }
-                
-                // Warte kurz und prüfe erneut
-                await new Promise(resolve => setTimeout(resolve, 1000));
-                
-                if (select.options.length <= 1) {
-                  console.log(`Dropdown ${i} immer noch leer, verwende Fallback`);
-                  // Fallback: Grundlegende Optionen hinzufügen
-                  select.innerHTML = '<option value="">Alle</option>';
-                }
-              } catch (error) {
-                console.log(`Fehler bei Dropdown ${i}:`, error);
-              }
-            }
-          }
-        };
-        
-        initializeDropdowns();
-        
-        // QuickSearch-Event-Listener für automatische Fahrzeuganzahl-Updates
-        setTimeout(() => {
-          if ((window as any).quicksearch) {
-            // Überwache QuickSearch-Events
-            const originalQueryCount = (window as any).quicksearch.queryCount;
-            if (originalQueryCount) {
-              (window as any).quicksearch.queryCount = function() {
-                console.log('QuickSearch queryCount() aufgerufen');
-                const result = originalQueryCount.apply(this, arguments);
-                
-                // Fahrzeuganzahl nach queryCount aktualisieren
-                setTimeout(() => {
-                  updateVehicleCountFromQuickSearch();
-                }, 500);
-                
-                return result;
-              };
-            }
-          }
-        }, 2500);
-        
-      }, 1500);
-          
-          initializationRef.current = true;
-          setIsInitialized(true);
-          console.log('QuickSearch erfolgreich initialisiert mit lokalen URLs');
-          console.log('Konfiguration:', config);
-          
-          // QuickSearch-Elemente sind jetzt direkt im DOM verfügbar
-          console.log('QuickSearch-Elemente mit korrekten IDs sind verfügbar');
-        }
-      });
-    } catch (error) {
-      console.error('Fehler bei der QuickSearch-Initialisierung:', error);
-    }
-  };
-
-  // Komplette Skript-Neuladung bei Seitenwechsel
-  const reloadQuickSearchScript = () => {
-    if (typeof window === 'undefined') return;
-
-    console.log('Starte komplette QuickSearch-Skript-Neuladung...');
-    
-    // Reset aller States
-    initializationRef.current = false;
-    setIsInitialized(false);
-    setIsQuickSearchLoaded(false);
-
-    // Komplette Bereinigung
-    try {
-      // QuickSearch-Objekt komplett entfernen
-      delete (window as any).quicksearch;
-      delete (window as any).marketplace;
-      delete (window as any).settings;
-      delete (window as any).baseUri;
-      delete (window as any).culture;
-      delete (window as any).apikey;
-      
-      // Alle bestehenden QuickSearch-Skripte entfernen
-      const existingScripts = document.querySelectorAll('script[src*="quicksearch"]');
-      existingScripts.forEach(script => {
-        script.remove();
-      });
-      
-      // DOM-Elemente zurücksetzen
-      const selects = document.querySelectorAll('.quicksearch select');
-      selects.forEach(select => {
-        (select as HTMLSelectElement).innerHTML = '<option value="">Laden...</option>';
-        (select as HTMLSelectElement).selectedIndex = 0;
-        // Event-Handler entfernen
-        const newSelect = select.cloneNode(true);
-        select.parentNode?.replaceChild(newSelect, select);
-      });
-      
-      // Fahrzeuganzahl zurücksetzen
-      const countElements = document.querySelectorAll('.quicksearch-count');
-      countElements.forEach(el => {
-        el.textContent = '0';
-      });
-      
-    } catch (error) {
-      console.log('QuickSearch cleanup error:', error);
-    }
-
-    // Skript neu laden nach Bereinigung
-    setTimeout(() => {
-      console.log('Lade QuickSearch-Skript neu...');
-      
-      // Neues Skript-Element erstellen
-      const script = document.createElement('script');
-      script.src = '/quicksearch-norequire_1.4.2.min.js';
-      script.onload = () => {
-        console.log('QuickSearch-Skript neu geladen');
-        setIsQuickSearchLoaded(true);
-        
-        // Nach Skript-Ladung initialisieren
-        setTimeout(() => {
-          initializeQuickSearch();
-          
-          // Fahrzeuganzahl laden
-          setTimeout(() => {
-            forceUpdateVehicleCount();
-          }, 1500);
-        }, 500);
-      };
-      script.onerror = () => {
-        console.error('Fehler beim Neuladen des QuickSearch-Skripts');
-      };
-      
-      document.head.appendChild(script);
-    }, 500);
-  };
-
-  // Robuste Fahrzeuganzahl-Aktualisierung mit Retry-Mechanismus
+  // Fahrzeuganzahl aktualisieren
   const updateVehicleCount = async () => {
     if (typeof window === 'undefined') return;
 
-    const apiUrls = [
-      `https://api.pixel-base.de/marketplace/v3-11365/vehicles/count/?apikey=${API_KEY}`,
-      `https://api.pixel-base.de/marketplace/v3-11365/vehicles/?apikey=${API_KEY}&take=1`,
-      `https://api.pixel-base.de/marketplace/v3-11365/criteria/manufacturers/?apikey=${API_KEY}`
-    ];
-
-    const retryFetch = async (url: string, retries = 3): Promise<any> => {
-      for (let i = 0; i < retries; i++) {
-        try {
-          const response = await fetch(url, {
-            method: 'GET',
-            headers: {
-              'Accept': 'application/json',
-              'Cache-Control': 'no-cache'
-            }
-          });
-          
-          if (response.ok) {
-            return await response.json();
-          } else if (response.status === 500 && i < retries - 1) {
-            console.log(`API-Fehler 500, Retry ${i + 1}/${retries}`);
-            await new Promise(resolve => setTimeout(resolve, 1000 * (i + 1)));
-            continue;
-          }
-        } catch (error) {
-          if (i < retries - 1) {
-            console.log(`Netzwerk-Fehler, Retry ${i + 1}/${retries}:`, error);
-            await new Promise(resolve => setTimeout(resolve, 1000 * (i + 1)));
-            continue;
-          }
-        }
-      }
-      throw new Error(`Alle Retry-Versuche fehlgeschlagen für: ${url}`);
-    };
-
     try {
-      // Versuche verschiedene API-Endpunkte
-      let count = 0;
+      const response = await fetch(`https://api.pixel-base.de/marketplace/v3-11365/vehicles/count/?apikey=${API_KEY}`);
+      const data = await response.json();
+      const count = data.count || data.total || 70;
       
-      for (const apiUrl of apiUrls) {
-        try {
-          const data = await retryFetch(apiUrl);
-          
-          if (apiUrl.includes('/count/')) {
-            count = data.count || data.total || 0;
-          } else if (apiUrl.includes('/vehicles/')) {
-            count = data.totalCount || data.total || 0;
-          } else if (apiUrl.includes('/manufacturers/')) {
-            // Fallback: Schätze basierend auf Herstelleranzahl
-            count = data.length ? data.length * 10 : 70;
-          }
-          
-          if (count > 0) {
-            break;
-          }
-        } catch (error) {
-          console.log(`API-Endpunkt fehlgeschlagen: ${apiUrl}`, error);
-          continue;
-        }
-      }
-      
-      // Fahrzeuganzahl aktualisieren
       const countElements = document.querySelectorAll('.quicksearch-count');
       countElements.forEach(el => {
-        el.textContent = count > 0 ? count.toString() : '70';
+        el.textContent = count.toString();
       });
       
-      console.log('Fahrzeuganzahl erfolgreich aktualisiert:', count);
-      
+      console.log('Fahrzeuganzahl aktualisiert:', count);
     } catch (error) {
-      console.error('Alle API-Versuche fehlgeschlagen:', error);
-      // Fallback: Standard-Anzahl anzeigen
+      console.error('Fehler beim Laden der Fahrzeuganzahl:', error);
       const countElements = document.querySelectorAll('.quicksearch-count');
       countElements.forEach(el => {
         el.textContent = '70';
@@ -335,125 +39,166 @@ export default function QuickSearchWidget({ className = '' }: QuickSearchWidgetP
     }
   };
 
-  // QuickSearch-spezifische Fahrzeuganzahl-Aktualisierung
-  const updateVehicleCountFromQuickSearch = () => {
-    if (typeof window === 'undefined') return;
-
-    try {
-      // Versuche die Fahrzeuganzahl direkt aus QuickSearch zu lesen
-      if ((window as any).quicksearch && (window as any).quicksearch.vehicleCount) {
-        const count = (window as any).quicksearch.vehicleCount;
-        const countElements = document.querySelectorAll('.quicksearch-count');
-        countElements.forEach(el => {
-          el.textContent = count.toString();
-        });
-        console.log('Fahrzeuganzahl von QuickSearch aktualisiert:', count);
-        return;
-      }
-      
-      // Fallback: Verwende die robuste API-Methode
-      updateVehicleCount();
-    } catch (error) {
-      console.error('Fehler bei updateVehicleCountFromQuickSearch:', error);
-      updateVehicleCount();
-    }
-  };
-
-  // Forcierte Fahrzeuganzahl-Aktualisierung bei Seitenwechsel
-  const forceUpdateVehicleCount = () => {
-    // Sofort die Anzahl auf 0 setzen
-    const countElements = document.querySelectorAll('.quicksearch-count');
-    countElements.forEach(el => {
-      el.textContent = '0';
-    });
-    
-    // Mehrere Versuche mit verschiedenen Verzögerungen
-    const delays = [500, 1000, 1500, 2000];
-    delays.forEach(delay => {
-      setTimeout(() => {
-        updateVehicleCount();
-      }, delay);
-    });
-  };
-
-  // Component mount detection
   useEffect(() => {
     setIsMounted(true);
   }, []);
 
-  // Next.js Router-Events-Lösung für externe JavaScript-Bibliotheken
   useEffect(() => {
-    if (!isMounted || !isJQueryLoaded) return;
-    
-    const handleRouteChange = () => {
-      console.log('Route geändert - reinitialisiere QuickSearch');
-      
-      // Kurze Verzögerung um sicherzustellen, dass DOM bereit ist
-      setTimeout(() => {
-        if (pathname === '/' && typeof window !== 'undefined') {
-          console.log('Startseite erkannt - initialisiere QuickSearch');
-          
-          // Prüfe ob QuickSearch verfügbar ist
-          if ((window as any).quicksearch) {
+    // Cleanup-Funktion nach FahrzeugeClient-Vorbild
+    const cleanup = () => {
+      // Bestehende Skripte entfernen
+      const existingScripts = document.querySelectorAll('script[src*="quicksearch"], script[src*="jquery"]');
+      existingScripts.forEach(script => script.remove());
+
+      // QuickSearch-Globals bereinigen
+      if (typeof window !== 'undefined' && (window as any).jQuery) {
+        try {
+          (window as any).jQuery('.quicksearch').empty();
+          (window as any).jQuery(window).off('.quicksearch');
+          (window as any).jQuery(document).off('.quicksearch');
+        } catch (e) {
+          console.log('jQuery cleanup übersprungen');
+        }
+      }
+
+      // QuickSearch-Objekte löschen
+      if (typeof window !== 'undefined') {
+        delete (window as any).quicksearch;
+        delete (window as any).marketplace;
+        delete (window as any).baseUri;
+        delete (window as any).culture;
+        delete (window as any).apikey;
+      }
+    };
+
+    // QuickSearch initialisieren (nach FahrzeugeClient-Muster)
+    const initializeQuickSearch = async () => {
+      try {
+        cleanup();
+
+        // Warten bis DOM bereit ist
+        if (document.readyState !== 'complete') {
+          await new Promise<void>(resolve => {
+            const handleLoad = () => {
+              window.removeEventListener('load', handleLoad);
+              resolve();
+            };
+            window.addEventListener('load', handleLoad);
+          });
+        }
+
+        // jQuery laden falls nicht vorhanden
+        if (typeof window !== 'undefined' && !(window as any).jQuery) {
+          await new Promise<void>((resolve, reject) => {
+            const script = document.createElement('script');
+            script.src = 'https://code.jquery.com/jquery-3.6.0.min.js';
+            script.crossOrigin = 'anonymous';
+            script.integrity = 'sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=';
+            script.onload = () => {
+              (window as any).$ = (window as any).jQuery;
+              console.log('jQuery erfolgreich geladen');
+              resolve();
+            };
+            script.onerror = (error) => {
+              console.error('Fehler beim Laden von jQuery:', error);
+              reject(error);
+            };
+            document.head.appendChild(script);
+          });
+        }
+
+        // QuickSearch-Skript laden
+        await new Promise<void>((resolve, reject) => {
+          const script = document.createElement('script');
+          script.src = '/quicksearch-norequire_1.4.2.min.js';
+          script.async = true;
+
+          const timeout = setTimeout(() => {
+            console.error('QuickSearch-Skript Timeout');
+            reject(new Error('Script loading timeout'));
+          }, 10000);
+
+          script.onload = () => {
+            clearTimeout(timeout);
+            console.log('QuickSearch-Skript erfolgreich geladen');
+            setTimeout(() => {
+              resolve();
+            }, 1000);
+          };
+
+          script.onerror = (error) => {
+            clearTimeout(timeout);
+            console.error('QuickSearch-Skript Fehler:', error);
+            reject(error);
+          };
+
+          document.head.appendChild(script);
+        });
+
+        // QuickSearch konfigurieren und initialisieren
+        if (typeof window !== 'undefined' && (window as any).quicksearch) {
+          const config = {
+            url: window.location.origin + '/fahrzeuge/',
+            renameManufacturers: true,
+            culture: 'de-DE',
+            hideOtherManufactueres: false,
+            modelsWithoutFinds: 'hide',
+            modelsWithCounter: false,
+            sortManAlphabetic: false,
+            target: '/fahrzeuge',
+            hash: '',
+            api: {
+              url: 'https://api.pixel-base.de/marketplace/v3-11365/',
+              key: API_KEY
+            }
+          };
+
+          // Globale Variablen setzen
+          (window as any).marketplace = config;
+          (window as any).baseUri = config.api.url;
+          (window as any).culture = config.culture;
+          (window as any).apikey = config.api.key;
+
+          // jQuery document ready verwenden
+          (window as any).jQuery(document).ready(() => {
             try {
-              // QuickSearch mit korrekter Konfiguration neu initialisieren
-              const config = {
-                culture: 'de-DE',
-                url: window.location.origin + '/fahrzeuge/',
-                target: '/fahrzeuge',
-                hash: '',
-                hideOtherManufactueres: false,
-                renameManufacturers: true,
-                modelsWithoutFinds: 'hide',
-                modelsWithCounter: false,
-                sortManAlphabetic: false,
-                api: {
-                  url: 'https://api.pixel-base.de/marketplace/v3-11365/',
-                  key: API_KEY
-                }
-              };
-              
-              // Globale Variablen setzen
-              (window as any).marketplace = config;
-              (window as any).baseUri = config.api.url;
-              (window as any).culture = config.culture;
-              (window as any).apikey = config.api.key;
-              
-              // QuickSearch initialisieren
               (window as any).quicksearch.init(config);
-              console.log('QuickSearch erfolgreich reinitialisiert');
+              console.log('QuickSearch erfolgreich initialisiert');
+              setIsInitialized(true);
               
-              // Fahrzeuganzahl nach Initialisierung aktualisieren
+              // Fahrzeuganzahl nach Initialisierung laden
               setTimeout(() => {
                 updateVehicleCount();
-              }, 1000);
-              
+              }, 2000);
             } catch (error) {
-              console.error('Fehler bei QuickSearch-Reinitialisierung:', error);
+              console.error('Fehler bei QuickSearch-Initialisierung:', error);
             }
-          } else {
-            console.log('QuickSearch nicht verfügbar - lade Skript neu');
-            reloadQuickSearchScript();
-          }
+          });
         }
+
+        console.log('QuickSearch-Initialisierung abgeschlossen');
+
+      } catch (error) {
+        console.error('Fehler bei QuickSearch-Initialisierung:', error);
+      }
+    };
+
+    // Nur auf Startseite initialisieren
+    if (isMounted && pathname === '/') {
+      const initTimer = setTimeout(() => {
+        initializeQuickSearch();
       }, 100);
-    };
-    
-    // Initial-Initialisierung
-    if (pathname === '/') {
-      handleRouteChange();
+
+      return () => {
+        clearTimeout(initTimer);
+        cleanup();
+      };
     }
-    
-    // Router-Events für Navigation überwachen
-    // Da Next.js App Router keine Router-Events hat, verwenden wir Pathname-Änderungen
-    return () => {
-      // Cleanup falls nötig
-    };
-  }, [pathname, isMounted, isJQueryLoaded]);
-  
+  }, [pathname, isMounted]);
+
   // Zusätzliche Sicherheitsüberprüfung für Fahrzeuganzahl
   useEffect(() => {
-    if (isMounted && isJQueryLoaded && pathname === '/' && isInitialized) {
+    if (isMounted && pathname === '/' && isInitialized) {
       // Prüfe nach 3 Sekunden ob Fahrzeuganzahl korrekt angezeigt wird
       const checkTimer = setTimeout(() => {
         const countElements = document.querySelectorAll('.quicksearch-count');
@@ -473,268 +218,195 @@ export default function QuickSearchWidget({ className = '' }: QuickSearchWidgetP
       
       return () => clearTimeout(checkTimer);
     }
-  }, [pathname, isJQueryLoaded, isMounted, isInitialized]);
-
-  // Initialisierung wenn beide Skripte geladen sind
-  useEffect(() => {
-    if (isMounted && isJQueryLoaded && isQuickSearchLoaded && !isInitialized) {
-      initializeQuickSearch();
-      // Nach erfolgreicher Initialisierung Fahrzeuganzahl laden
-      setTimeout(() => {
-        forceUpdateVehicleCount();
-      }, 1000);
-    }
-  }, [isJQueryLoaded, isQuickSearchLoaded, isInitialized, isMounted]);
+  }, [pathname, isMounted, isInitialized]);
 
   // Cleanup bei Komponenten-Unmount
   useEffect(() => {
     return () => {
-      if (typeof window !== 'undefined' && (window as any).quicksearch) {
-        try {
-          // Reset QuickSearch wenn möglich
-          if ((window as any).quicksearch && typeof (window as any).quicksearch.resetAll === 'function') {
-            (window as any).quicksearch.resetAll();
-          }
-        } catch (error) {
-          console.log('QuickSearch cleanup:', error);
-        }
+      if (typeof window !== 'undefined') {
+        // QuickSearch-Objekte bereinigen
+        delete (window as any).quicksearch;
+        delete (window as any).marketplace;
+        delete (window as any).baseUri;
+        delete (window as any).culture;
+        delete (window as any).apikey;
       }
     };
   }, []);
 
   return (
-    <>
-      {/* jQuery laden */}
-      <Script
-        src="https://code.jquery.com/jquery-3.6.0.min.js"
-        strategy="beforeInteractive"
-        onLoad={() => {
-          console.log('jQuery geladen');
-          setIsJQueryLoaded(true);
-        }}
-        onError={() => {
-          console.error('Fehler beim Laden von jQuery');
-        }}
-      />
+    <div 
+      ref={widgetRef}
+      className={`quicksearch relative ${className}`}
+    >
+      {/* QuickSearch Widget HTML - Dokumentations-konforme Struktur */}
+      <div className="bg-white rounded-2xl shadow-2xl p-8 backdrop-blur-sm bg-white/95">
+        {/* QuickSearch-konforme HTML-Struktur - DIREKT im .quicksearch Container */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          {/* Fahrzeugart */}
+          <div className="group">
+            <label htmlFor="fahrzeugart" className="block text-sm font-semibold text-gray-700 mb-3 group-hover:text-red-600 transition-colors">
+              <i className="ri-car-line mr-2"></i>Fahrzeugart
+            </label>
+            <select 
+              id="fahrzeugart" 
+              className="w-full p-4 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all duration-300 hover:border-red-300 bg-white shadow-sm"
+            >
+              <option value="">Alle Fahrzeugarten</option>
+            </select>
+          </div>
 
-      {/* QuickSearch Script laden */}
-      {isJQueryLoaded && (
-        <Script
-          src="/quicksearch-norequire_1.4.2.min.js"
-          strategy="afterInteractive"
-          onLoad={() => {
-            console.log('QuickSearch Script geladen');
-            setIsQuickSearchLoaded(true);
-          }}
-          onError={() => {
-            console.error('Fehler beim Laden des QuickSearch Scripts');
-          }}
-        />
-      )}
+          {/* Hersteller */}
+          <div className="group">
+            <label htmlFor="hersteller" className="block text-sm font-semibold text-gray-700 mb-3 group-hover:text-red-600 transition-colors">
+              <i className="ri-building-line mr-2"></i>Hersteller
+            </label>
+            <select 
+              id="hersteller" 
+              className="w-full p-4 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all duration-300 hover:border-red-300 bg-white shadow-sm"
+            >
+              <option value="">Alle Hersteller</option>
+            </select>
+          </div>
 
-      {/* QuickSearch Widget HTML - Kompatible Struktur */}
-      <div ref={widgetRef} className={`quicksearch ${className}`}>
-        <section className="py-16 pb-24 md:pb-16 bg-gradient-to-br from-gray-50 to-gray-100 relative overflow-hidden">
-        {/* Background decoration */}
-        <div className="absolute top-0 right-0 w-96 h-96 bg-red-100 rounded-full -translate-y-48 translate-x-48 opacity-30"></div>
-        <div className="absolute bottom-0 left-0 w-72 h-72 bg-blue-100 rounded-full translate-y-36 -translate-x-36 opacity-30"></div>
-        
-        <div className="container mx-auto px-6 relative z-10">
-          <div className="max-w-6xl mx-auto">
-            <div className="text-center mb-12">
-              <h2 className="text-4xl font-bold text-gray-900 mb-4">
-                Finden Sie Ihr <span className="text-red-600 relative">
-                  Traumauto
-                  <div className="absolute -bottom-2 left-0 w-full h-1 bg-red-600 rounded-full"></div>
-                </span>
-              </h2>
-              <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-                Durchsuchen Sie unsere Premium-Fahrzeuge mit intelligenten Filtern
-              </p>
-            </div>
-            
-            <div className="bg-white rounded-2xl shadow-2xl p-8 backdrop-blur-sm bg-white/95">
-              {/* QuickSearch-konforme HTML-Struktur - DIREKT im .quicksearch Container */}
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                {/* Fahrzeugart */}
-                <div className="group">
-                  <label htmlFor="fahrzeugart" className="block text-sm font-semibold text-gray-700 mb-3 group-hover:text-red-600 transition-colors">
-                    <i className="ri-car-line mr-2"></i>Fahrzeugart
-                  </label>
-                  <select 
-                    id="fahrzeugart" 
-                    className="w-full p-4 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all duration-300 hover:border-red-300 bg-white shadow-sm"
-                  >
-                    <option value="">Alle Fahrzeugarten</option>
-                  </select>
-                </div>
+          {/* Modell */}
+          <div className="group">
+            <label htmlFor="modell" className="block text-sm font-semibold text-gray-700 mb-3 group-hover:text-red-600 transition-colors">
+              <i className="ri-car-2-line mr-2"></i>Modell
+            </label>
+            <select 
+              id="modell" 
+              className="w-full p-4 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all duration-300 hover:border-red-300 bg-white shadow-sm"
+            >
+              <option value="">Alle Modelle</option>
+            </select>
+          </div>
 
-                {/* Hersteller */}
-                <div className="group">
-                  <label htmlFor="hersteller" className="block text-sm font-semibold text-gray-700 mb-3 group-hover:text-red-600 transition-colors">
-                    <i className="ri-building-line mr-2"></i>Hersteller
-                  </label>
-                  <select 
-                    id="hersteller" 
-                    className="w-full p-4 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all duration-300 hover:border-red-300 bg-white shadow-sm"
-                  >
-                    <option value="">Alle Hersteller</option>
-                  </select>
-                </div>
+          {/* Preis max */}
+          <div className="group">
+            <label htmlFor="preismax" className="block text-sm font-semibold text-gray-700 mb-3 group-hover:text-red-600 transition-colors">
+              <i className="ri-money-euro-circle-line mr-2"></i>Preis bis
+            </label>
+            <select 
+              id="preismax" 
+              className="w-full p-4 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all duration-300 hover:border-red-300 bg-white shadow-sm"
+            >
+              <option value="">Alle Preise</option>
+              <option value="5000">5.000 €</option>
+              <option value="10000">10.000 €</option>
+              <option value="15000">15.000 €</option>
+              <option value="20000">20.000 €</option>
+              <option value="25000">25.000 €</option>
+              <option value="30000">30.000 €</option>
+              <option value="40000">40.000 €</option>
+              <option value="50000">50.000 €</option>
+              <option value="75000">75.000 €</option>
+              <option value="100000">100.000 €</option>
+            </select>
+          </div>
 
-                {/* Modell */}
-                <div className="group">
-                  <label htmlFor="modell" className="block text-sm font-semibold text-gray-700 mb-3 group-hover:text-red-600 transition-colors">
-                    <i className="ri-car-2-line mr-2"></i>Modell
-                  </label>
-                  <select 
-                    id="modell" 
-                    className="w-full p-4 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all duration-300 hover:border-red-300 bg-white shadow-sm"
-                  >
-                    <option value="">Alle Modelle</option>
-                  </select>
-                </div>
+          {/* Kilometer bis */}
+          <div className="group">
+            <label htmlFor="kilometerbis" className="block text-sm font-semibold text-gray-700 mb-3 group-hover:text-red-600 transition-colors">
+              <i className="ri-speedometer-line mr-2"></i>Kilometer bis
+            </label>
+            <select 
+              id="kilometerbis" 
+              className="w-full p-4 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all duration-300 hover:border-red-300 bg-white shadow-sm"
+            >
+              <option value="">Alle Kilometer</option>
+              <option value="10000">10.000 km</option>
+              <option value="25000">25.000 km</option>
+              <option value="50000">50.000 km</option>
+              <option value="75000">75.000 km</option>
+              <option value="100000">100.000 km</option>
+              <option value="150000">150.000 km</option>
+              <option value="200000">200.000 km</option>
+            </select>
+          </div>
 
-                {/* Preis max */}
-                <div className="group">
-                  <label htmlFor="preismax" className="block text-sm font-semibold text-gray-700 mb-3 group-hover:text-red-600 transition-colors">
-                    <i className="ri-money-euro-circle-line mr-2"></i>Preis bis
-                  </label>
-                  <select 
-                    id="preismax" 
-                    className="w-full p-4 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all duration-300 hover:border-red-300 bg-white shadow-sm"
-                  >
-                    <option value="">Alle Preise</option>
-                    <option value="5000">5.000 €</option>
-                    <option value="10000">10.000 €</option>
-                    <option value="15000">15.000 €</option>
-                    <option value="20000">20.000 €</option>
-                    <option value="25000">25.000 €</option>
-                    <option value="30000">30.000 €</option>
-                    <option value="40000">40.000 €</option>
-                    <option value="50000">50.000 €</option>
-                    <option value="75000">75.000 €</option>
-                    <option value="100000">100.000 €</option>
-                  </select>
-                </div>
+          {/* Zulassung von */}
+          <div className="group">
+            <label htmlFor="zulassungvon" className="block text-sm font-semibold text-gray-700 mb-3 group-hover:text-red-600 transition-colors">
+              <i className="ri-calendar-line mr-2"></i>Zulassung von
+            </label>
+            <select 
+              id="zulassungvon" 
+              className="w-full p-4 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all duration-300 hover:border-red-300 bg-white shadow-sm"
+            >
+              <option value="">Alle Jahre</option>
+            </select>
+          </div>
 
-                {/* Kilometer bis */}
-                <div className="group">
-                  <label htmlFor="kilometerbis" className="block text-sm font-semibold text-gray-700 mb-3 group-hover:text-red-600 transition-colors">
-                    <i className="ri-speedometer-line mr-2"></i>Kilometer bis
-                  </label>
-                  <select 
-                    id="kilometerbis" 
-                    className="w-full p-4 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all duration-300 hover:border-red-300 bg-white shadow-sm"
-                  >
-                    <option value="">Alle Kilometer</option>
-                    <option value="10000">10.000 km</option>
-                    <option value="25000">25.000 km</option>
-                    <option value="50000">50.000 km</option>
-                    <option value="75000">75.000 km</option>
-                    <option value="100000">100.000 km</option>
-                    <option value="150000">150.000 km</option>
-                    <option value="200000">200.000 km</option>
-                  </select>
-                </div>
-
-                {/* Zulassung von */}
-                <div className="group">
-                  <label htmlFor="zulassungvon" className="block text-sm font-semibold text-gray-700 mb-3 group-hover:text-red-600 transition-colors">
-                    <i className="ri-calendar-line mr-2"></i>Zulassung von
-                  </label>
-                  <select 
-                    id="zulassungvon" 
-                    className="w-full p-4 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all duration-300 hover:border-red-300 bg-white shadow-sm"
-                  >
-                    <option value="">Alle Jahre</option>
-                  </select>
-                </div>
-
-                {/* Kraftstoff */}
-                <div className="group">
-                  <label htmlFor="kraftstoff" className="block text-sm font-semibold text-gray-700 mb-3 group-hover:text-red-600 transition-colors">
-                    <i className="ri-gas-station-line mr-2"></i>Kraftstoff
-                  </label>
-                  <select 
-                    id="kraftstoff" 
-                    className="w-full p-4 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all duration-300 hover:border-red-300 bg-white shadow-sm"
-                  >
-                    <option value="">Alle Kraftstoffe</option>
-                  </select>
-                </div>
-              </div>
-
-              {/* Buttons */}
-              <div className="flex flex-col sm:flex-row justify-center gap-4 mt-8 pt-6 border-t border-gray-100">
-                {isMounted ? (
-                   <a 
-                     id="carsearchlink" 
-                     href="/fahrzeuge" 
-                     className="group bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white font-bold py-4 px-8 rounded-xl transition-all duration-300 text-center flex items-center justify-center shadow-lg hover:shadow-xl transform hover:-translate-y-1"
-                   >
-                     <i className="ri-search-line mr-3 text-lg group-hover:scale-110 transition-transform"></i>
-                     <span className="quicksearch-count">0</span> Fahrzeuge durchsuchen
-                   </a>
-                 ) : (
-                   <div className="group bg-gradient-to-r from-red-600 to-red-700 text-white font-bold py-4 px-8 rounded-xl text-center flex items-center justify-center shadow-lg">
-                     <i className="ri-search-line mr-3 text-lg"></i>
-                     <span>0</span> Fahrzeuge durchsuchen
-                   </div>
-                 )}
-                 
-                 {isMounted ? (
-                   <a 
-                     id="car-search-detail" 
-                     href="/fahrzeuge" 
-                     className="group border-2 border-red-600 text-red-600 hover:bg-red-600 hover:text-white font-bold py-4 px-8 rounded-xl transition-all duration-300 text-center shadow-lg hover:shadow-xl transform hover:-translate-y-1"
-                   >
-                     <i className="ri-filter-3-line mr-2 group-hover:scale-110 transition-transform"></i>
-                     Detailsuche
-                   </a>
-                 ) : (
-                   <div className="border-2 border-red-600 text-red-600 font-bold py-4 px-8 rounded-xl text-center shadow-lg">
-                     <i className="ri-filter-3-line mr-2"></i>
-                     Detailsuche
-                   </div>
-                 )}
-                
-                <button 
-                  id="car-search-reset" 
-                  type="button"
-                  onClick={() => {
-                    // QuickSearch resetAll verwenden (offizielle Methode)
-                    if ((window as any).quicksearch && (window as any).quicksearch.resetAll) {
-                      (window as any).quicksearch.resetAll();
-                      console.log('QuickSearch resetAll() aufgerufen');
-                    } else {
-                      // Fallback: Manuelle Reset der Select-Elemente
-                      const selects = document.querySelectorAll('.quicksearch select');
-                      selects.forEach(select => {
-                        (select as HTMLSelectElement).selectedIndex = 0;
-                      });
-                    }
-                    
-                    // Fahrzeuganzahl nach Reset aktualisieren
-                    setTimeout(() => {
-                      if ((window as any).quicksearch && (window as any).quicksearch.update) {
-                        (window as any).quicksearch.update();
-                      } else {
-                        forceUpdateVehicleCount();
-                      }
-                    }, 300);
-                  }}
-                  className="group bg-gradient-to-r from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700 text-white font-bold py-4 px-8 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
-                >
-                  <i className="ri-refresh-line mr-2 group-hover:rotate-180 transition-transform duration-500"></i>
-                  Zurücksetzen
-                </button>
-              </div>
-            </div>
+          {/* Kraftstoff */}
+          <div className="group">
+            <label htmlFor="kraftstoff" className="block text-sm font-semibold text-gray-700 mb-3 group-hover:text-red-600 transition-colors">
+              <i className="ri-gas-station-line mr-2"></i>Kraftstoff
+            </label>
+            <select 
+              id="kraftstoff" 
+              className="w-full p-4 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all duration-300 hover:border-red-300 bg-white shadow-sm"
+            >
+              <option value="">Alle Kraftstoffe</option>
+            </select>
           </div>
         </div>
-      </section>
+
+        {/* Action Buttons */}
+        <div className="flex flex-col sm:flex-row gap-4 mt-8 justify-center">
+          {/* Suchen Button */}
+          <a 
+            id="carsearchlink"
+            href="/fahrzeuge"
+            className="bg-gradient-to-r from-red-600 to-red-700 text-white px-8 py-4 rounded-xl font-bold text-lg hover:from-red-700 hover:to-red-800 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl flex items-center justify-center group"
+          >
+            <i className="ri-search-line mr-3 text-xl group-hover:animate-pulse"></i>
+            <span className="quicksearch-count">0</span> Fahrzeuge anzeigen
+          </a>
+
+          {/* Detailsuche Button */}
+          <a 
+            id="car-search-detail"
+            href="/fahrzeuge"
+            className="border-2 border-red-600 text-red-600 hover:bg-red-600 hover:text-white px-8 py-4 rounded-xl font-bold text-lg transition-all duration-300 shadow-lg hover:shadow-xl flex items-center justify-center group"
+          >
+            <i className="ri-filter-3-line mr-3 text-xl group-hover:animate-pulse"></i>
+            Erweiterte Suche
+          </a>
+
+          {/* Reset Button */}
+          <button 
+            id="car-search-reset"
+            type="button"
+            onClick={() => {
+              // QuickSearch resetAll verwenden (offizielle Methode)
+              if ((window as any).quicksearch && (window as any).quicksearch.resetAll) {
+                (window as any).quicksearch.resetAll();
+                console.log('QuickSearch resetAll() aufgerufen');
+              } else {
+                // Fallback: Manuelle Reset der Select-Elemente
+                const selects = document.querySelectorAll('.quicksearch select');
+                selects.forEach(select => {
+                  (select as HTMLSelectElement).selectedIndex = 0;
+                });
+              }
+              
+              // Fahrzeuganzahl nach Reset aktualisieren
+              setTimeout(() => {
+                if ((window as any).quicksearch && (window as any).quicksearch.update) {
+                  (window as any).quicksearch.update();
+                } else {
+                  updateVehicleCount();
+                }
+              }, 300);
+            }}
+            className="bg-gray-100 text-gray-700 hover:bg-gray-200 px-6 py-4 rounded-xl font-semibold transition-all duration-300 shadow-lg hover:shadow-xl flex items-center justify-center group"
+          >
+            <i className="ri-refresh-line mr-2 text-lg group-hover:animate-spin"></i>
+            Zurücksetzen
+          </button>
+        </div>
       </div>
-    </>
+    </div>
   );
 }
