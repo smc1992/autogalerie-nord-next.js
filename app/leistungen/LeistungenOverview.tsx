@@ -47,7 +47,7 @@ export default function LeistungenOverview() {
     {
       title: 'Kommissionsverkauf',
       description: 'Verkaufen Sie Ihr Fahrzeug professionell über uns. Maximaler Erlös bei minimalem Aufwand für Sie.',
-      icon: 'ri-handshake-line',
+      icon: 'ri-auction-line',
       href: '/leistungen/kommissionsverkauf',
       features: [
         'Professionelle Fahrzeugvermarktung',
