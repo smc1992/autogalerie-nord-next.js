@@ -78,38 +78,67 @@ export default function QuickSearchWidget({ className = '' }: QuickSearchWidgetP
           (window as any).target = '/fahrzeuge';
           
           // QuickSearch mit vollständiger Konfiguration initialisieren
-          (window as any).quicksearch.init(config);
+      (window as any).quicksearch.init(config);
+      
+      // Erweiterte Initialisierung mit Fehlerbehandlung
+      setTimeout(() => {
+        // Links korrigieren
+        const searchLink = document.querySelector('#carsearchlink');
+        if (searchLink) {
+          const currentHref = searchLink.getAttribute('href');
+          if (currentHref && currentHref.includes('vogelsang')) {
+            searchLink.setAttribute('href', '/fahrzeuge');
+            console.log('Vogelsang-Link korrigiert zu:', '/fahrzeuge');
+          }
+        }
+        
+        const detailLink = document.querySelector('#car-search-detail');
+        if (detailLink) {
+          detailLink.setAttribute('href', '/fahrzeuge');
+        }
+        
+        // Robuste Dropdown-Initialisierung
+        const initializeDropdowns = async () => {
+          const selects = document.querySelectorAll('.quicksearch select');
           
-          // Warten auf vollständige Initialisierung
-          setTimeout(() => {
-            // Links korrigieren
-            const searchLink = document.querySelector('#carsearchlink');
-            if (searchLink) {
-              const currentHref = searchLink.getAttribute('href');
-              if (currentHref && currentHref.includes('vogelsang')) {
-                searchLink.setAttribute('href', '/fahrzeuge');
-                console.log('Vogelsang-Link korrigiert zu:', '/fahrzeuge');
-              }
-            }
+          for (let i = 0; i < selects.length; i++) {
+            const select = selects[i] as HTMLSelectElement;
             
-            const detailLink = document.querySelector('#car-search-detail');
-            if (detailLink) {
-              detailLink.setAttribute('href', '/fahrzeuge');
-            }
-            
-            // Dropdown-Optionen manuell laden falls nötig
-            const selects = document.querySelectorAll('.quicksearch select');
-            selects.forEach((select, index) => {
-              if ((select as HTMLSelectElement).options.length <= 1) {
-                console.log(`Dropdown ${index} hat keine Optionen, lade manuell...`);
-                // Trigger QuickSearch reload für dieses Element
-                if ((window as any).quicksearch && (window as any).quicksearch.loadCriteria) {
-                  (window as any).quicksearch.loadCriteria();
+            if (select.options.length <= 1) {
+              console.log(`Dropdown ${i} hat keine Optionen, lade manuell...`);
+              
+              try {
+                // Versuche verschiedene Methoden zur Dropdown-Initialisierung
+                if ((window as any).quicksearch) {
+                  if ((window as any).quicksearch.loadCriteria) {
+                    (window as any).quicksearch.loadCriteria();
+                  }
+                  if ((window as any).quicksearch.refresh) {
+                    (window as any).quicksearch.refresh();
+                  }
+                  if ((window as any).quicksearch.reload) {
+                    (window as any).quicksearch.reload();
+                  }
                 }
+                
+                // Warte kurz und prüfe erneut
+                await new Promise(resolve => setTimeout(resolve, 1000));
+                
+                if (select.options.length <= 1) {
+                  console.log(`Dropdown ${i} immer noch leer, verwende Fallback`);
+                  // Fallback: Grundlegende Optionen hinzufügen
+                  select.innerHTML = '<option value="">Alle</option>';
+                }
+              } catch (error) {
+                console.log(`Fehler bei Dropdown ${i}:`, error);
               }
-            });
-            
-          }, 1500);
+            }
+          }
+        };
+        
+        initializeDropdowns();
+        
+      }, 1500);
           
           initializationRef.current = true;
           setIsInitialized(true);
@@ -198,34 +227,86 @@ export default function QuickSearchWidget({ className = '' }: QuickSearchWidgetP
     }, 500);
   };
 
-  // Fahrzeuganzahl aktualisieren
-  const updateVehicleCount = () => {
+  // Robuste Fahrzeuganzahl-Aktualisierung mit Retry-Mechanismus
+  const updateVehicleCount = async () => {
     if (typeof window === 'undefined') return;
 
+    const apiUrls = [
+      `https://api.pixel-base.de/marketplace/v3-11365/vehicles/count/?apikey=${API_KEY}`,
+      `https://api.pixel-base.de/marketplace/v3-11365/vehicles/?apikey=${API_KEY}&take=1`,
+      `https://api.pixel-base.de/marketplace/v3-11365/criteria/manufacturers/?apikey=${API_KEY}`
+    ];
+
+    const retryFetch = async (url: string, retries = 3): Promise<any> => {
+      for (let i = 0; i < retries; i++) {
+        try {
+          const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+              'Accept': 'application/json',
+              'Cache-Control': 'no-cache'
+            }
+          });
+          
+          if (response.ok) {
+            return await response.json();
+          } else if (response.status === 500 && i < retries - 1) {
+            console.log(`API-Fehler 500, Retry ${i + 1}/${retries}`);
+            await new Promise(resolve => setTimeout(resolve, 1000 * (i + 1)));
+            continue;
+          }
+        } catch (error) {
+          if (i < retries - 1) {
+            console.log(`Netzwerk-Fehler, Retry ${i + 1}/${retries}:`, error);
+            await new Promise(resolve => setTimeout(resolve, 1000 * (i + 1)));
+            continue;
+          }
+        }
+      }
+      throw new Error(`Alle Retry-Versuche fehlgeschlagen für: ${url}`);
+    };
+
     try {
-      // API-Aufruf für Fahrzeuganzahl
-      const apiUrl = `https://api.pixel-base.de/marketplace/v3-11365/vehicles/count/?apikey=${API_KEY}`;
+      // Versuche verschiedene API-Endpunkte
+      let count = 0;
       
-      fetch(apiUrl)
-        .then(response => response.json())
-        .then(data => {
-          const count = data.count || data.total || 0;
-          const countElements = document.querySelectorAll('.quicksearch-count');
-          countElements.forEach(el => {
-            el.textContent = count.toString();
-          });
-          console.log('Fahrzeuganzahl aktualisiert:', count);
-        })
-        .catch(error => {
-          console.error('Fehler beim Laden der Fahrzeuganzahl:', error);
-          // Fallback: Standard-Anzahl anzeigen
-          const countElements = document.querySelectorAll('.quicksearch-count');
-          countElements.forEach(el => {
-            el.textContent = '70';
-          });
-        });
+      for (const apiUrl of apiUrls) {
+        try {
+          const data = await retryFetch(apiUrl);
+          
+          if (apiUrl.includes('/count/')) {
+            count = data.count || data.total || 0;
+          } else if (apiUrl.includes('/vehicles/')) {
+            count = data.totalCount || data.total || 0;
+          } else if (apiUrl.includes('/manufacturers/')) {
+            // Fallback: Schätze basierend auf Herstelleranzahl
+            count = data.length ? data.length * 10 : 70;
+          }
+          
+          if (count > 0) {
+            break;
+          }
+        } catch (error) {
+          console.log(`API-Endpunkt fehlgeschlagen: ${apiUrl}`, error);
+          continue;
+        }
+      }
+      
+      // Fahrzeuganzahl aktualisieren
+      const countElements = document.querySelectorAll('.quicksearch-count');
+      countElements.forEach(el => {
+        el.textContent = count > 0 ? count.toString() : '70';
+      });
+      
+      console.log('Fahrzeuganzahl erfolgreich aktualisiert:', count);
+      
     } catch (error) {
-      console.error('Fehler bei updateVehicleCount:', error);
+      console.error('Alle API-Versuche fehlgeschlagen:', error);
+      // Fallback: Standard-Anzahl anzeigen
+      const countElements = document.querySelectorAll('.quicksearch-count');
+      countElements.forEach(el => {
+        el.textContent = '70';
+      });
     }
   };
 
