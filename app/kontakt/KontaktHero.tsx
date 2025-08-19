@@ -5,7 +5,7 @@ export default function KontaktHero() {
     <section 
       className="relative h-96 bg-cover bg-center bg-no-repeat"
       style={{
-        backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('/images/kontakt-hero.jpg')`
+        backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('/images/Hero Kontakt.webp')`
       }}
     >
       <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/40 to-red-900/40"></div>
