@@ -1,0 +1,42 @@
+# Robots.txt für Autogalerie Nord GmbH
+# https://autogalerie-nord.de
+
+User-agent: *
+Allow: /
+
+# Blockiere private/administrative Bereiche
+Disallow: /api/
+Disallow: /_next/
+Disallow: /admin/
+Disallow: /.well-known/
+
+# Blockiere Datenschutz und Impressum für Suchmaschinen (bereits noindex in metadata)
+Disallow: /datenschutz
+Disallow: /impressum
+
+# Erlaubte wichtige Verzeichnisse
+Allow: /images/
+Allow: /favicon.ico
+Allow: /sitemap.xml
+
+# Sitemap-Verweis
+Sitemap: https://autogalerie-nord.de/sitemap.xml
+
+# Crawl-Delay für höfliches Crawling
+Crawl-delay: 1
+
+# Spezielle Anweisungen für Google
+User-agent: Googlebot
+Allow: /
+Disallow: /api/
+Disallow: /_next/
+Disallow: /datenschutz
+Disallow: /impressum
+
+# Spezielle Anweisungen für Bing
+User-agent: Bingbot
+Allow: /
+Disallow: /api/
+Disallow: /_next/
+Disallow: /datenschutz
+Disallow: /impressum

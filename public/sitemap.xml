@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <!-- Homepage -->
+  <url>
+    <loc>https://autogalerie-nord.de/</loc>
+    <lastmod>2024-12-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  
+  <!-- Fahrzeuge -->
+  <url>
+    <loc>https://autogalerie-nord.de/fahrzeuge</loc>
+    <lastmod>2024-12-19</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+  
+  <!-- Autoankauf -->
+  <url>
+    <loc>https://autogalerie-nord.de/autoankauf</loc>
+    <lastmod>2024-12-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <!-- Leistungen -->
+  <url>
+    <loc>https://autogalerie-nord.de/leistungen</loc>
+    <lastmod>2024-12-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <!-- Finanzierung -->
+  <url>
+    <loc>https://autogalerie-nord.de/leistungen/finanzierung</loc>
+    <lastmod>2024-12-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  
+  <!-- Zulassungsservice -->
+  <url>
+    <loc>https://autogalerie-nord.de/leistungen/zulassungsservice</loc>
+    <lastmod>2024-12-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  
+  <!-- Kommissionsverkauf -->
+  <url>
+    <loc>https://autogalerie-nord.de/leistungen/kommissionsverkauf</loc>
+    <lastmod>2024-12-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  
+  <!-- Import/Export -->
+  <url>
+    <loc>https://autogalerie-nord.de/leistungen/import-export</loc>
+    <lastmod>2024-12-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  
+  <!-- Service/Werkstatt -->
+  <url>
+    <loc>https://autogalerie-nord.de/service</loc>
+    <lastmod>2024-12-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <!-- Business-Lösungen -->
+  <url>
+    <loc>https://autogalerie-nord.de/businessloesungen</loc>
+    <lastmod>2024-12-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  
+  <!-- Über uns -->
+  <url>
+    <loc>https://autogalerie-nord.de/ueber-uns</loc>
+    <lastmod>2024-12-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <!-- Kontakt -->
+  <url>
+    <loc>https://autogalerie-nord.de/kontakt</loc>
+    <lastmod>2024-12-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <!-- Cookie-Einstellungen -->
+  <url>
+    <loc>https://autogalerie-nord.de/cookie-einstellungen</loc>
+    <lastmod>2024-12-19</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  
+  <!-- Datenschutz (noindex in metadata, aber für Vollständigkeit) -->
+  <url>
+    <loc>https://autogalerie-nord.de/datenschutz</loc>
+    <lastmod>2024-12-19</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <!-- Impressum (noindex in metadata, aber für Vollständigkeit) -->
+  <url>
+    <loc>https://autogalerie-nord.de/impressum</loc>
+    <lastmod>2024-12-19</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.2</priority>
+  </url>
+</urlset>
