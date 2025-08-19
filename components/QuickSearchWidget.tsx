@@ -77,10 +77,12 @@ export default function QuickSearchWidget({ className = '' }: QuickSearchWidgetP
           (window as any).settings = config;
           (window as any).target = '/fahrzeuge';
           
+          // QuickSearch mit vollständiger Konfiguration initialisieren
           (window as any).quicksearch.init(config);
           
-          // Nach der Initialisierung nochmals Links korrigieren
+          // Warten auf vollständige Initialisierung
           setTimeout(() => {
+            // Links korrigieren
             const searchLink = document.querySelector('#carsearchlink');
             if (searchLink) {
               const currentHref = searchLink.getAttribute('href');
@@ -94,7 +96,20 @@ export default function QuickSearchWidget({ className = '' }: QuickSearchWidgetP
             if (detailLink) {
               detailLink.setAttribute('href', '/fahrzeuge');
             }
-          }, 1000);
+            
+            // Dropdown-Optionen manuell laden falls nötig
+            const selects = document.querySelectorAll('.quicksearch select');
+            selects.forEach((select, index) => {
+              if ((select as HTMLSelectElement).options.length <= 1) {
+                console.log(`Dropdown ${index} hat keine Optionen, lade manuell...`);
+                // Trigger QuickSearch reload für dieses Element
+                if ((window as any).quicksearch && (window as any).quicksearch.loadCriteria) {
+                  (window as any).quicksearch.loadCriteria();
+                }
+              }
+            });
+            
+          }, 1500);
           
           initializationRef.current = true;
           setIsInitialized(true);
@@ -111,34 +126,61 @@ export default function QuickSearchWidget({ className = '' }: QuickSearchWidgetP
   const reinitializeQuickSearch = () => {
     if (typeof window === 'undefined') return;
 
+    console.log('Starte komplette QuickSearch-Reinitialisierung...');
+    
     // Reset der Initialisierung
     initializationRef.current = false;
     setIsInitialized(false);
 
-    // QuickSearch komplett zurücksetzen
+    // QuickSearch komplett zurücksetzen und DOM bereinigen
     if ((window as any).quicksearch) {
       try {
+        // Alle QuickSearch-Instanzen zerstören
+        if (typeof (window as any).quicksearch.destroy === 'function') {
+          (window as any).quicksearch.destroy();
+        }
         if (typeof (window as any).quicksearch.resetAll === 'function') {
           (window as any).quicksearch.resetAll();
         }
+        
+        // DOM-Elemente zurücksetzen
+        const selects = document.querySelectorAll('.quicksearch select');
+        selects.forEach(select => {
+          (select as HTMLSelectElement).innerHTML = '<option value="">Laden...</option>';
+          (select as HTMLSelectElement).selectedIndex = 0;
+        });
+        
         // Fahrzeuganzahl zurücksetzen
         const countElements = document.querySelectorAll('.quicksearch-count');
         countElements.forEach(el => {
           el.textContent = '0';
         });
+        
+        // Event-Handler entfernen
+        selects.forEach(select => {
+          const newSelect = select.cloneNode(true);
+          select.parentNode?.replaceChild(newSelect, select);
+        });
+        
       } catch (error) {
         console.log('QuickSearch reset error:', error);
       }
     }
 
-    // Kurze Verzögerung für DOM-Updates
+    // Globale Variablen zurücksetzen
+    delete (window as any).marketplace;
+    delete (window as any).settings;
+    
+    // Längere Verzögerung für komplette DOM-Bereinigung
     setTimeout(() => {
+      console.log('Starte Neuinitialisierung...');
       initializeQuickSearch();
-      // Nach Initialisierung Fahrzeuganzahl neu laden
+      
+      // Nach Initialisierung mehrere Update-Versuche
       setTimeout(() => {
-        updateVehicleCount();
-      }, 500);
-    }, 100);
+        forceUpdateVehicleCount();
+      }, 1000);
+    }, 300);
   };
 
   // Fahrzeuganzahl aktualisieren
