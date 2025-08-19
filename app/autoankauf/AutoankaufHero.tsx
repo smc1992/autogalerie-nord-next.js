@@ -4,7 +4,7 @@ export default function AutoankaufHero() {
     <section 
       className="relative min-h-[700px] flex items-center bg-cover bg-center bg-no-repeat overflow-hidden"
       style={{
-        backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.4)), url('/images/autoankauf-hero.jpg')`
+        backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.4)), url('/images/Hero-Autoankauf.webp')`
       }}
     >
       <div className="relative w-full px-4 md:px-6 lg:px-8">

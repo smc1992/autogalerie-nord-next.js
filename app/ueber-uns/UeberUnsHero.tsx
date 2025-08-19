@@ -4,7 +4,7 @@ export default function UeberUnsHero() {
     <section 
       className="relative h-screen bg-cover bg-center bg-no-repeat flex items-center"
       style={{
-        backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('/images/about-us-hero.jpg')`
+        backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('/images/Hero-Über uns.webp')`
       }}
     >
       <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-transparent to-red-900/40"></div>
