@@ -251,36 +251,36 @@ export default function QuickSearchWidget({ className = '' }: QuickSearchWidgetP
     setIsMounted(true);
   }, []);
 
-  // Überwachung von Seitenwechseln und erzwungene Reinitialisierung
+  // Aggressive Reinitialisierung bei jedem Startseiten-Besuch
   useEffect(() => {
     if (isMounted && isJQueryLoaded && pathname === '/') {
-      console.log('Startseite besucht, prüfe QuickSearch-Status...');
+      console.log('Startseite besucht - erzwinge sofortige QuickSearch-Neuladung');
       
-      // Immer reinitialisieren wenn nicht initialisiert
-      if (!isInitialized) {
-        console.log('QuickSearch nicht initialisiert, lade Skript neu');
-        reloadQuickSearchScript();
-        return;
-      }
-      
-      // Prüfe ob QuickSearch funktioniert (Dropdown-Test)
+      // IMMER neu laden bei Startseiten-Besuch
+      // Dies ist die einzige zuverlässige Methode
+      reloadQuickSearchScript();
+    }
+  }, [pathname, isJQueryLoaded, isMounted]);
+  
+  // Zusätzliche Sicherheitsüberprüfung nach Initialisierung
+  useEffect(() => {
+    if (isMounted && isJQueryLoaded && pathname === '/' && isInitialized) {
+      // Doppelte Sicherheit: Prüfe nach 3 Sekunden nochmals
       setTimeout(() => {
-        const selects = document.querySelectorAll('.quicksearch select');
-        let hasEmptyDropdowns = false;
+        const countElements = document.querySelectorAll('.quicksearch-count');
+        let hasZeroCount = false;
         
-        selects.forEach(select => {
-          if ((select as HTMLSelectElement).options.length <= 1) {
-            hasEmptyDropdowns = true;
+        countElements.forEach(el => {
+          if (el.textContent === '0') {
+            hasZeroCount = true;
           }
         });
         
-        if (hasEmptyDropdowns) {
-          console.log('QuickSearch-Dropdowns sind leer, erzwinge Neuladung');
+        if (hasZeroCount) {
+          console.log('Fahrzeuganzahl ist immer noch 0 - erzwinge erneute Neuladung');
           reloadQuickSearchScript();
-        } else {
-          console.log('QuickSearch funktioniert korrekt');
         }
-      }, 2000);
+      }, 3000);
     }
   }, [pathname, isJQueryLoaded, isMounted, isInitialized]);
 
