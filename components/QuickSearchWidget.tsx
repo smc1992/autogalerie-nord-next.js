@@ -406,21 +406,8 @@ export default function QuickSearchWidget({ className = '' }: QuickSearchWidgetP
         // Blockiere AMM-System
         (window as any).ammInfo = undefined;
         
-        // Überwache und blockiere externe Script-Injektionen
-        const originalAppendChild = document.head.appendChild;
-        document.head.appendChild = function(child: any) {
-          if (child.tagName === 'SCRIPT' && 
-              (child.src?.includes('dein.auto') || 
-               child.src?.includes('amm') || 
-               child.src?.includes('marketplace') && 
-               !child.src?.includes('quicksearch'))) {
-            console.log('Blockiere externes Marketplace-Script:', child.src);
-            return child; // Blockiere das Script
-          }
-          return originalAppendChild.call(this, child);
-        };
-        
-        console.log('Externe Marketplace-Skripte blockiert');
+        // Marketplace-Scripts sind auf der Fahrzeuge-Seite erwünscht
+        console.log('Script-Blockierung für Marketplace deaktiviert');
       }
     };
     

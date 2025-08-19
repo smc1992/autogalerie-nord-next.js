@@ -190,7 +190,7 @@ export default function Footer() {
           <div className="border-t border-gray-200 pt-8 mt-8">
             <div className="flex flex-col md:flex-row justify-between items-center">
               <p className="text-gray-600 text-sm mb-4 md:mb-0">
-                2024 Autogalerie Nord. Alle Rechte vorbehalten.
+                {new Date().getFullYear()} Autogalerie Nord. Alle Rechte vorbehalten.
               </p>
               <div className="flex space-x-6 text-sm">
                 <Link href="/impressum" className="text-gray-600 hover:text-blue-600">

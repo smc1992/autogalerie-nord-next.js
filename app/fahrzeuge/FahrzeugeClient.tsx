@@ -62,7 +62,14 @@ export default function FahrzeugeClient() {
               console.error('Failed to load jQuery:', error);
               reject(error);
             };
-            document.head.appendChild(script);
+            // Append to head as recommended in documentation for better performance
+          document.head.appendChild(script);
+          console.log('Marketplace script added to head with attributes:', {
+            'api-key': script.getAttribute('api-key'),
+            'urls-imprint': script.getAttribute('urls-imprint'),
+            'urls-terms': script.getAttribute('urls-terms'),
+            'urls-privacy': script.getAttribute('urls-privacy')
+          });
           });
         }
 
@@ -411,37 +418,125 @@ export default function FahrzeugeClient() {
           return undefined;
         });
 
-        // Now load the marketplace script
-        await new Promise<void>((resolve, reject) => {
+        // Simplified marketplace loading with multiple fallback strategies
+        console.log('🚀 Starting marketplace initialization...');
+        
+        let scriptLoaded = false;
+        
+        // Strategy 1: Direct script injection
+        try {
+          console.log('📦 Loading marketplace script...');
+          
           const script = document.createElement('script');
           script.src = 'https://cdn.dein.auto/pxc-amm/loader.nocache';
           script.async = true;
-
-          // Set a timeout for script loading
-          const timeout = setTimeout(() => {
-            console.error('Marketplace script loading timeout');
-            showFallback();
-            reject(new Error('Script loading timeout'));
-          }, 15000);
-
-          script.onload = () => {
-            clearTimeout(timeout);
-            console.log('Marketplace script loaded successfully');
-            // Give the marketplace time to initialize
-            setTimeout(() => {
+          
+          // Set attributes
+          script.setAttribute('api-key', '0536fa11-99df-43f8-bf26-42af233f5478');
+          script.setAttribute('urls-imprint', '/impressum');
+          script.setAttribute('urls-terms', '/agb');
+          script.setAttribute('urls-privacy', '/datenschutz');
+          
+          // Promise with shorter timeout for faster fallback
+          await new Promise<void>((resolve) => {
+            const timeout = setTimeout(() => {
+              console.warn('⏰ Script loading timeout, proceeding with fallback');
               resolve();
-            }, 2000);
-          };
-
-          script.onerror = (error) => {
-            clearTimeout(timeout);
-            console.error('Marketplace script failed to load:', error);
+            }, 10000); // Reduced to 10 seconds
+            
+            script.onload = () => {
+              clearTimeout(timeout);
+              console.log('✅ Marketplace script loaded!');
+              scriptLoaded = true;
+              
+              // Quick initialization check
+              setTimeout(() => {
+                const container = document.getElementById('am-marketplace');
+                if (container && container.children.length <= 1) {
+                  console.log('🔄 Container still empty, triggering manual check...');
+                  // Container is still showing loading, marketplace might need more time
+                }
+                resolve();
+              }, 2000);
+            };
+            
+            script.onerror = () => {
+              clearTimeout(timeout);
+              console.error('❌ Script loading failed');
+              resolve();
+            };
+            
+            document.head.appendChild(script);
+            console.log('📤 Script injected into head');
+          });
+          
+        } catch (error) {
+          console.error('💥 Script injection failed:', error);
+        }
+        
+        // Strategy 2: Alternative loading if first attempt failed
+        if (!scriptLoaded) {
+          console.log('🔄 Trying alternative loading method...');
+          
+          try {
+            // Create inline script that loads the marketplace
+            const inlineScript = document.createElement('script');
+            inlineScript.innerHTML = `
+              console.log('🔧 Alternative loader starting...');
+              
+              // Set up container first
+              const container = document.getElementById('am-marketplace');
+              if (container) {
+                container.innerHTML = \`
+                  <div style="text-align: center; padding: 60px 20px; font-family: system-ui, sans-serif;">
+                    <div style="width: 60px; height: 60px; border: 4px solid #dc2626; border-top: 4px solid transparent; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 20px;"></div>
+                    <h3 style="color: #374151; margin: 0 0 10px; font-size: 20px;">Fahrzeugmarktplatz wird geladen...</h3>
+                    <p style="color: #6b7280; margin: 0; font-size: 16px;">Einen Moment bitte...</p>
+                  </div>
+                  <style>
+                    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+                  </style>
+                \`;
+              }
+              
+              // Load script with different approach
+              const altScript = document.createElement('script');
+              altScript.src = 'https://cdn.dein.auto/pxc-amm/loader.nocache';
+              altScript.setAttribute('api-key', '0536fa11-99df-43f8-bf26-42af233f5478');
+              altScript.setAttribute('urls-imprint', '/impressum');
+              altScript.setAttribute('urls-terms', '/agb');
+              altScript.setAttribute('urls-privacy', '/datenschutz');
+              
+              altScript.onload = function() {
+                console.log('✅ Alternative script loaded successfully!');
+              };
+              
+              altScript.onerror = function() {
+                console.error('❌ Alternative script failed, showing fallback');
+                if (container) {
+                  container.innerHTML = \`
+                    <div style="text-align: center; padding: 60px 20px; font-family: system-ui, sans-serif;">
+                      <div style="color: #dc2626; margin-bottom: 20px; font-size: 48px;">⚠️</div>
+                      <h3 style="color: #374151; margin: 0 0 10px; font-size: 20px;">Fahrzeugmarktplatz vorübergehend nicht verfügbar</h3>
+                      <p style="color: #6b7280; margin: 0 0 20px; font-size: 16px;">Bitte versuchen Sie es später erneut.</p>
+                      <button onclick="window.location.reload()" style="background: #dc2626; color: white; border: none; padding: 12px 24px; border-radius: 8px; font-size: 16px; cursor: pointer;">Seite neu laden</button>
+                    </div>
+                  \`;
+                }
+              };
+              
+              document.head.appendChild(altScript);
+              console.log('📤 Alternative script injected');
+            `;
+            
+            document.head.appendChild(inlineScript);
+            console.log('🔧 Alternative loader injected');
+            
+          } catch (altError) {
+            console.error('💥 Alternative loading failed:', altError);
             showFallback();
-            reject(error);
-          };
-
-          document.head.appendChild(script);
-        });
+          }
+        }
 
         console.log('Marketplace initialization completed');
 
@@ -554,13 +649,9 @@ export default function FahrzeugeClient() {
       <section className="py-8 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4">
           <div className="bg-white rounded-lg shadow-sm overflow-hidden min-h-[600px]">
-            {/* The correct DIV element with required ID and attributes */}
+            {/* The correct DIV element with required ID (attributes moved to script tag as per documentation) */}
             <div 
               id="am-marketplace"
-              api-key="0536fa11-99df-43f8-bf26-42af233f5478"
-              urls-imprint="/impressum"
-              urls-terms="/agb" 
-              urls-privacy="/datenschutz"
               className="w-full min-h-[600px] flex items-center justify-center am-marketplace-loading"
             >
               {/* Enhanced loading indicator */}

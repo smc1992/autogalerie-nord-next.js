@@ -11,7 +11,7 @@ function createBusinessContactEmailTemplate(data: any) {
     <meta charset="utf-8">
     <title>Neue B2B-Anfrage - Autogalerie Nord</title>
     <style>
-        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+        body { font-family: 'Klavika', system-ui, sans-serif; line-height: 1.6; color: #333; }
         .container { max-width: 600px; margin: 0 auto; padding: 20px; }
         .header { background: #dc2626; color: white; padding: 20px; text-align: center; }
         .content { background: #f9f9f9; padding: 20px; }

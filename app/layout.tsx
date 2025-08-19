@@ -1,23 +1,8 @@
 import type { Metadata } from "next";
-import { Inter, Pacifico } from 'next/font/google';
-import { GeistSans } from 'geist/font/sans';
-import { GeistMono } from 'geist/font/mono';
 import "./globals.css";
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import CookieBanner from '../components/CookieBanner';
-
-// Google Fonts
-const inter = Inter({
-  subsets: ['latin'],
-  variable: '--font-inter',
-});
-
-const pacifico = Pacifico({
-  weight: '400',
-  subsets: ['latin'],
-  variable: '--font-pacifico',
-});
 
 export const metadata: Metadata = {
   title: "Autogalerie Nord GmbH - Premium Autohändler in Hamburg",
@@ -148,9 +133,7 @@ export default function RootLayout({
           `
         }} />
       </head>
-      <body
-        className={`${GeistSans.variable} ${GeistMono.variable} ${pacifico.variable} ${inter.className} antialiased`}
-      >
+      <body className="font-klavika antialiased">
         <Header />
         <main>{children}</main>
         <Footer />
