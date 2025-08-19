@@ -166,23 +166,8 @@ export default function QuickSearchWidget({ className = '' }: QuickSearchWidgetP
           console.log('QuickSearch erfolgreich initialisiert mit lokalen URLs');
           console.log('Konfiguration:', config);
           
-          // Fallback-UI ausblenden wenn QuickSearch erfolgreich geladen wurde
-          setTimeout(() => {
-            const quicksearchForm = document.querySelector('.quicksearch-form');
-            const fallbackUI = document.querySelector('#custom-quicksearch-fallback');
-            
-            if (quicksearchForm && quicksearchForm.children.length > 0) {
-              console.log('QuickSearch-Form gefunden, blende Fallback-UI aus');
-              if (fallbackUI) {
-                (fallbackUI as HTMLElement).style.display = 'none';
-              }
-            } else {
-              console.log('QuickSearch-Form leer, zeige Fallback-UI');
-              if (fallbackUI) {
-                (fallbackUI as HTMLElement).style.display = 'grid';
-              }
-            }
-          }, 2000);
+          // QuickSearch-Elemente sind jetzt direkt im DOM verfügbar
+          console.log('QuickSearch-Elemente mit korrekten IDs sind verfügbar');
         }
       });
     } catch (error) {
@@ -507,11 +492,8 @@ export default function QuickSearchWidget({ className = '' }: QuickSearchWidgetP
             </div>
             
             <div className="bg-white rounded-2xl shadow-2xl p-8 backdrop-blur-sm bg-white/95">
-              {/* QuickSearch-kompatible Form-Struktur */}
-              <div className="quicksearch-form"></div>
-              
-              {/* Fallback: Custom UI falls QuickSearch nicht lädt */}
-              <div id="custom-quicksearch-fallback" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              {/* QuickSearch-konforme HTML-Struktur - DIREKT im .quicksearch Container */}
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                 {/* Fahrzeugart */}
                 <div className="group">
                   <label htmlFor="fahrzeugart" className="block text-sm font-semibold text-gray-700 mb-3 group-hover:text-red-600 transition-colors">
@@ -659,20 +641,25 @@ export default function QuickSearchWidget({ className = '' }: QuickSearchWidgetP
                   id="car-search-reset" 
                   type="button"
                   onClick={() => {
-                    // Reset all select elements
-                    const selects = document.querySelectorAll('.quicksearch select, #custom-quicksearch-fallback select');
-                    selects.forEach(select => {
-                      (select as HTMLSelectElement).selectedIndex = 0;
-                    });
-                    
-                    // Call QuickSearch reset if available
+                    // QuickSearch resetAll verwenden (offizielle Methode)
                     if ((window as any).quicksearch && (window as any).quicksearch.resetAll) {
                       (window as any).quicksearch.resetAll();
+                      console.log('QuickSearch resetAll() aufgerufen');
+                    } else {
+                      // Fallback: Manuelle Reset der Select-Elemente
+                      const selects = document.querySelectorAll('.quicksearch select');
+                      selects.forEach(select => {
+                        (select as HTMLSelectElement).selectedIndex = 0;
+                      });
                     }
                     
                     // Fahrzeuganzahl nach Reset aktualisieren
                     setTimeout(() => {
-                      forceUpdateVehicleCount();
+                      if ((window as any).quicksearch && (window as any).quicksearch.update) {
+                        (window as any).quicksearch.update();
+                      } else {
+                        forceUpdateVehicleCount();
+                      }
                     }, 300);
                   }}
                   className="group bg-gradient-to-r from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700 text-white font-bold py-4 px-8 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
