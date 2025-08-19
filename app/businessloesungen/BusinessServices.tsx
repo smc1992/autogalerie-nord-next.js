@@ -7,42 +7,42 @@ export default function BusinessServices() {
       icon: 'ri-user-heart-line',
       title: 'Persönliche Beratung',
       description: 'Individuelle Beratung für Ihre spezifischen Anforderungen und Budgetvorstellungen.',
-      image: '/images/business-consulting.jpg',
+      image: '/images/Persönliche Beratung-Autogalerie Nord.webp',
       link: '/kontakt'
     },
     {
       icon: 'ri-dashboard-line',
       title: 'Flottenmanagement',
       description: 'Komplette Verwaltung Ihres Fuhrparks mit digitalen Tools und professionellem Service.',
-      image: '/images/fleet-management.jpg',
+      image: '/images/Flottenmanagement- Autogalerie Nord.webp',
       link: '/leistungen'
     },
     {
       icon: 'ri-bank-card-line',
       title: 'Leasing & Finanzierung',
       description: 'Flexible Leasing-Optionen und maßgeschneiderte Finanzierungslösungen für Geschäftskunden.',
-      image: '/images/leasing-finance.jpg',
+      image: '/images/Leasing und Finanzierung-Autogalerie Nord.webp',
       link: '/leistungen/finanzierung'
     },
     {
       icon: 'ri-tools-line',
       title: 'Wartung & Service',
       description: 'Professionelle Wartung und Reparatur direkt in unserer zertifizierten Werkstatt.',
-      image: '/images/maintenance-service.jpg',
+      image: '/images/Wartung und Service-Autogalerie Nord.webp',
       link: '/service'
     },
     {
       icon: 'ri-shield-check-line',
       title: 'Versicherung & Garantie',
       description: 'Umfassende Versicherungspakete und erweiterte Garantien für maximale Sicherheit.',
-      image: '/images/insurance-warranty.jpg',
+      image: '/images/Versicherung und Garantie-Autogalerie Nord.webp',
       link: '/leistungen'
     },
     {
       icon: 'ri-discount-percent-line',
       title: 'Großkunden-Rabatte',
       description: 'Attraktive Mengenrabatte und Sonderkonditionen für Firmenkunden ab 5 Fahrzeugen.',
-      image: '/images/bulk-discounts.jpg',
+      image: '/images/Großkunden-Rabatte-Autogalerie Nord.webp',
       link: '/kontakt'
     }
   ];

@@ -4,7 +4,7 @@ export default function BusinessHero() {
     <section 
       className="relative min-h-[80vh] bg-cover bg-center bg-no-repeat flex items-center"
       style={{
-        backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.3)), url('/images/business-hero.jpg')`
+        backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.3)), url('/images/Hero-Business.webp')`
       }}
     >
       <div className="container mx-auto px-6 py-20 relative z-10">

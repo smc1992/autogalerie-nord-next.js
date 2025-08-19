@@ -4,7 +4,7 @@ export default function BusinessCTA() {
     <section 
       className="relative py-20 bg-cover bg-center bg-no-repeat"
       style={{
-        backgroundImage: `linear-gradient(135deg, rgba(220, 38, 38, 0.9), rgba(239, 68, 68, 0.8)), url('/images/business-cta.jpg')`
+        backgroundImage: `linear-gradient(135deg, rgba(220, 38, 38, 0.9), rgba(239, 68, 68, 0.8)), url('/images/Hero-Business.webp')`
       }}
     >
       <div className="container mx-auto px-6 relative z-10">
