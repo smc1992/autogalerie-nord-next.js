@@ -12,7 +12,7 @@ export default function ServiceKategorien() {
         'Ölwechsel',
         'Filterwechsel'
       ],
-      image: '/images/wartung-inspektion.jpg'
+      image: '/images/Wartung und Inspektion-Autogalerie Nord.webp'
     },
     {
       title: 'Reparaturen',
@@ -24,7 +24,7 @@ export default function ServiceKategorien() {
         'Elektronik Diagnose',
         'Karosserie Arbeiten'
       ],
-      image: '/images/reparaturen.jpg'
+      image: '/images/Reparaturen-Autogalerie Nord.webp'
     },
     {
       title: 'Reifenservice',
@@ -36,7 +36,7 @@ export default function ServiceKategorien() {
         'Auswuchtung',
         'Reifenverkauf'
       ],
-      image: '/images/reifenservice.jpg'
+      image: '/images/Reifenservice-Autogalerie Nord.webp'
     },
     {
       title: 'Fahrzeugpflege',
@@ -48,7 +48,7 @@ export default function ServiceKategorien() {
         'Lackversiegelung',
         'Polsterreinigung'
       ],
-      image: '/images/fahrzeugpflege.jpg'
+      image: '/images/Fahrzeugpflege-Autogalerie Nord.webp'
     }
   ];
 
