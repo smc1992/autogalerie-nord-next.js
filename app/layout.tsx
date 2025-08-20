@@ -9,6 +9,11 @@ export const metadata: Metadata = {
   description: "Ihr vertrauensvoller Partner für Gebrauchtwagen, Autoankauf, Finanzierung und Service in Hamburg. Premium Fahrzeuge zu fairen Preisen. Jetzt Termin vereinbaren!",
   keywords: "Auto kaufen Hamburg, Gebrauchtwagen Hamburg, Autoankauf Hamburg, Autofinanzierung, Autohändler Hamburg, Premium Fahrzeuge",
   authors: [{ name: "Autogalerie Nord GmbH" }],
+  icons: {
+    icon: '/favicon.ico',
+    shortcut: '/favicon.ico',
+    apple: '/apple-touch-icon.png',
+  },
   openGraph: {
     title: "Autogalerie Nord GmbH - Premium Autohändler in Hamburg",
     description: "Ihr vertrauensvoller Partner für Gebrauchtwagen, Autoankauf, Finanzierung und Service in Hamburg. Premium Fahrzeuge zu fairen Preisen.",
@@ -47,8 +52,6 @@ export default function RootLayout({
   return (
     <html lang="de">
       <head>
-        <link rel="icon" href="/favicon.ico" />
-        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         <meta name="theme-color" content="#dc2626" />
         <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet" />
         <link

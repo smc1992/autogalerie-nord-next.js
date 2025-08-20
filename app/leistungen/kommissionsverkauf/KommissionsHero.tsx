@@ -28,7 +28,15 @@ export default function KommissionsHero() {
                 <i className="ri-phone-line mr-2"></i>
                 Jetzt anrufen
               </a>
-              <button className="border-2 border-white text-white hover:bg-white hover:text-gray-900 px-8 py-4 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105 whitespace-nowrap cursor-pointer">
+              <button 
+                onClick={() => {
+                  const formElement = document.getElementById('fahrzeugbewertung');
+                  if (formElement) {
+                    formElement.scrollIntoView({ behavior: 'smooth' });
+                  }
+                }}
+                className="border-2 border-white text-white hover:bg-white hover:text-gray-900 px-8 py-4 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105 whitespace-nowrap cursor-pointer"
+              >
                 Fahrzeug bewerten
               </button>
             </div>
