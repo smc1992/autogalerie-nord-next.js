@@ -2,7 +2,7 @@
 
 export default function ServiceOverview() {
   return (
-    <section className="py-20 bg-white">
+    <section id="service-overview" className="py-20 bg-white">
       <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
         {/* Hero Section */}
         <div className="text-center mb-20">

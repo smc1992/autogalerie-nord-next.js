@@ -21,7 +21,7 @@ export default function Header() {
     { href: '/leistungen/finanzierung', label: 'Finanzierung', icon: 'ri-bank-card-line' },
     { href: '/leistungen/zulassungsservice', label: 'Zulassungsservice', icon: 'ri-file-text-line' },
     { href: '/leistungen/import-export', label: 'Import & Export', icon: 'ri-ship-line' },
-    { href: '/leistungen/kommissionsverkauf', label: 'Kommissionsverkauf', icon: 'ri-handshake-line' }
+    { href: '/leistungen/kommissionsverkauf', label: 'Kommissionsverkauf', icon: 'ri-exchange-dollar-line' }
   ];
 
   return (

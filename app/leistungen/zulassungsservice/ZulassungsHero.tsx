@@ -7,7 +7,7 @@ export default function ZulassungsHero() {
       <div 
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
         style={{
-          backgroundImage: `url('/images/zulassung-hero.jpg')`
+          backgroundImage: `url('/images/Hero-Zulassungsservice.webp')`
         }}
       >
         <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/60 to-black/40"></div>
@@ -31,7 +31,15 @@ export default function ZulassungsHero() {
                 <i className="ri-phone-line mr-2"></i>
                 Jetzt anrufen
               </a>
-              <button className="border-2 border-white text-white hover:bg-white hover:text-gray-900 px-8 py-4 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105 whitespace-nowrap cursor-pointer">
+              <button 
+                onClick={() => {
+                  const element = document.querySelector('#service-overview');
+                  if (element) {
+                    element.scrollIntoView({ behavior: 'smooth' });
+                  }
+                }}
+                className="border-2 border-white text-white hover:bg-white hover:text-gray-900 px-8 py-4 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105 whitespace-nowrap cursor-pointer"
+              >
                 Mehr erfahren
               </button>
             </div>

@@ -6,19 +6,19 @@ export default function ProcessSection() {
       title: 'Komplette Abwicklung',
       description: 'Autogalerie Nord GmbH kümmert sich für Sie um alles, damit Sie zügig mit Ihrem neuen gebrauchten Fahrzeug starten können.',
       icon: 'ri-checkbox-circle-line',
-      image: '/images/komplett-abwicklung.jpg'
+      image: '/images/Komplette Abwicklung-Autogalerie Nord.webp'
     },
     {
       title: 'Minimaler Aufwand',
       description: 'Sie stellen uns nur die notwendigen Unterlagen zur Verfügung - den gesamten Papierkram übernehmen wir für Sie.',
       icon: 'ri-time-line',
-      image: '/images/minimal-aufwand.jpg'
+      image: '/images/Minimaler Aufwand-Autogalerie Nord.webp'
     },
     {
       title: 'Alle Kennzeichen-Arten',
       description: 'Ob normale Zulassung, Kurzzeit- oder Ausfuhrkennzeichen - wir haben die passende Lösung für Ihre Bedürfnisse.',
       icon: 'ri-car-line',
-      image: '/images/kennzeichen-arten.jpg'
+      image: '/images/alle Kennzeichenarten-Autogalerie Nord.webp'
     }
   ];
 
