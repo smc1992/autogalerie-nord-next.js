@@ -99,7 +99,7 @@ export default function Header() {
               <img 
                 src="/images/logo.png" 
                 alt="Autogalerie Nord Logo" 
-                className="h-24 md:h-28 lg:h-32 w-auto transform transition-all duration-300 group-hover:scale-110"
+                className="h-32 md:h-36 lg:h-40 w-auto transform transition-all duration-300 group-hover:scale-110"
               />
             </Link>
 

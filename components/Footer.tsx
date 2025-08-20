@@ -19,7 +19,7 @@ export default function Footer() {
                 <img 
                   src="/images/logo.png" 
                   alt="Autogalerie Nord Logo" 
-                  className="h-32 w-auto mb-4 transform transition-all duration-300 group-hover:scale-110"
+                  className="h-48 w-auto mb-4 transform transition-all duration-300 group-hover:scale-110"
                 />
               </div>
               <p className="text-gray-600 text-sm leading-relaxed group-hover:text-gray-700 transition-colors duration-300">

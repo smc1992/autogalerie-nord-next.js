@@ -14,24 +14,24 @@ export default function HomeClient() {
   // SEO-optimierte Headlines für den Slider
   const headlines = [
     {
-      part1: "Ihr Traumauto",
-      part2: "wartet bereits", 
-      subtitle: "Über 70 Premium-Fahrzeuge sofort verfügbar"
+      part1: "Ihr Autohaus",
+      part2: "für starke Marken", 
+      subtitle: "Faire Preise, ehrliche Beratung und geprüfte Qualität"
     },
     {
-      part1: "Gebrauchtwagen kaufen",
-      part2: "leicht gemacht",
-      subtitle: "Qualitätsgeprüfte Fahrzeuge • Faire Preise • Garantie"
+      part1: "Hochwertige Fahrzeuge",
+      part2: "viele Marken, ein Partner",
+      subtitle: "Faire Preise, ehrliche Beratung und geprüfte Qualität"
     },
     {
       part1: "Premium Autohaus",
       part2: "in Stelle bei Hamburg",
-      subtitle: "BMW • Mercedes • Audi • VW • Porsche direkt verfügbar"
+      subtitle: "Faire Preise, ehrliche Beratung und geprüfte Qualität"
     },
     {
-      part1: "Sofort finanzieren",
-      part2: "heute fahren",
-      subtitle: "Flexible Finanzierung • Schnelle Zusage • Ohne Anzahlung"
+      part1: "Geprüfte Qualität",
+      part2: "faire Preise",
+      subtitle: "Faire Preise, ehrliche Beratung und geprüfte Qualität"
     }
   ];
 
@@ -163,7 +163,7 @@ export default function HomeClient() {
               <Link href="/fahrzeuge" className="group bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white px-10 py-5 rounded-xl font-bold text-lg transition-all duration-300 whitespace-nowrap cursor-pointer text-center transform hover:scale-105 hover:shadow-2xl">
                 <span className="flex items-center justify-center">
                   <i className="ri-car-line mr-3 text-xl"></i>
-                  Jetzt Traumauto finden
+                  Alle Fahrzeuge ansehen
                   <i className="ri-arrow-right-line ml-3 transform group-hover:translate-x-2 transition-transform duration-300"></i>
                 </span>
               </Link>
