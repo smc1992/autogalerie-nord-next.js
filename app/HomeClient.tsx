@@ -155,7 +155,7 @@ export default function HomeClient() {
             }`}
             style={{ textShadow: '1px 1px 2px rgba(0,0,0,0.6)' }}
             >
-              ✓ Faire Preise  ✓ Sofortige Finanzierung  ✓ Garantie inklusive
+              ✓ Faire Preise  ✓ Sofortige Finanzierung
             </p>
             <div className={`flex flex-col sm:flex-row gap-4 transform transition-all duration-700 delay-700 ${
               heroLoaded ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'
@@ -168,12 +168,14 @@ export default function HomeClient() {
                 </span>
               </Link>
               <a 
-                href="tel:+4941745969770"
-                className="group border-2 border-white text-white hover:bg-white hover:text-red-600 px-8 py-4 rounded-xl font-semibold transition-all duration-300 whitespace-nowrap cursor-pointer text-center transform hover:scale-105"
+                href="https://wa.me/4941717889111"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group border-2 border-white text-white hover:bg-white hover:text-green-600 px-8 py-4 rounded-xl font-semibold transition-all duration-300 whitespace-nowrap cursor-pointer text-center transform hover:scale-105"
               >
                 <span className="flex items-center justify-center">
-                  <i className="ri-phone-line mr-2"></i>
-                  041 745 969 70
+                  <i className="ri-whatsapp-line mr-2"></i>
+                  WhatsApp Chat
                 </span>
               </a>
             </div>
