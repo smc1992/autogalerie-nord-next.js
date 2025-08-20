@@ -23,7 +23,7 @@ export default function ServiceOverview() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20">
           <div className="bg-gradient-to-br from-red-50 to-red-100 p-8 rounded-2xl text-center">
             <div className="w-16 h-16 flex items-center justify-center bg-red-600 rounded-full mx-auto mb-6">
-              <i className="ri-file-check-line text-2xl text-white"></i>
+              <i className="ri-checkbox-circle-line text-2xl text-white"></i>
             </div>
             <h3 className="text-xl font-bold text-gray-900 mb-4">Vollservice</h3>
             <p className="text-gray-700 leading-relaxed">

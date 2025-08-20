@@ -7,28 +7,28 @@ export default function ProzessSchritte() {
       title: 'Kontaktaufnahme',
       description: 'Wir kümmern uns um die professionelle Vermarktung, die Verhandlungen und den gesamten Papierkram. Sie erhalten am Ende den bestmöglichen Preis für Ihr Fahrzeug, ohne den üblichen Stress.',
       icon: 'ri-phone-line',
-      image: '/images/kontakt-schritt.jpg'
+      image: '/images/Kontaktaufnahme-Kommisionsverkauf.webp'
     },
     {
       nummer: '2',
       title: 'Vor-Ort Bewertung',
       description: 'Wir erstellen hochwertige Fotos und eine detaillierte Beschreibung, um Ihr Fahrzeug im "besten Licht" zu präsentieren. Unsere Online-Präsenz auf allen großen Plattformen garantiert maximale Reichweite.',
       icon: 'ri-camera-line',
-      image: '/images/bewertung-schritt.jpg'
+      image: '/images/vor ort Bewertung-Autogalerie Nord.webp'
     },
     {
       nummer: '3',
       title: 'Vertragsabschluss',
       description: 'Bei Einverständnis schließen wir einen transparenten Kommissionsvertrag ab und übernehmen den Verkauf.',
       icon: 'ri-file-text-line',
-      image: '/images/vertrag-schritt.jpg'
+      image: '/images/Vertragsabschluss Kommisonsverkauf.webp'
     },
     {
       nummer: '4',
       title: 'Auszahlung',
       description: 'Nach erfolgreichem Verkauf erhalten Sie umgehend Ihren Erlös - abzüglich unserer fairen Provision.',
       icon: 'ri-money-euro-circle-line',
-      image: '/images/auszahlung-schritt.jpg'
+      image: '/images/Auszahlung Kommsionsverkauf.webp'
     }
   ];
 

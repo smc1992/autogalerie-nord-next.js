@@ -8,7 +8,7 @@ export default function ImportExportHero() {
       <div 
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
         style={{
-          backgroundImage: `url('/images/import-export-hero.jpg')`
+          backgroundImage: `url('/images/Hero-Import und Export.webp')`
         }}
       >
         <div className="absolute inset-0 bg-black/60"></div>

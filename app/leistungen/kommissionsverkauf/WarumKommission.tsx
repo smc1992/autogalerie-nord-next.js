@@ -6,37 +6,37 @@ export default function WarumKommission() {
       icon: 'ri-money-euro-circle-line',
       title: 'Höchstmöglicher Preis',
       description: 'Durch unsere Expertise und unser Netzwerk erzielen wir für Ihr Fahrzeug den bestmöglichen Verkaufspreis.',
-      image: '/images/hoechster-preis.jpg'
+      image: '/images/höchstmöglicher Preis Kommisionsverkauf.webp'
     },
     {
       icon: 'ri-timer-2-line',
       title: 'Schnell & Unkompliziert',
       description: 'Keine langen Wartezeiten oder komplizierte Abwicklung. Wir kümmern uns um alles für Sie.',
-      image: '/images/schnell-unkompliziert.jpg'
+      image: '/images/unkomplizierter Verkauf.webp'
     },
     {
       icon: 'ri-shield-check-line',
       title: 'Sicher & Seriös',
       description: 'Vertrauen Sie auf unsere langjährige Erfahrung und seriöse Abwicklung ohne versteckte Kosten.',
-      image: '/images/sicher-serioes.jpg'
+      image: '/images/sicher und seriös.webp'
     },
     {
       icon: 'ri-search-line',
       title: 'Professionelle Bewertung',
       description: 'Unsere Experten bewerten Ihr Fahrzeug vor Ort und erstellen eine faire, marktgerechte Einschätzung.',
-      image: '/images/kommission-bewertung.jpg'
+      image: '/images/professionelle Bewertung-Autogalerie Nord.webp'
     },
     {
       icon: 'ri-customer-service-2-line',
       title: 'Komplette Abwicklung',
       description: 'Alle Verhandlungen mit potenziellen Käufern werden von unserem erfahrenen Team geführt. Wir filtern "unseriöse Anfragen" heraus und sorgen für einen reibungslosen und sicheren Verkaufsprozess.',
-      image: '/images/kommission-abwicklung.jpg'
+      image: '/images/komplette Abwicklung Kommisionsverkauf-Autogalerie Nord.webp'
     },
     {
       icon: 'ri-user-heart-line',
       title: 'Persönliche Betreuung',
       description: 'Ein fester Ansprechpartner begleitet Sie durch den gesamten Verkaufsprozess.',
-      image: '/images/kommission-betreuung.jpg'
+      image: '/images/persönliche Betreuung Kommisionsverkauf.webp'
     }
   ];
 
