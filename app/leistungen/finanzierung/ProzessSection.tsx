@@ -16,7 +16,7 @@ export default function ProzessSection() {
       title: 'Antragsstellung',
       description: 'Wir helfen Ihnen beim Ausfüllen der Finanzierungsunterlagen',
       icon: 'ri-file-edit-line',
-      color: 'bg-blue-600',
+      color: 'bg-red-600',
       details: ['Unterstützung beim Antrag', 'Vollständige Unterlagen', 'Digitale Übermittlung']
     },
     {
@@ -24,7 +24,7 @@ export default function ProzessSection() {
       title: 'Schnelle Prüfung',
       description: 'Ihr Antrag wird innerhalb von 24 Stunden bearbeitet',
       icon: 'ri-search-line',
-      color: 'bg-green-600',
+      color: 'bg-red-600',
       details: ['24h Bearbeitungszeit', 'Professionelle Prüfung', 'Transparenter Prozess']
     },
     {
@@ -32,7 +32,7 @@ export default function ProzessSection() {
       title: 'Zusage & Auszahlung',
       description: 'Bei positiver Prüfung erhalten Sie sofort Ihre Zusage',
       icon: 'ri-check-line',
-      color: 'bg-purple-600',
+      color: 'bg-red-600',
       details: ['Sofortige Zusage', 'Schnelle Auszahlung', 'Ihr Traumauto wartet']
     }
   ];
@@ -51,14 +51,14 @@ export default function ProzessSection() {
 
         <div className="relative">
           {/* Verbindungslinie */}
-          <div className="hidden lg:block absolute top-20 left-0 right-0 h-0.5 bg-red-200 z-0"></div>
+          <div className="hidden sm:block absolute top-20 left-0 right-0 h-0.5 bg-red-200 z-0"></div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 relative z-10">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 relative z-10">
             {schritte.map((schritt, index) => (
               <div key={index} className="relative">
-                <div className="bg-gray-50 rounded-2xl p-8 hover:bg-white hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 text-center">
+                <div className="bg-gray-50 rounded-2xl p-6 md:p-8 hover:bg-white hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 text-center">
                   {/* Schritt Nummer */}
-                  <div className={`w-16 h-16 flex items-center justify-center ${schritt.color} rounded-full mx-auto mb-6 text-white font-bold text-2xl shadow-lg transform hover:scale-110 transition-all duration-300`}>
+                  <div className="w-16 h-16 flex items-center justify-center bg-red-600 rounded-full mx-auto mb-6 text-white font-bold text-2xl shadow-lg transform hover:scale-110 transition-all duration-300">
                     {schritt.number}
                   </div>
 
@@ -92,7 +92,7 @@ export default function ProzessSection() {
         </div>
 
         {/* CTA Section */}
-        <div className="mt-16 text-center bg-gradient-to-r from-red-50 to-red-100 rounded-3xl p-12">
+        <div className="mt-12 md:mt-16 text-center bg-gradient-to-r from-red-50 to-red-100 rounded-3xl p-12">
           <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">
             Bereit für Ihr Traumauto?
           </h3>

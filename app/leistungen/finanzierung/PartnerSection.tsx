@@ -5,13 +5,13 @@ export default function PartnerSection() {
   const partner = [
     {
       name: 'Santander Consumer Bank',
-      logo: '/images/santander-logo.jpg',
+      logo: '/images/Santander.webp',
       description: 'Einer der führenden Anbieter für Autofinanzierung in Deutschland',
       features: ['Testsieger Autokredit 2023', 'Über 60 Jahre Erfahrung', 'Millionen zufriedene Kunden']
     },
     {
       name: 'Credit.de',
-      logo: '/images/credit-logo.jpg',
+      logo: '/images/credit.de.webp',
       description: 'Spezialist für maßgeschneiderte Finanzierungslösungen',
       features: ['Flexible Konditionen', 'Schnelle Bearbeitung', 'Individuelle Lösungen']
     }
@@ -29,9 +29,9 @@ export default function PartnerSection() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
           {partner.map((partner, index) => (
-            <div key={index} className="bg-white rounded-3xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
+            <div key={index} className="bg-white rounded-3xl p-6 md:p-8 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
               <div className="text-center mb-8">
                 <img 
                   src={partner.logo}
@@ -61,13 +61,13 @@ export default function PartnerSection() {
         </div>
 
         {/* Vertrauen schaffen */}
-        <div className="mt-16 bg-gradient-to-r from-blue-50 to-blue-100 rounded-3xl p-12">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+        <div className="mt-16 bg-gradient-to-r from-red-50 to-red-100 rounded-3xl p-8 md:p-12">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 text-center">
             <div className="group">
-              <div className="w-20 h-20 flex items-center justify-center bg-blue-100 rounded-full mx-auto mb-6 group-hover:bg-blue-600 transition-all duration-300 transform group-hover:scale-110">
-                <i className="ri-shield-check-line text-3xl text-blue-600 group-hover:text-white transition-colors duration-300"></i>
+              <div className="w-20 h-20 flex items-center justify-center bg-red-100 rounded-full mx-auto mb-6 group-hover:bg-red-600 transition-all duration-300 transform group-hover:scale-110">
+                <i className="ri-shield-check-line text-3xl text-red-600 group-hover:text-white transition-colors duration-300"></i>
               </div>
-              <h4 className="text-xl font-semibold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors duration-300">
+              <h4 className="text-xl font-semibold text-gray-900 mb-3 group-hover:text-red-600 transition-colors duration-300">
                 Sicherheit
               </h4>
               <p className="text-gray-600 group-hover:text-gray-700 transition-colors duration-300">
@@ -75,10 +75,10 @@ export default function PartnerSection() {
               </p>
             </div>
             <div className="group">
-              <div className="w-20 h-20 flex items-center justify-center bg-blue-100 rounded-full mx-auto mb-6 group-hover:bg-blue-600 transition-all duration-300 transform group-hover:scale-110">
-                <i className="ri-award-line text-3xl text-blue-600 group-hover:text-white transition-colors duration-300"></i>
+              <div className="w-20 h-20 flex items-center justify-center bg-red-100 rounded-full mx-auto mb-6 group-hover:bg-red-600 transition-all duration-300 transform group-hover:scale-110">
+                <i className="ri-award-line text-3xl text-red-600 group-hover:text-white transition-colors duration-300"></i>
               </div>
-              <h4 className="text-xl font-semibold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors duration-300">
+              <h4 className="text-xl font-semibold text-gray-900 mb-3 group-hover:text-red-600 transition-colors duration-300">
                 Ausgezeichnet
               </h4>
               <p className="text-gray-600 group-hover:text-gray-700 transition-colors duration-300">
@@ -86,10 +86,10 @@ export default function PartnerSection() {
               </p>
             </div>
             <div className="group">
-              <div className="w-20 h-20 flex items-center justify-center bg-blue-100 rounded-full mx-auto mb-6 group-hover:bg-blue-600 transition-all duration-300 transform group-hover:scale-110">
-                <i className="ri-user-heart-line text-3xl text-blue-600 group-hover:text-white transition-colors duration-300"></i>
+              <div className="w-20 h-20 flex items-center justify-center bg-red-100 rounded-full mx-auto mb-6 group-hover:bg-red-600 transition-all duration-300 transform group-hover:scale-110">
+                <i className="ri-user-heart-line text-3xl text-red-600 group-hover:text-white transition-colors duration-300"></i>
               </div>
-              <h4 className="text-xl font-semibold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors duration-300">
+              <h4 className="text-xl font-semibold text-gray-900 mb-3 group-hover:text-red-600 transition-colors duration-300">
                 Vertrauen
               </h4>
               <p className="text-gray-600 group-hover:text-gray-700 transition-colors duration-300">

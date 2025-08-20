@@ -8,28 +8,28 @@ export default function VorteileSection() {
       title: 'Günstige Zinssätze',
       description: 'Attraktive Konditionen durch unsere starken Finanzierungspartner',
       highlight: 'ab 2,99% eff. Jahreszins',
-      color: 'bg-green-100 text-green-600 group-hover:bg-green-600 group-hover:text-white'
+      color: 'bg-red-100 text-red-600 group-hover:bg-red-600 group-hover:text-white'
     },
     {
       icon: 'ri-time-line',
       title: 'Schnelle Bearbeitung',
       description: 'Ihre Finanzierungsanfrage wird innerhalb von 24 Stunden bearbeitet',
       highlight: 'Zusage in 24h',
-      color: 'bg-blue-100 text-blue-600 group-hover:bg-blue-600 group-hover:text-white'
+      color: 'bg-red-100 text-red-600 group-hover:bg-red-600 group-hover:text-white'
     },
     {
       icon: 'ri-calendar-line',
       title: 'Flexible Laufzeiten',
       description: 'Wählen Sie die Laufzeit, die zu Ihrem Budget passt',
       highlight: '12-84 Monate',
-      color: 'bg-purple-100 text-purple-600 group-hover:bg-purple-600 group-hover:text-white'
+      color: 'bg-red-100 text-red-600 group-hover:bg-red-600 group-hover:text-white'
     },
     {
       icon: 'ri-money-euro-circle-line',
       title: 'Sondertilgungen',
       description: 'Tilgen Sie Ihren Kredit schneller durch kostenlose Sonderzahlungen',
       highlight: 'jederzeit kostenlos',
-      color: 'bg-orange-100 text-orange-600 group-hover:bg-orange-600 group-hover:text-white'
+      color: 'bg-red-100 text-red-600 group-hover:bg-red-600 group-hover:text-white'
     }
   ];
 
@@ -45,9 +45,9 @@ export default function VorteileSection() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           {vorteile.map((vorteil, index) => (
-            <div key={index} className="group bg-gray-50 rounded-2xl p-8 hover:bg-red-50 transition-all duration-300 transform hover:-translate-y-2 hover:shadow-xl text-center">
+            <div key={index} className="group bg-gray-50 rounded-2xl p-6 md:p-8 hover:bg-red-50 transition-all duration-300 transform hover:-translate-y-2 hover:shadow-xl text-center">
               <div className={`w-20 h-20 flex items-center justify-center ${vorteil.color} rounded-full mx-auto mb-6 transition-all duration-300 transform group-hover:scale-110`}>
                 <i className={`${vorteil.icon} text-3xl transition-colors duration-300`}></i>
               </div>
@@ -65,8 +65,8 @@ export default function VorteileSection() {
         </div>
 
         {/* Zusätzliche Informationen */}
-        <div className="mt-16 bg-gradient-to-r from-gray-50 to-gray-100 rounded-3xl p-12">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+        <div className="mt-16 bg-gradient-to-r from-gray-50 to-gray-100 rounded-3xl p-8 md:p-12">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 text-center">
             <div className="group">
               <div className="w-16 h-16 flex items-center justify-center bg-red-100 rounded-full mx-auto mb-4 group-hover:bg-red-600 transition-all duration-300 transform group-hover:scale-110">
                 <i className="ri-shield-check-line text-2xl text-red-600 group-hover:text-white transition-colors duration-300"></i>
