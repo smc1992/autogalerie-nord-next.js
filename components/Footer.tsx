@@ -12,20 +12,20 @@ export default function Footer() {
 
       <div className="px-6 py-16 relative z-10">
         <div className="max-w-6xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-5 gap-12">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             {/* Logo und Beschreibung */}
-            <div className="md:col-span-1 group">
-              <div className="mb-6 transform transition-all duration-300 group-hover:scale-105">
+            <div className="md:col-span-1 group flex flex-col items-center md:items-start">
+              <div className="mb-2 transform transition-all duration-300 group-hover:scale-105">
                 <img 
                   src="/images/logo.png" 
                   alt="Autogalerie Nord Logo" 
-                  className="h-48 w-auto mb-4 transform transition-all duration-300 group-hover:scale-110"
+                  className="h-32 md:h-36 lg:h-40 w-auto mb-4 transform transition-all duration-300 group-hover:scale-110"
                 />
               </div>
               <p className="text-gray-600 text-sm leading-relaxed group-hover:text-gray-700 transition-colors duration-300">
                 Ihr vertrauensvoller Partner für hochwertige Gebrauchtwagen in Norddeutschland.
               </p>
-              <div className="flex space-x-3 mt-6">
+              <div className="flex space-x-3 mt-3">
                 {[
                   { icon: 'ri-facebook-fill', href: 'https://www.facebook.com/profile.php?id=61565890614324' },
                   { icon: 'ri-instagram-line', href: 'https://www.instagram.com/autogalerie.nord.gmbh/' },
@@ -46,10 +46,10 @@ export default function Footer() {
 
             {/* Quick Links */}
             <div className="group">
-              <h3 className="font-semibold text-gray-900 mb-6 group-hover:text-red-600 transition-colors duration-300">
+              <h3 className="font-semibold text-gray-900 mb-4 group-hover:text-red-600 transition-colors duration-300">
                 Quick Links
               </h3>
-              <ul className="space-y-3">
+              <ul className="space-y-2">
                 {[
                   { href: '/', label: 'Startseite' },
                   { href: '/fahrzeuge', label: 'Fahrzeuge' },
@@ -74,10 +74,10 @@ export default function Footer() {
 
             {/* Rechtliches */}
             <div className="group">
-              <h3 className="font-semibold text-gray-900 mb-6 group-hover:text-red-600 transition-colors duration-300">
+              <h3 className="font-semibold text-gray-900 mb-4 group-hover:text-red-600 transition-colors duration-300">
                 Rechtliches
               </h3>
-              <ul className="space-y-3">
+              <ul className="space-y-2">
                 {[
                   { href: '/impressum', label: 'Impressum' },
                   { href: '#', label: 'Datenschutz' },
@@ -97,44 +97,46 @@ export default function Footer() {
               </ul>
             </div>
 
-            {/* Kontakt */}
-            <div className="group">
-              <h3 className="font-semibold text-gray-900 mb-6 group-hover:text-red-600 transition-colors duration-300">
-                Kontakt
-              </h3>
-              <div className="space-y-4">
-                <div className="group/item flex items-start transform transition-all duration-300 hover:translate-x-2">
-                  <div className="w-4 h-4 flex items-center justify-center mt-0.5 mr-3 transform group-hover/item:rotate-12 transition-transform duration-300">
-                    <i className="ri-map-pin-line text-red-600 text-sm"></i>
+            {/* Kontakt & Bewertungen */}
+            <div className="group flex flex-col md:flex-row md:space-x-2 space-y-3 md:space-y-0">
+              {/* Kontakt */}
+              <div className="md:w-1/2">
+                <h3 className="font-semibold text-gray-900 mb-4 group-hover:text-red-600 transition-colors duration-300">
+                  Kontakt
+                </h3>
+                <div className="space-y-3">
+                  <div className="group/item flex items-start transform transition-all duration-300 hover:translate-x-2">
+                    <div className="w-4 h-4 flex items-center justify-center mt-0.5 mr-3 transform group-hover/item:rotate-12 transition-transform duration-300">
+                      <i className="ri-map-pin-line text-red-600 text-sm"></i>
+                    </div>
+                    <div className="text-gray-600 text-sm group-hover/item:text-gray-800 transition-colors duration-300">
+                      <div>Lüneburger Str. 30,</div>
+                      <div>21435 Stelle</div>
+                    </div>
                   </div>
-                  <div className="text-gray-600 text-sm group-hover/item:text-gray-800 transition-colors duration-300">
-                    <div>Lüneburger Str. 30,</div>
-                    <div>21435 Stelle</div>
-                  </div>
+
+                  <a href="tel:+4941745969770" className="group/item flex items-center transform transition-all duration-300 hover:translate-x-2 cursor-pointer">
+                    <div className="w-4 h-4 flex items-center justify-center mr-3 transform group-hover/item:rotate-12 transition-transform duration-300">
+                      <i className="ri-phone-line text-red-600 text-sm"></i>
+                    </div>
+                    <span className="text-gray-600 text-sm group-hover/item:text-red-600 transition-colors duration-300">
+                      041 745 969 70
+                    </span>
+                  </a>
+
+                  <a href="mailto:info@autogalerie-nord.de" className="group/item flex items-center transform transition-all duration-300 hover:translate-x-2 cursor-pointer">
+                    <div className="w-4 h-4 flex items-center justify-center mr-3 transform group-hover/item:rotate-12 transition-transform duration-300">
+                      <i className="ri-mail-line text-red-600 text-sm"></i>
+                    </div>
+                    <span className="text-gray-600 text-sm group-hover/item:text-red-600 transition-colors duration-300">
+                      info@autogalerie-nord.de
+                    </span>
+                  </a>
                 </div>
-
-                <a href="tel:+4941745969770" className="group/item flex items-center transform transition-all duration-300 hover:translate-x-2 cursor-pointer">
-                  <div className="w-4 h-4 flex items-center justify-center mr-3 transform group-hover/item:rotate-12 transition-transform duration-300">
-                    <i className="ri-phone-line text-red-600 text-sm"></i>
-                  </div>
-                  <span className="text-gray-600 text-sm group-hover/item:text-red-600 transition-colors duration-300">
-                    041 745 969 70
-                  </span>
-                </a>
-
-                <a href="mailto:info@autogalerie-nord.de" className="group/item flex items-center transform transition-all duration-300 hover:translate-x-2 cursor-pointer">
-                  <div className="w-4 h-4 flex items-center justify-center mr-3 transform group-hover/item:rotate-12 transition-transform duration-300">
-                    <i className="ri-mail-line text-red-600 text-sm"></i>
-                  </div>
-                  <span className="text-gray-600 text-sm group-hover/item:text-red-600 transition-colors duration-300">
-                    info@autogalerie-nord.de
-                  </span>
-                </a>
               </div>
-            </div>
 
-            {/* Kundenbewertungen Widget */}
-            <div className="group">
+              {/* Kundenbewertungen Widget */}
+              <div className="md:w-1/2">
               <div className="text-sm text-gray-600 mb-2 group-hover:text-gray-800 transition-colors duration-300">
                 Kundenbewertungen
               </div>
@@ -183,6 +185,7 @@ export default function Footer() {
                     </span>
                   </div>
                 ))}
+              </div>
               </div>
             </div>
           </div>
