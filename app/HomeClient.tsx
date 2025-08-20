@@ -218,7 +218,7 @@ export default function HomeClient() {
         {isClient && (
           <>
             <div className="absolute top-0 right-0 w-96 h-96 bg-red-100 rounded-full -translate-y-48 translate-x-48 opacity-20"></div>
-            <div className="absolute bottom-0 left-0 w-72 h-72 bg-blue-100 rounded-full translate-y-36 -translate-x-36 opacity-20"></div>
+            <div className="absolute bottom-0 left-0 w-72 h-72 bg-gray-200 rounded-full translate-y-36 -translate-x-36 opacity-20"></div>
           </>
         )}
 
@@ -265,7 +265,7 @@ export default function HomeClient() {
         {isClient && (
           <>
             <div className="absolute top-1/2 left-0 w-32 h-32 bg-gradient-to-r from-red-200 to-transparent rounded-full animate-pulse opacity-30"></div>
-            <div className="absolute bottom-0 right-0 w-24 h-24 bg-gradient-to-l from-blue-200 to-transparent rounded-full animate-pulse opacity-30"></div>
+            <div className="absolute bottom-0 right-0 w-24 h-24 bg-gradient-to-l from-gray-300 to-transparent rounded-full animate-pulse opacity-30"></div>
           </>
         )}
 
@@ -323,7 +323,7 @@ export default function HomeClient() {
         {isClient && (
           <div className="absolute inset-0 opacity-5">
             <div className="absolute top-10 sm:top-20 left-10 sm:left-20 w-6 h-6 sm:w-8 sm:h-8 border-2 border-red-500 rotate-45 animate-spin-slow"></div>
-            <div className="absolute top-20 sm:top-40 right-16 sm:right-32 w-4 h-4 sm:w-6 sm:h-6 bg-blue-500 rounded-full animate-bounce"></div>
+            <div className="absolute top-20 sm:top-40 right-16 sm:right-32 w-4 h-4 sm:w-6 sm:h-6 bg-gray-600 rounded-full animate-bounce"></div>
             <div className="absolute bottom-16 sm:bottom-32 left-1/4 w-6 h-6 sm:w-10 sm:h-10 border-2 border-green-500 rounded-full animate-pulse"></div>
           </div>
         )}
@@ -380,7 +380,7 @@ export default function HomeClient() {
         {isClient && (
           <>
             <div className="absolute top-0 left-1/4 w-64 h-64 bg-gradient-radial from-red-100 to-transparent rounded-full opacity-30 animate-pulse"></div>
-            <div className="absolute bottom-0 right-1/4 w-48 h-48 bg-gradient-radial from-blue-100 to-transparent rounded-full opacity-30 animate-pulse animation-delay-1000"></div>
+            <div className="absolute bottom-0 right-1/4 w-48 h-48 bg-gradient-radial from-gray-200 to-transparent rounded-full opacity-30 animate-pulse animation-delay-1000"></div>
           </>
         )}
 
@@ -389,7 +389,7 @@ export default function HomeClient() {
             {/* Left side - Image */}
             <div className="order-2 lg:order-1 animate-slideInLeft">
               <div className="relative group">
-                <div className="absolute inset-0 bg-gradient-to-r from-red-500 to-blue-500 rounded-2xl transform rotate-3 group-hover:rotate-6 transition-transform duration-500 opacity-20"></div>
+                <div className="absolute inset-0 bg-gradient-to-r from-red-500 to-gray-700 rounded-2xl transform rotate-3 group-hover:rotate-6 transition-transform duration-500 opacity-20"></div>
                 <div className="relative rounded-2xl overflow-hidden shadow-2xl transform transition-all duration-500 group-hover:scale-105">
                   <img 
                     src="/images/standort.jpg" 
