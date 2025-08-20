@@ -111,6 +111,9 @@ export default function Header() {
               <Link href="/fahrzeuge" className="text-gray-700 hover:text-red-600 transition-colors duration-300 cursor-pointer">
                 Fahrzeuge
               </Link>
+              <Link href="/autoankauf" className="text-gray-700 hover:text-red-600 transition-colors duration-300 cursor-pointer">
+                Autoankauf
+              </Link>
               <div 
                 className="relative"
                 onMouseEnter={() => setIsLeistungenOpen(true)}
@@ -136,9 +139,6 @@ export default function Header() {
                 Business
               </Link>
 
-              <Link href="/autoankauf" className="text-gray-700 hover:text-red-600 transition-colors duration-300 cursor-pointer">
-                Autoankauf
-              </Link>
               <Link href="/service" className="text-gray-700 hover:text-red-600 transition-colors duration-300 cursor-pointer">
                 Service
               </Link>
@@ -204,6 +204,15 @@ export default function Header() {
                       </Link>
                       
                       <Link 
+                        href="/autoankauf" 
+                        className="flex items-center px-4 py-3 text-gray-700 hover:bg-red-50 hover:text-red-600 rounded-lg transition-colors duration-300 cursor-pointer"
+                        onClick={() => setIsMenuOpen(false)}
+                      >
+                        <i className="ri-car-line w-5 h-5 mr-3"></i>
+                        Autoankauf
+                      </Link>
+                      
+                      <Link 
                         href="/leistungen" 
                         className="flex items-center px-4 py-3 text-gray-700 hover:bg-red-50 hover:text-red-600 rounded-lg transition-colors duration-300 cursor-pointer"
                         onClick={() => setIsMenuOpen(false)}
@@ -234,15 +243,6 @@ export default function Header() {
                       >
                         <i className="ri-building-line w-5 h-5 mr-3"></i>
                         Business
-                      </Link>
-                      
-                      <Link 
-                        href="/autoankauf" 
-                        className="flex items-center px-4 py-3 text-gray-700 hover:bg-red-50 hover:text-red-600 rounded-lg transition-colors duration-300 cursor-pointer"
-                        onClick={() => setIsMenuOpen(false)}
-                      >
-                        <i className="ri-car-line w-5 h-5 mr-3"></i>
-                        Autoankauf
                       </Link>
                       
                       <Link 
