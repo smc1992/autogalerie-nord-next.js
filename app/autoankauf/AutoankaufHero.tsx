@@ -1,5 +1,11 @@
 
+'use client';
+
+import { useState } from 'react';
+import AutoankaufPopup from '../../components/AutoankaufPopup';
+
 export default function AutoankaufHero() {
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
   return (
     <section 
       className="relative min-h-[700px] flex items-center bg-cover bg-center bg-no-repeat overflow-hidden"
@@ -25,17 +31,22 @@ export default function AutoankaufHero() {
                 <i className="ri-phone-line mr-2"></i>
                 041 745 969 70
               </a>
-              <a 
-                href="mailto:info@autogalerie-nord.de"
+              <button 
+                onClick={() => setIsPopupOpen(true)}
                 className="border-2 border-white text-white hover:bg-white hover:text-gray-900 px-8 py-4 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105 whitespace-nowrap cursor-pointer inline-flex items-center justify-center"
               >
-                <i className="ri-mail-line mr-2"></i>
-                E-Mail senden
-              </a>
+                <i className="ri-file-text-line mr-2"></i>
+                Fahrzeug anbieten
+              </button>
             </div>
           </div>
         </div>
       </div>
+      
+      <AutoankaufPopup 
+        isOpen={isPopupOpen} 
+        onClose={() => setIsPopupOpen(false)} 
+      />
     </section>
   );
 }

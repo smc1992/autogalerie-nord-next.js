@@ -4,6 +4,54 @@
 
 @import url('https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.5.0/remixicon.min.css');
 
+/* Optimierungen für große Bildschirme (27 Zoll und größer) */
+@layer utilities {
+  /* Container-Optimierungen */
+  @screen 3xl {
+    .container {
+      max-width: 1600px;
+    }
+    
+    /* Globale Schriftgrößen-Anpassungen */
+    .text-base { font-size: 1.125rem; }
+    .text-lg { font-size: 1.25rem; }
+    .text-xl { font-size: 1.375rem; }
+    .text-2xl { font-size: 1.75rem; }
+    .text-3xl { font-size: 2.25rem; }
+    .text-4xl { font-size: 2.75rem; }
+    .text-5xl { font-size: 3.5rem; }
+    .text-6xl { font-size: 4.5rem; }
+    
+    /* Padding und Margin Anpassungen */
+    .py-20 { padding-top: 6rem; padding-bottom: 6rem; }
+    .px-6 { padding-left: 2rem; padding-right: 2rem; }
+    .mb-8 { margin-bottom: 2.5rem; }
+    .mb-12 { margin-bottom: 3.5rem; }
+  }
+  
+  @screen 4xl {
+    .container {
+      max-width: 2000px;
+    }
+    
+    /* Noch größere Schriftgrößen für 4K */
+    .text-base { font-size: 1.25rem; }
+    .text-lg { font-size: 1.375rem; }
+    .text-xl { font-size: 1.5rem; }
+    .text-2xl { font-size: 1.875rem; }
+    .text-3xl { font-size: 2.5rem; }
+    .text-4xl { font-size: 3rem; }
+    .text-5xl { font-size: 4rem; }
+    .text-6xl { font-size: 5rem; }
+    
+    /* Größere Abstände für 4K */
+    .py-20 { padding-top: 7rem; padding-bottom: 7rem; }
+    .px-6 { padding-left: 2.5rem; padding-right: 2.5rem; }
+    .mb-8 { margin-bottom: 3rem; }
+    .mb-12 { margin-bottom: 4rem; }
+  }
+}
+
 /* Klavika Font Family */
 @font-face {
   font-family: 'Klavika';

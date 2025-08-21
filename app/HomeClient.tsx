@@ -90,16 +90,16 @@ export default function HomeClient() {
           </div>
         )}
 
-        <div className="relative z-10 flex items-center h-full px-6">
-          <div className={`w-full max-w-4xl transform transition-all duration-1000 ${
+        <div className="relative z-10 flex items-center h-full px-6 3xl:px-12 4xl:px-16">
+          <div className={`w-full max-w-4xl 3xl:max-w-6xl 4xl:max-w-7xl transform transition-all duration-1000 ${
             heroLoaded ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'
           }`}>
             {/* SEO-optimierte dynamische H1 Überschrift */}
-            <div className="relative h-32 md:h-40 lg:h-48 mb-6 overflow-hidden">
+            <div className="relative h-32 md:h-40 lg:h-48 3xl:h-56 4xl:h-64 mb-6 3xl:mb-8 4xl:mb-10 overflow-hidden">
               {headlines.map((headline, index) => (
                 <h1 
                   key={index}
-                  className={`absolute inset-0 text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight transition-all duration-1800 ease-in-out transform ${
+                  className={`absolute inset-0 text-3xl sm:text-4xl md:text-5xl lg:text-6xl 3xl:text-7xl 4xl:text-8xl font-bold text-white leading-tight transition-all duration-1800 ease-in-out transform ${
                     index === currentHeadline 
                       ? 'translate-y-0 opacity-100 scale-100' 
                       : index < currentHeadline 
