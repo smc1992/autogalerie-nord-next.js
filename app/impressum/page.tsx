@@ -35,7 +35,7 @@ export default function ImpressumPage() {
             </div>
 
             <h2 className="text-2xl font-semibold text-gray-800 mt-8 mb-4">Vertreten durch</h2>
-            <p className="mb-4">Geschäftsführer: Max Mustermann</p>
+            <p className="mb-4">Geschäftsführer: Galip Alkan</p>
 
             <h2 className="text-2xl font-semibold text-gray-800 mt-8 mb-4">Kontakt</h2>
             <div className="bg-gray-50 p-6 rounded-lg mb-6">
@@ -45,15 +45,15 @@ export default function ImpressumPage() {
 
             <h2 className="text-2xl font-semibold text-gray-800 mt-8 mb-4">Registereintrag</h2>
             <p className="mb-2">Eintragung im Handelsregister.</p>
-            <p className="mb-2">Registergericht: Amtsgericht Hamburg</p>
-            <p className="mb-2">Registernummer: HRB 123456</p>
+            <p className="mb-2">Registergericht: Amtsgericht Lüneburg</p>
+            <p className="mb-2">Registernummer: HRB 206353</p>
 
             <h2 className="text-2xl font-semibold text-gray-800 mt-8 mb-4">Umsatzsteuer-ID</h2>
-            <p className="mb-4">Umsatzsteuer-Identifikationsnummer gemäß § 27 a Umsatzsteuergesetz: DE123456789</p>
+            <p className="mb-4">Umsatzsteuer-Identifikationsnummer gemäß § 27 a Umsatzsteuergesetz: DE307285920</p>
 
             <h2 className="text-2xl font-semibold text-gray-800 mt-8 mb-4">Verantwortlich für den Inhalt nach § 55 Abs. 2 RStV</h2>
             <div className="bg-gray-50 p-6 rounded-lg mb-6">
-              <p className="mb-2">Max Mustermann</p>
+              <p className="mb-2">Galip Alkan</p>
               <p className="mb-2">Lüneburger Str. 30</p>
               <p className="mb-2">21435 Stelle</p>
             </div>
