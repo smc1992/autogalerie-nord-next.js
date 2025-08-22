@@ -23,20 +23,14 @@ export default function AutoankaufHero() {
             <p className="text-xl md:text-2xl text-gray-200 mb-8 leading-relaxed">
               Faire Bewertung • Schnelle Abwicklung • Sofortige Barauszahlung
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-              <a 
-                href="tel:+4941745969770"
-                className="bg-red-600 hover:bg-red-700 text-white px-8 py-4 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105 hover:shadow-xl whitespace-nowrap cursor-pointer inline-flex items-center justify-center"
-              >
-                <i className="ri-phone-line mr-2"></i>
-                041 745 969 70
-              </a>
+            <div className="flex justify-center lg:justify-start">
               <button 
                 onClick={() => setIsPopupOpen(true)}
-                className="border-2 border-white text-white hover:bg-white hover:text-gray-900 px-8 py-4 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105 whitespace-nowrap cursor-pointer inline-flex items-center justify-center"
+                className="bg-red-600 hover:bg-red-700 text-white px-10 py-5 rounded-xl font-bold text-lg transition-all duration-300 transform hover:scale-105 hover:shadow-xl whitespace-nowrap cursor-pointer inline-flex items-center justify-center"
               >
-                <i className="ri-file-text-line mr-2"></i>
-                Fahrzeug anbieten
+                <i className="ri-money-dollar-circle-line mr-3 text-xl"></i>
+                Jetzt Fahrzeug verkaufen
+                <i className="ri-arrow-right-line ml-3 transform group-hover:translate-x-2 transition-transform duration-300"></i>
               </button>
             </div>
           </div>
