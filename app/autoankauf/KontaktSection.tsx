@@ -47,7 +47,7 @@ export default function KontaktSection() {
               onClick={() => setIsPopupOpen(true)}
               className="text-lg text-gray-600 hover:text-red-600 transition-colors duration-300 cursor-pointer block break-all"
             >
-              Kontaktformular öffnen
+              info@autogalerie-nord.de
             </button>
           </div>
 
