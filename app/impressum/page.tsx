@@ -26,7 +26,7 @@ export default function ImpressumPage() {
           <h1 className="text-4xl font-bold text-gray-900 mb-8">Impressum</h1>
           
           <div className="prose prose-lg max-w-none">
-            <h2 className="text-2xl font-semibold text-gray-800 mt-8 mb-4">Angaben gemäß § 5 TMG</h2>
+            <h2 className="text-2xl font-semibold text-gray-800 mt-8 mb-4">Angaben gemäß &sect; 5 TMG</h2>
             <div className="bg-gray-50 p-6 rounded-lg mb-6">
               <p className="mb-2"><strong>Autogalerie Nord GmbH</strong></p>
               <p className="mb-2">Lüneburger Str. 30</p>
@@ -49,9 +49,9 @@ export default function ImpressumPage() {
             <p className="mb-2">Registernummer: HRB 206353</p>
 
             <h2 className="text-2xl font-semibold text-gray-800 mt-8 mb-4">Umsatzsteuer-ID</h2>
-            <p className="mb-4">Umsatzsteuer-Identifikationsnummer gemäß § 27 a Umsatzsteuergesetz: DE307285920</p>
+            <p className="mb-4">Umsatzsteuer-Identifikationsnummer gemäß &sect; 27 a Umsatzsteuergesetz: DE307285920</p>
 
-            <h2 className="text-2xl font-semibold text-gray-800 mt-8 mb-4">Verantwortlich für den Inhalt nach § 55 Abs. 2 RStV</h2>
+            <h2 className="text-2xl font-semibold text-gray-800 mt-8 mb-4">Verantwortlich für den Inhalt nach &sect; 55 Abs. 2 RStV</h2>
             <div className="bg-gray-50 p-6 rounded-lg mb-6">
               <p className="mb-2">Galip Alkan</p>
               <p className="mb-2">Lüneburger Str. 30</p>
@@ -62,8 +62,8 @@ export default function ImpressumPage() {
             
             <h3 className="text-xl font-semibold text-gray-700 mt-6 mb-3">Haftung für Inhalte</h3>
             <p className="mb-4">
-              Als Diensteanbieter sind wir gemäß § 7 Abs.1 TMG für eigene Inhalte auf diesen Seiten nach den 
-              allgemeinen Gesetzen verantwortlich. Nach §§ 8 bis 10 TMG sind wir als Diensteanbieter jedoch nicht 
+              Als Diensteanbieter sind wir gemäß &sect; 7 Abs.1 TMG für eigene Inhalte auf diesen Seiten nach den 
+              allgemeinen Gesetzen verantwortlich. Nach &sect;&sect; 8 bis 10 TMG sind wir als Diensteanbieter jedoch nicht 
               unter der Verpflichtung, übermittelte oder gespeicherte fremde Informationen zu überwachen oder nach 
               Umständen zu forschen, die auf eine rechtswidrige Tätigkeit hinweisen.
             </p>
