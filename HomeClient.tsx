@@ -16,7 +16,7 @@ export default function HomeClient() {
     {
       part1: "Ihr Traumauto",
       part2: "wartet bereits", 
-      subtitle: "Über 70 Premium-Fahrzeuge sofort verfügbar"
+      subtitle: "Über 120 Premium-Fahrzeuge sofort verfügbar"
     },
     {
       part1: "Gebrauchtwagen kaufen",
@@ -272,7 +272,7 @@ export default function HomeClient() {
         <div className="px-6 max-w-6xl mx-auto relative z-10">
           <div className="text-center mb-16 animate-fadeInUp">
             <h2 className="text-4xl font-bold text-gray-900 mb-4">
-              Über <span className="text-red-600 animate-countUp">70</span> sofort verfügbare Fahrzeuge
+              Über <span className="text-red-600 animate-countUp">120</span> sofort verfügbare Fahrzeuge
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
               Finden Sie Ihren Traumwagen in wenigen Klicks aus einer großen Auswahl hochwertiger Fahrzeuge.
@@ -412,7 +412,7 @@ export default function HomeClient() {
 
               <div className="space-y-8">
                 {[ 
-                  { icon: 'ri-timer-line', title: 'Schnelle Verfügbarkeit', desc: 'Über 70 sofort verfügbare Fahrzeuge verschiedener Premiummarken in unserem Bestand.', delay: 0 },
+                  { icon: 'ri-timer-line', title: 'Schnelle Verfügbarkeit', desc: 'Über 120 sofort verfügbare Fahrzeuge verschiedener Premiummarken in unserem Bestand.', delay: 0 },
                   { icon: 'ri-shield-check-line', title: 'Qualitätsgarantie', desc: 'Alle Fahrzeuge durchlaufen eine gründliche technische Prüfung durch unsere zertifizierten Experten.', delay: 200 },
                   { icon: 'ri-user-heart-line', title: 'Persönliche Beratung', desc: 'Unser erfahrenes Team berät Sie individuell und findet das perfekte Fahrzeug für Ihre Bedürfnisse.', delay: 400 }
                 ].map((item, index) => (

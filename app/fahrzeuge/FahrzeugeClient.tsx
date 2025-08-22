@@ -605,7 +605,7 @@ export default function FahrzeugeClient() {
               Unsere Fahrzeuge
             </h1>
             <p className="text-xl text-red-100 mb-4 animate-fadeInUp animation-delay-300">
-              Entdecken Sie über 70 hochwertige Gebrauchtwagen
+              Entdecken Sie über 120 hochwertige Gebrauchtwagen
             </p>
             <p className="text-lg text-red-200 animate-fadeInUp animation-delay-500">
               BMW • Mercedes • Audi • Volkswagen • und viele weitere Marken
@@ -661,7 +661,7 @@ export default function FahrzeugeClient() {
                   <div className="absolute inset-0 rounded-full h-16 w-16 border-4 border-red-200 mx-auto animate-pulse"></div>
                 </div>
                 <h3 className="text-xl font-semibold text-gray-900 mb-2">Fahrzeugmarktplatz wird geladen...</h3>
-                <p className="text-gray-600 mb-2">Bitte warten Sie, während wir über 70 Fahrzeuge für Sie laden</p>
+                <p className="text-gray-600 mb-2">Bitte warten Sie, während wir über 120 Fahrzeuge für Sie laden</p>
                 <div className="flex items-center justify-center space-x-1 text-red-600">
                   <div className="w-2 h-2 bg-red-600 rounded-full animate-bounce"></div>
                   <div className="w-2 h-2 bg-red-600 rounded-full animate-bounce" style={{animationDelay: '0.1s'}}></div>

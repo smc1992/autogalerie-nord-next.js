@@ -13,7 +13,7 @@ export default function HeroSection() {
     {
       part1: "Ihr Traumauto",
       part2: "wartet bereits", 
-      subtitle: "Über 70 Premium-Fahrzeuge sofort verfügbar"
+      subtitle: "Über 120 Premium-Fahrzeuge sofort verfügbar"
     },
     {
       part1: "Gebrauchtwagen kaufen",

@@ -49,7 +49,7 @@ export default function KontaktSection() {
           </div>
           <h3 className="text-xl font-semibold text-white mb-4">Besuchen Sie uns</h3>
           <p className="text-gray-300 text-lg">Stelle bei Hamburg</p>
-          <p className="text-gray-400 mt-2">Über 70 Fahrzeuge vor Ort verfügbar</p>
+          <p className="text-gray-400 mt-2">Über 120 Fahrzeuge vor Ort verfügbar</p>
         </div>
         
         {/* CTA Buttons */}
