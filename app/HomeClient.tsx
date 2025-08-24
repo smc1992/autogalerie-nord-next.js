@@ -95,11 +95,11 @@ export default function HomeClient() {
             heroLoaded ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'
           }`}>
             {/* SEO-optimierte dynamische H1 Überschrift */}
-            <div className="relative h-28 sm:h-32 md:h-40 lg:h-48 3xl:h-56 4xl:h-64 mb-4 sm:mb-6 3xl:mb-8 4xl:mb-10 overflow-hidden">
+            <div className="relative h-32 sm:h-36 md:h-40 lg:h-48 3xl:h-56 4xl:h-64 mb-4 sm:mb-6 3xl:mb-8 4xl:mb-10 overflow-hidden">
               {headlines.map((headline, index) => (
                 <h1 
                   key={index}
-                  className={`absolute inset-0 text-3xl sm:text-4xl md:text-5xl lg:text-6xl 3xl:text-7xl 4xl:text-8xl font-bold text-white leading-tight transition-all duration-1800 ease-in-out transform ${
+                  className={`absolute inset-0 text-4xl sm:text-5xl md:text-5xl lg:text-6xl 3xl:text-7xl 4xl:text-8xl font-bold text-white leading-tight transition-all duration-1800 ease-in-out transform ${
                     index === currentHeadline 
                       ? 'translate-y-0 opacity-100 scale-100' 
                       : index < currentHeadline 
