@@ -137,7 +137,7 @@ export default function HeroSection() {
             ))}
           </div>
 
-          <p className={`text-2xl 3xl:text-3xl 4xl:text-4xl font-semibold text-yellow-300 mb-4 3xl:mb-6 4xl:mb-8 transform transition-all duration-700 delay-600 ${
+          <p className={`text-2xl 3xl:text-3xl 4xl:text-4xl font-semibold text-red-400 mb-4 3xl:mb-6 4xl:mb-8 transform transition-all duration-700 delay-600 ${
             heroLoaded ? 'translate-x-0 opacity-100' : '-translate-x-10 opacity-0'
           }`}
           style={{ textShadow: '1px 1px 3px rgba(0,0,0,0.7)' }}

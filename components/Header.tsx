@@ -92,10 +92,10 @@ export default function Header() {
 
       {/* Main Header */}
       <header className={`bg-white shadow-lg relative z-50 ${isScrolled ? 'shadow-xl' : 'shadow-md'}`}>
-        <div className="px-4 md:px-6">
+        <div className="pl-2 pr-4 md:px-6">
           <nav className="flex items-center justify-between h-16">
             {/* Logo */}
-            <Link href="/" className="flex items-center space-x-3 cursor-pointer group">
+            <Link href="/" className="flex items-center cursor-pointer group -ml-2 md:ml-0">
               <img 
                 src="/images/logo.png" 
                 alt="Autogalerie Nord Logo" 
