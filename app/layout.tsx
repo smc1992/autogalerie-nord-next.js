@@ -53,7 +53,16 @@ export default function RootLayout({
     <html lang="de">
       <head>
         <meta name="theme-color" content="#dc2626" />
-        <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet" />
+        
+        {/* LCP-Optimierung: Hero-Bild preloaden */}
+        <link
+          rel="preload"
+          href="/images/hero-premium.webp"
+          as="image"
+          type="image/webp"
+          fetchPriority="high"
+        />
+
         <link
           href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css"
           rel="stylesheet"

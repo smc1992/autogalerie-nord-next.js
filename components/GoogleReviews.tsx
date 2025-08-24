@@ -177,6 +177,7 @@ export default function GoogleReviews() {
           <button
             onClick={() => setCurrentReview((prev) => (prev - 1 + reviews.length) % reviews.length)}
             className="absolute left-0 top-1/2 transform -translate-y-1/2 -translate-x-4 w-12 h-12 flex items-center justify-center bg-white rounded-full shadow-lg border border-gray-200 hover:shadow-xl transition-all duration-300 cursor-pointer group hover:scale-110"
+            aria-label="Vorherige Bewertung anzeigen"
           >
             <i className="ri-arrow-left-line text-gray-600 group-hover:text-gray-800 transition-colors duration-300"></i>
           </button>
@@ -184,6 +185,7 @@ export default function GoogleReviews() {
           <button
             onClick={() => setCurrentReview((prev) => (prev + 1) % reviews.length)}
             className="absolute right-0 top-1/2 transform -translate-y-1/2 translate-x-4 w-12 h-12 flex items-center justify-center bg-white rounded-full shadow-lg border border-gray-200 hover:shadow-xl transition-all duration-300 cursor-pointer group hover:scale-110"
+            aria-label="Nächste Bewertung anzeigen"
           >
             <i className="ri-arrow-right-line text-gray-600 group-hover:text-gray-800 transition-colors duration-300"></i>
           </button>

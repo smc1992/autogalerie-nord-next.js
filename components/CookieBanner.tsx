@@ -123,6 +123,7 @@ export default function CookieBanner() {
               <button
                 onClick={() => setShowBanner(false)}
                 className="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-gray-600"
+                aria-label="Cookie-Banner schließen"
               >
                 <i className="ri-close-line text-xl"></i>
               </button>
@@ -187,6 +188,7 @@ export default function CookieBanner() {
               <button
                 onClick={() => setShowDetails(false)}
                 className="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-gray-600"
+                aria-label="Zurück zu Cookie-Banner"
               >
                 <i className="ri-arrow-left-line text-xl"></i>
               </button>

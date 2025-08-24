@@ -69,7 +69,18 @@ export default function HomeClient() {
           backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('/images/hero-premium.webp')`
         }}
       >
-        {/* Static background overlay - removed animation */}
+        {/* LCP-optimiertes Hero-Bild */}
+        <img
+          src="/images/hero-premium.webp"
+          alt="Premium Fahrzeuge bei Autogalerie Nord - Hochwertige Gebrauchtwagen"
+          className="absolute inset-0 w-full h-full object-cover -z-10"
+          fetchPriority="high"
+          loading="eager"
+          decoding="sync"
+        />
+        
+        {/* Gradient Overlays */}
+        <div className="absolute inset-0 bg-gradient-to-r from-black/40 via-transparent to-black/20"></div>
         <div className="absolute inset-0 bg-gradient-to-r from-black/50 via-transparent to-red-900/30"></div>
         
         {/* Fixed floating particles - only render on client and desktop */}
@@ -192,6 +203,7 @@ export default function HomeClient() {
                       : 'bg-white/50 hover:bg-white/70'
                   }`}
                   aria-label={`Zur Überschrift ${index + 1} wechseln`}
+                  aria-current={index === currentHeadline ? 'true' : 'false'}
                 />
               ))}
             </div>
