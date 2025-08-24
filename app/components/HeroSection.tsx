@@ -66,9 +66,9 @@ export default function HeroSection() {
       {/* Static background overlay */}
       <div className="absolute inset-0 bg-gradient-to-r from-black/50 via-transparent to-red-900/30"></div>
       
-      {/* Fixed floating particles - only render on client */}
+      {/* Fixed floating particles - only render on client and desktop */}
       {isClient && (
-        <div className="absolute inset-0">
+        <div className="absolute inset-0 hidden md:block">
           {heroParticles.map((particle, i) => (
             <div
               key={i}
@@ -89,11 +89,11 @@ export default function HeroSection() {
           heroLoaded ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'
         }`}>
           {/* SEO-optimierte dynamische H1 Überschrift */}
-          <div className="relative h-32 md:h-40 lg:h-48 3xl:h-56 4xl:h-64 mb-6 3xl:mb-8 4xl:mb-10 overflow-hidden">
+          <div className="relative h-24 sm:h-32 md:h-40 lg:h-48 3xl:h-56 4xl:h-64 mb-4 sm:mb-6 3xl:mb-8 4xl:mb-10 overflow-hidden">
             {headlines.map((headline, index) => (
               <h1 
                 key={index}
-                className={`absolute inset-0 text-3xl sm:text-4xl md:text-5xl lg:text-6xl 3xl:text-7xl 4xl:text-8xl font-bold text-white leading-tight transition-all duration-1800 ease-in-out transform ${
+                className={`absolute inset-0 text-2xl sm:text-3xl md:text-5xl lg:text-6xl 3xl:text-7xl 4xl:text-8xl font-bold text-white leading-tight transition-all duration-1800 ease-in-out transform ${
                   index === currentHeadline 
                     ? 'translate-y-0 opacity-100 scale-100' 
                     : index < currentHeadline 
@@ -116,11 +116,11 @@ export default function HeroSection() {
           </div>
 
           {/* Dynamischer Untertitel */}
-          <div className="relative h-16 3xl:h-20 4xl:h-24 mb-4 3xl:mb-6 4xl:mb-8 overflow-hidden">
+          <div className="relative h-12 sm:h-16 3xl:h-20 4xl:h-24 mb-3 sm:mb-4 3xl:mb-6 4xl:mb-8 overflow-hidden">
             {headlines.map((headline, index) => (
               <p 
                 key={index}
-                className={`absolute inset-0 text-xl 3xl:text-2xl 4xl:text-3xl text-gray-100 transition-all duration-1500 ease-in-out transform ${
+                className={`absolute inset-0 text-base sm:text-xl 3xl:text-2xl 4xl:text-3xl text-gray-100 transition-all duration-1500 ease-in-out transform ${
                   index === currentHeadline 
                     ? 'translate-x-0 opacity-100' 
                     : index < currentHeadline 
@@ -137,45 +137,45 @@ export default function HeroSection() {
             ))}
           </div>
 
-          <p className={`text-2xl 3xl:text-3xl 4xl:text-4xl font-semibold text-red-400 mb-4 3xl:mb-6 4xl:mb-8 transform transition-all duration-700 delay-600 ${
+          <p className={`text-lg sm:text-2xl 3xl:text-3xl 4xl:text-4xl font-semibold text-red-400 mb-3 sm:mb-4 3xl:mb-6 4xl:mb-8 transform transition-all duration-700 delay-600 ${
             heroLoaded ? 'translate-x-0 opacity-100' : '-translate-x-10 opacity-0'
           }`}
           style={{ textShadow: '1px 1px 3px rgba(0,0,0,0.7)' }}
           >
             BMW • Mercedes • Audi • VW • Porsche
           </p>
-          <p className={`text-lg 3xl:text-xl 4xl:text-2xl text-red-100 mb-8 3xl:mb-10 4xl:mb-12 transform transition-all duration-700 delay-700 ${
+          <p className={`text-base sm:text-lg 3xl:text-xl 4xl:text-2xl text-red-100 mb-6 sm:mb-8 3xl:mb-10 4xl:mb-12 transform transition-all duration-700 delay-700 ${
             heroLoaded ? 'translate-x-0 opacity-100' : '-translate-x-10 opacity-0'
           }`}
           style={{ textShadow: '1px 1px 2px rgba(0,0,0,0.6)' }}
           >
             ✓ Faire Preise  ✓ Sofortige Finanzierung
           </p>
-          <div className={`flex flex-col sm:flex-row gap-4 3xl:gap-6 4xl:gap-8 transform transition-all duration-700 delay-700 ${
+          <div className={`flex flex-col gap-4 sm:flex-row sm:gap-4 3xl:gap-6 4xl:gap-8 transform transition-all duration-700 delay-700 ${
             heroLoaded ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'
           }`}>
-            <Link href="/fahrzeuge" className="group bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white px-10 py-5 3xl:px-12 3xl:py-6 4xl:px-14 4xl:py-7 rounded-xl font-bold text-lg 3xl:text-xl 4xl:text-2xl transition-all duration-300 whitespace-nowrap cursor-pointer text-center transform hover:scale-105 hover:shadow-2xl">
+            <Link href="/fahrzeuge" className="group bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white px-8 py-4 sm:px-10 sm:py-5 3xl:px-12 3xl:py-6 4xl:px-14 4xl:py-7 rounded-lg sm:rounded-xl font-bold text-base sm:text-lg 3xl:text-xl 4xl:text-2xl transition-all duration-300 cursor-pointer text-center transform hover:scale-105 hover:shadow-2xl w-full sm:w-auto">
               <span className="flex items-center justify-center">
-                <i className="ri-car-line mr-3 text-xl 3xl:text-2xl 4xl:text-3xl"></i>
-                Jetzt Traumauto finden
-                <i className="ri-arrow-right-line ml-3 3xl:ml-4 4xl:ml-5 text-xl 3xl:text-2xl 4xl:text-3xl transform group-hover:translate-x-2 transition-transform duration-300"></i>
+                <i className="ri-car-line mr-2 sm:mr-3 text-lg sm:text-xl 3xl:text-2xl 4xl:text-3xl"></i>
+                Alle Fahrzeuge ansehen
+                <i className="ri-arrow-right-line ml-2 sm:ml-3 3xl:ml-4 4xl:ml-5 text-lg sm:text-xl 3xl:text-2xl 4xl:text-3xl transform group-hover:translate-x-2 transition-transform duration-300"></i>
               </span>
             </Link>
             <a 
               href="https://wa.me/4941717889111"
               target="_blank"
               rel="noopener noreferrer"
-              className="group border-2 border-white text-white hover:bg-white hover:text-green-600 px-8 py-4 3xl:px-10 3xl:py-5 4xl:px-12 4xl:py-6 rounded-xl font-semibold text-lg 3xl:text-xl 4xl:text-2xl transition-all duration-300 whitespace-nowrap cursor-pointer text-center transform hover:scale-105"
+              className="group border-2 border-white text-white hover:bg-white hover:text-green-600 px-8 py-4 sm:px-8 sm:py-4 3xl:px-10 3xl:py-5 4xl:px-12 4xl:py-6 rounded-lg sm:rounded-xl font-semibold text-base sm:text-lg 3xl:text-xl 4xl:text-2xl transition-all duration-300 cursor-pointer text-center transform hover:scale-105 w-full sm:w-auto"
             >
               <span className="flex items-center justify-center">
-                <i className="ri-whatsapp-line mr-2 3xl:mr-3 4xl:mr-4 text-xl 3xl:text-2xl 4xl:text-3xl"></i>
+                <i className="ri-whatsapp-line mr-2 3xl:mr-3 4xl:mr-4 text-lg sm:text-xl 3xl:text-2xl 4xl:text-3xl"></i>
                 WhatsApp Chat
               </span>
             </a>
           </div>
 
-          {/* Headline Indikator */}
-          <div className="flex justify-center lg:justify-start mt-8 space-x-2">
+          {/* Headline Indikator - nur auf Desktop */}
+          <div className="hidden md:flex justify-center lg:justify-start mt-8 space-x-2">
             {headlines.map((_, index) => (
               <button
                 key={index}

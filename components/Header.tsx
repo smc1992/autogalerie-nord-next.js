@@ -155,150 +155,203 @@ export default function Header() {
             {/* Mobile menu button */}
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="lg:hidden p-2 rounded-md text-gray-700 hover:text-red-600 hover:bg-gray-100 z-50 relative"
+              className="lg:hidden p-3 rounded-xl text-gray-700 hover:text-red-600 hover:bg-red-50 z-50 relative transition-all duration-300 transform hover:scale-110"
             >
-              <i className={`ri-${isMenuOpen ? 'close' : 'menu'}-line text-2xl transition-transform duration-300 ${isMenuOpen ? 'rotate-180' : ''}`}></i>
+              {!isMenuOpen ? (
+                <div className="relative w-6 h-6">
+                  <span className="absolute top-1 left-0 w-6 h-0.5 bg-current transform transition-all duration-300 rounded-full"></span>
+                  <span className="absolute top-3 left-0 w-6 h-0.5 bg-current transform transition-all duration-300 rounded-full"></span>
+                  <span className="absolute top-5 left-0 w-4 h-0.5 bg-current transform transition-all duration-300 rounded-full"></span>
+                </div>
+              ) : (
+                <div className="relative w-6 h-6">
+                  <span className="absolute top-3 left-0 w-6 h-0.5 bg-current transform rotate-45 transition-all duration-300 rounded-full"></span>
+                  <span className="absolute top-3 left-0 w-6 h-0.5 bg-current transform -rotate-45 transition-all duration-300 rounded-full"></span>
+                </div>
+              )}
             </button>
           </nav>
 
           {/* Mobile Navigation Overlay */}
-          {isMenuOpen && (
-            <>
-              <div 
-                className="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden"
-                onClick={() => setIsMenuOpen(false)}
-              ></div>
-              
-              <div className="fixed top-0 right-0 h-full w-80 max-w-full bg-white shadow-2xl z-50 lg:hidden transform transition-transform duration-300">
-                <div className="flex flex-col h-full">
-                  {/* Mobile Header */}
-                  <div className="flex items-center justify-between p-6 border-b border-gray-200">
-                    <h3 className="text-xl font-bold text-gray-900">Menü</h3>
-                    <button
-                      onClick={() => setIsMenuOpen(false)}
-                      className="p-2 rounded-md text-gray-700 hover:text-red-600 hover:bg-gray-100"
-                    >
-                      <i className="ri-close-line text-2xl"></i>
-                    </button>
+          <div className={`fixed inset-0 z-40 lg:hidden transition-all duration-500 ease-in-out ${
+            isMenuOpen ? 'opacity-100 visible' : 'opacity-0 invisible'
+          }`}>
+            <div 
+              className="absolute inset-0 bg-black transition-opacity duration-500 ease-in-out"
+              style={{ opacity: isMenuOpen ? 0.6 : 0 }}
+              onClick={() => setIsMenuOpen(false)}
+            ></div>
+            
+            <div className={`absolute top-0 right-0 h-full w-80 max-w-full bg-white shadow-2xl transform transition-all duration-500 ease-out ${
+              isMenuOpen ? 'translate-x-0' : 'translate-x-full'
+            }`}>
+              <div className="flex flex-col h-full">
+                {/* Mobile Header */}
+                <div className="flex items-center justify-center p-6 border-b border-gray-100 bg-gradient-to-r from-red-50 to-white">
+                  <div className="flex items-center space-x-3">
+                    <div className="w-10 h-10 bg-red-600 rounded-xl flex items-center justify-center shadow-lg">
+                      <i className="ri-navigation-line text-white text-lg"></i>
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-bold text-gray-900">Navigation</h3>
+                      <p className="text-xs text-gray-500">Autogalerie Nord</p>
+                    </div>
                   </div>
+                </div>
 
                   {/* Mobile Menu Items */}
                   <div className="flex-1 overflow-y-auto py-6">
-                    <div className="space-y-2 px-4">
+                    <div className="space-y-3 px-4">
                       <Link 
                         href="/" 
-                        className="flex items-center px-4 py-3 text-gray-700 hover:bg-red-50 hover:text-red-600 rounded-lg transition-colors duration-300 cursor-pointer"
+                        className="group flex items-center px-4 py-4 text-gray-700 hover:bg-gradient-to-r hover:from-red-50 hover:to-red-100 hover:text-red-600 rounded-xl transition-all duration-300 cursor-pointer transform hover:scale-105 hover:shadow-md"
                         onClick={() => setIsMenuOpen(false)}
                       >
-                        <i className="ri-home-line w-5 h-5 mr-3"></i>
-                        Home
+                        <div className="w-10 h-10 bg-gray-100 group-hover:bg-red-600 rounded-lg flex items-center justify-center mr-4 transition-all duration-300">
+                          <i className="ri-home-line text-lg group-hover:text-white transition-colors duration-300"></i>
+                        </div>
+                        <span className="font-medium">Home</span>
+                        <i className="ri-arrow-right-s-line ml-auto text-gray-400 group-hover:text-red-600 transform group-hover:translate-x-1 transition-all duration-300"></i>
                       </Link>
                       
                       <Link 
                         href="/fahrzeuge" 
-                        className="flex items-center px-4 py-3 text-gray-700 hover:bg-red-50 hover:text-red-600 rounded-lg transition-colors duration-300 cursor-pointer"
+                        className="group flex items-center px-4 py-4 text-gray-700 hover:bg-gradient-to-r hover:from-red-50 hover:to-red-100 hover:text-red-600 rounded-xl transition-all duration-300 cursor-pointer transform hover:scale-105 hover:shadow-md"
                         onClick={() => setIsMenuOpen(false)}
                       >
-                        <i className="ri-car-line w-5 h-5 mr-3"></i>
-                        Fahrzeuge
+                        <div className="w-10 h-10 bg-gray-100 group-hover:bg-red-600 rounded-lg flex items-center justify-center mr-4 transition-all duration-300">
+                          <i className="ri-car-line text-lg group-hover:text-white transition-colors duration-300"></i>
+                        </div>
+                        <span className="font-medium">Fahrzeuge</span>
+                        <i className="ri-arrow-right-s-line ml-auto text-gray-400 group-hover:text-red-600 transform group-hover:translate-x-1 transition-all duration-300"></i>
                       </Link>
                       
                       <Link 
                         href="/autoankauf" 
-                        className="flex items-center px-4 py-3 text-gray-700 hover:bg-red-50 hover:text-red-600 rounded-lg transition-colors duration-300 cursor-pointer"
+                        className="group flex items-center px-4 py-4 text-gray-700 hover:bg-gradient-to-r hover:from-red-50 hover:to-red-100 hover:text-red-600 rounded-xl transition-all duration-300 cursor-pointer transform hover:scale-105 hover:shadow-md"
                         onClick={() => setIsMenuOpen(false)}
                       >
-                        <i className="ri-car-line w-5 h-5 mr-3"></i>
-                        Autoankauf
+                        <div className="w-10 h-10 bg-gray-100 group-hover:bg-red-600 rounded-lg flex items-center justify-center mr-4 transition-all duration-300">
+                          <i className="ri-money-dollar-circle-line text-lg group-hover:text-white transition-colors duration-300"></i>
+                        </div>
+                        <span className="font-medium">Autoankauf</span>
+                        <i className="ri-arrow-right-s-line ml-auto text-gray-400 group-hover:text-red-600 transform group-hover:translate-x-1 transition-all duration-300"></i>
                       </Link>
                       
                       <Link 
                         href="/leistungen" 
-                        className="flex items-center px-4 py-3 text-gray-700 hover:bg-red-50 hover:text-red-600 rounded-lg transition-colors duration-300 cursor-pointer"
+                        className="group flex items-center px-4 py-4 text-gray-700 hover:bg-gradient-to-r hover:from-red-50 hover:to-red-100 hover:text-red-600 rounded-xl transition-all duration-300 cursor-pointer transform hover:scale-105 hover:shadow-md"
                         onClick={() => setIsMenuOpen(false)}
                       >
-                        <i className="ri-service-line w-5 h-5 mr-3"></i>
-                        Leistungen
+                        <div className="w-10 h-10 bg-gray-100 group-hover:bg-red-600 rounded-lg flex items-center justify-center mr-4 transition-all duration-300">
+                          <i className="ri-service-line text-lg group-hover:text-white transition-colors duration-300"></i>
+                        </div>
+                        <span className="font-medium">Leistungen</span>
+                        <i className="ri-arrow-right-s-line ml-auto text-gray-400 group-hover:text-red-600 transform group-hover:translate-x-1 transition-all duration-300"></i>
                       </Link>
 
                       {/* Leistungen Submenu */}
-                      <div className="ml-4 space-y-1">
+                      <div className="ml-6 space-y-2 bg-gray-50 rounded-xl p-3">
+                        <div className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Unsere Services</div>
                         {leistungenSubMenu.map((item, index) => (
                           <Link 
                             key={index}
                             href={item.href} 
-                            className="flex items-center px-4 py-2 text-sm text-gray-600 hover:bg-red-50 hover:text-red-600 rounded-lg transition-colors duration-300 cursor-pointer"
+                            className="group flex items-center px-3 py-2 text-sm text-gray-600 hover:bg-white hover:text-red-600 rounded-lg transition-all duration-300 cursor-pointer hover:shadow-sm"
                             onClick={() => setIsMenuOpen(false)}
                           >
-                            <i className={`${item.icon} w-4 h-4 mr-3`}></i>
-                            {item.label}
+                            <div className="w-6 h-6 bg-gray-200 group-hover:bg-red-100 rounded-md flex items-center justify-center mr-3 transition-all duration-300">
+                              <i className={`${item.icon} text-xs group-hover:text-red-600 transition-colors duration-300`}></i>
+                            </div>
+                            <span className="text-sm">{item.label}</span>
                           </Link>
                         ))}
                       </div>
 
                       <Link 
                         href="/businessloesungen" 
-                        className="flex items-center px-4 py-3 text-gray-700 hover:bg-red-50 hover:text-red-600 rounded-lg transition-colors duration-300 cursor-pointer"
+                        className="group flex items-center px-4 py-4 text-gray-700 hover:bg-gradient-to-r hover:from-red-50 hover:to-red-100 hover:text-red-600 rounded-xl transition-all duration-300 cursor-pointer transform hover:scale-105 hover:shadow-md"
                         onClick={() => setIsMenuOpen(false)}
                       >
-                        <i className="ri-building-line w-5 h-5 mr-3"></i>
-                        Business
+                        <div className="w-10 h-10 bg-gray-100 group-hover:bg-red-600 rounded-lg flex items-center justify-center mr-4 transition-all duration-300">
+                          <i className="ri-building-line text-lg group-hover:text-white transition-colors duration-300"></i>
+                        </div>
+                        <span className="font-medium">Business</span>
+                        <i className="ri-arrow-right-s-line ml-auto text-gray-400 group-hover:text-red-600 transform group-hover:translate-x-1 transition-all duration-300"></i>
                       </Link>
                       
                       <Link 
                         href="/service" 
-                        className="flex items-center px-4 py-3 text-gray-700 hover:bg-red-50 hover:text-red-600 rounded-lg transition-colors duration-300 cursor-pointer"
+                        className="group flex items-center px-4 py-4 text-gray-700 hover:bg-gradient-to-r hover:from-red-50 hover:to-red-100 hover:text-red-600 rounded-xl transition-all duration-300 cursor-pointer transform hover:scale-105 hover:shadow-md"
                         onClick={() => setIsMenuOpen(false)}
                       >
-                        <i className="ri-tools-line w-5 h-5 mr-3"></i>
-                        Service
+                        <div className="w-10 h-10 bg-gray-100 group-hover:bg-red-600 rounded-lg flex items-center justify-center mr-4 transition-all duration-300">
+                          <i className="ri-tools-line text-lg group-hover:text-white transition-colors duration-300"></i>
+                        </div>
+                        <span className="font-medium">Service</span>
+                        <i className="ri-arrow-right-s-line ml-auto text-gray-400 group-hover:text-red-600 transform group-hover:translate-x-1 transition-all duration-300"></i>
                       </Link>
                       
                       <Link 
                         href="/ueber-uns" 
-                        className="flex items-center px-4 py-3 text-gray-700 hover:bg-red-50 hover:text-red-600 rounded-lg transition-colors duration-300 cursor-pointer"
+                        className="group flex items-center px-4 py-4 text-gray-700 hover:bg-gradient-to-r hover:from-red-50 hover:to-red-100 hover:text-red-600 rounded-xl transition-all duration-300 cursor-pointer transform hover:scale-105 hover:shadow-md"
                         onClick={() => setIsMenuOpen(false)}
                       >
-                        <i className="ri-team-line w-5 h-5 mr-3"></i>
-                        Über Uns
+                        <div className="w-10 h-10 bg-gray-100 group-hover:bg-red-600 rounded-lg flex items-center justify-center mr-4 transition-all duration-300">
+                          <i className="ri-team-line text-lg group-hover:text-white transition-colors duration-300"></i>
+                        </div>
+                        <span className="font-medium">Über Uns</span>
+                        <i className="ri-arrow-right-s-line ml-auto text-gray-400 group-hover:text-red-600 transform group-hover:translate-x-1 transition-all duration-300"></i>
                       </Link>
                       
                       <Link 
                         href="/kontakt" 
-                        className="flex items-center px-4 py-3 text-gray-700 hover:bg-red-50 hover:text-red-600 rounded-lg transition-colors duration-300 cursor-pointer"
+                        className="group flex items-center px-4 py-4 text-gray-700 hover:bg-gradient-to-r hover:from-red-50 hover:to-red-100 hover:text-red-600 rounded-xl transition-all duration-300 cursor-pointer transform hover:scale-105 hover:shadow-md"
                         onClick={() => setIsMenuOpen(false)}
                       >
-                        <i className="ri-phone-line w-5 h-5 mr-3"></i>
-                        Kontakt
+                        <div className="w-10 h-10 bg-gray-100 group-hover:bg-red-600 rounded-lg flex items-center justify-center mr-4 transition-all duration-300">
+                          <i className="ri-phone-line text-lg group-hover:text-white transition-colors duration-300"></i>
+                        </div>
+                        <span className="font-medium">Kontakt</span>
+                        <i className="ri-arrow-right-s-line ml-auto text-gray-400 group-hover:text-red-600 transform group-hover:translate-x-1 transition-all duration-300"></i>
                       </Link>
                     </div>
                   </div>
 
                   {/* Mobile Contact Actions */}
-                  <div className="p-6 border-t border-gray-200 space-y-3">
+                  <div className="p-6 border-t border-gray-100 bg-gradient-to-b from-gray-50 to-white space-y-4">
+                    <div className="text-center mb-4">
+                      <p className="text-sm text-gray-600 mb-1">Haben Sie Fragen?</p>
+                      <p className="text-xs text-gray-500">Wir sind für Sie da!</p>
+                    </div>
                     <a 
                       href="tel:+4941745969770"
-                      className="w-full bg-red-600 hover:bg-red-700 text-white px-4 py-3 rounded-lg font-semibold transition-all duration-300 whitespace-nowrap cursor-pointer inline-flex items-center justify-center"
+                      className="group w-full bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white px-6 py-4 rounded-xl font-semibold transition-all duration-300 cursor-pointer inline-flex items-center justify-center transform hover:scale-105 hover:shadow-lg"
                       onClick={() => setIsMenuOpen(false)}
                     >
-                      <i className="ri-phone-line mr-2"></i>
-                      Jetzt anrufen
+                      <div className="w-8 h-8 bg-white bg-opacity-20 rounded-lg flex items-center justify-center mr-3 group-hover:bg-opacity-30 transition-all duration-300">
+                        <i className="ri-phone-line text-lg"></i>
+                      </div>
+                      <span>Jetzt anrufen</span>
+                      <i className="ri-arrow-right-line ml-auto transform group-hover:translate-x-1 transition-transform duration-300"></i>
                     </a>
                     <a 
                       href="https://wa.me/4941717889111"
                       target="_blank" 
                       rel="noopener noreferrer"
-                      className="w-full border-2 border-red-600 text-red-600 hover:bg-red-600 hover:text-white px-4 py-3 rounded-lg font-semibold transition-all duration-300 whitespace-nowrap cursor-pointer inline-flex items-center justify-center"
+                      className="group w-full border-2 border-red-600 text-red-600 hover:bg-red-600 hover:text-white px-6 py-4 rounded-xl font-semibold transition-all duration-300 cursor-pointer inline-flex items-center justify-center transform hover:scale-105 hover:shadow-lg"
                       onClick={() => setIsMenuOpen(false)}
                     >
-                      <i className="ri-whatsapp-line mr-2"></i>
-                      WhatsApp
+                      <div className="w-8 h-8 border border-red-600 group-hover:border-white rounded-lg flex items-center justify-center mr-3 group-hover:bg-white group-hover:bg-opacity-20 transition-all duration-300">
+                        <i className="ri-whatsapp-line text-lg group-hover:text-white"></i>
+                      </div>
+                      <span>WhatsApp Chat</span>
+                      <i className="ri-arrow-right-line ml-auto transform group-hover:translate-x-1 transition-transform duration-300"></i>
                     </a>
                   </div>
                 </div>
               </div>
-            </>
-          )}
+            </div>
         </div>
       </header>
     </>

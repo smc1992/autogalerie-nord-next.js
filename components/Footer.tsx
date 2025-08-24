@@ -174,13 +174,13 @@ export default function Footer() {
                 {new Date().getFullYear()} Autogalerie Nord. Alle Rechte vorbehalten.
               </p>
               <div className="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-6 text-base sm:text-sm text-center order-1 md:order-2">
-                <Link href="/impressum" className="text-gray-600 hover:text-blue-600 py-3 sm:py-2 md:py-0 px-4 sm:px-0 rounded-lg sm:rounded-none hover:bg-gray-50 sm:hover:bg-transparent transition-all duration-300">
+                <Link href="/impressum" className="text-gray-600 hover:text-red-600 py-3 sm:py-2 md:py-0 px-4 sm:px-0 rounded-lg sm:rounded-none hover:bg-gray-50 sm:hover:bg-transparent transition-all duration-300">
                   Impressum
                 </Link>
-                <Link href="/datenschutz" className="text-gray-600 hover:text-blue-600 py-3 sm:py-2 md:py-0 px-4 sm:px-0 rounded-lg sm:rounded-none hover:bg-gray-50 sm:hover:bg-transparent transition-all duration-300">
+                <Link href="/datenschutz" className="text-gray-600 hover:text-red-600 py-3 sm:py-2 md:py-0 px-4 sm:px-0 rounded-lg sm:rounded-none hover:bg-gray-50 sm:hover:bg-transparent transition-all duration-300">
                   Datenschutz
                 </Link>
-                <Link href="/cookie-einstellungen" className="text-gray-600 hover:text-blue-600 py-3 sm:py-2 md:py-0 px-4 sm:px-0 rounded-lg sm:rounded-none hover:bg-gray-50 sm:hover:bg-transparent transition-all duration-300">
+                <Link href="/cookie-einstellungen" className="text-gray-600 hover:text-red-600 py-3 sm:py-2 md:py-0 px-4 sm:px-0 rounded-lg sm:rounded-none hover:bg-gray-50 sm:hover:bg-transparent transition-all duration-300">
                   Cookie-Einstellungen
                 </Link>
               </div>

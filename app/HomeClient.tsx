@@ -72,9 +72,9 @@ export default function HomeClient() {
         {/* Static background overlay - removed animation */}
         <div className="absolute inset-0 bg-gradient-to-r from-black/50 via-transparent to-red-900/30"></div>
         
-        {/* Fixed floating particles - only render on client */}
+        {/* Fixed floating particles - only render on client and desktop */}
         {isClient && (
-          <div className="absolute inset-0">
+          <div className="absolute inset-0 hidden md:block">
             {heroParticles.map((particle, i) => (
               <div
                 key={i}
@@ -95,7 +95,7 @@ export default function HomeClient() {
             heroLoaded ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'
           }`}>
             {/* SEO-optimierte dynamische H1 Überschrift */}
-            <div className="relative h-32 md:h-40 lg:h-48 3xl:h-56 4xl:h-64 mb-6 3xl:mb-8 4xl:mb-10 overflow-hidden">
+            <div className="relative h-28 sm:h-32 md:h-40 lg:h-48 3xl:h-56 4xl:h-64 mb-4 sm:mb-6 3xl:mb-8 4xl:mb-10 overflow-hidden">
               {headlines.map((headline, index) => (
                 <h1 
                   key={index}
@@ -122,11 +122,11 @@ export default function HomeClient() {
             </div>
 
             {/* Dynamischer Untertitel */}
-            <div className="relative h-16 mb-4 overflow-hidden">
+            <div className="relative h-12 sm:h-16 mb-3 sm:mb-4 overflow-hidden">
               {headlines.map((headline, index) => (
                 <p 
                   key={index}
-                  className={`absolute inset-0 text-xl text-gray-100 transition-all duration-1500 ease-in-out transform ${
+                  className={`absolute inset-0 text-lg sm:text-xl text-gray-100 transition-all duration-1500 ease-in-out transform ${
                     index === currentHeadline 
                       ? 'translate-x-0 opacity-100' 
                       : index < currentHeadline 
@@ -143,45 +143,45 @@ export default function HomeClient() {
               ))}
             </div>
 
-            <p className={`text-2xl font-semibold text-red-400 mb-4 transform transition-all duration-700 delay-600 ${
+            <p className={`text-xl sm:text-2xl font-semibold text-red-400 mb-3 sm:mb-4 transform transition-all duration-700 delay-600 ${
               heroLoaded ? 'translate-x-0 opacity-100' : '-translate-x-10 opacity-0'
             }`}
             style={{ textShadow: '1px 1px 3px rgba(0,0,0,0.7)' }}
             >
               BMW • Mercedes • Audi • VW • Porsche
             </p>
-            <p className={`text-lg text-red-100 mb-8 transform transition-all duration-700 delay-700 ${
+            <p className={`text-lg sm:text-lg text-red-100 mb-6 sm:mb-8 transform transition-all duration-700 delay-700 ${
               heroLoaded ? 'translate-x-0 opacity-100' : '-translate-x-10 opacity-0'
             }`}
             style={{ textShadow: '1px 1px 2px rgba(0,0,0,0.6)' }}
             >
               ✓ Faire Preise  ✓ Sofortige Finanzierung
             </p>
-            <div className={`flex flex-col sm:flex-row gap-4 transform transition-all duration-700 delay-700 ${
+            <div className={`flex flex-col gap-4 sm:flex-row sm:gap-4 transform transition-all duration-700 delay-700 ${
               heroLoaded ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'
             }`}>
-              <Link href="/fahrzeuge" className="group bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white px-10 py-5 rounded-xl font-bold text-lg transition-all duration-300 whitespace-nowrap cursor-pointer text-center transform hover:scale-105 hover:shadow-2xl">
+              <Link href="/fahrzeuge" className="group bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white px-8 py-4 sm:px-10 sm:py-5 rounded-lg sm:rounded-xl font-bold text-base sm:text-lg transition-all duration-300 cursor-pointer text-center transform hover:scale-105 hover:shadow-2xl w-full sm:w-auto">
                 <span className="flex items-center justify-center">
-                  <i className="ri-car-line mr-3 text-xl"></i>
+                  <i className="ri-car-line mr-2 sm:mr-3 text-lg sm:text-xl"></i>
                   Alle Fahrzeuge ansehen
-                  <i className="ri-arrow-right-line ml-3 transform group-hover:translate-x-2 transition-transform duration-300"></i>
+                  <i className="ri-arrow-right-line ml-2 sm:ml-3 transform group-hover:translate-x-2 transition-transform duration-300"></i>
                 </span>
               </Link>
               <a 
                 href="https://wa.me/4941717889111"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group border-2 border-white text-white hover:bg-white hover:text-green-600 px-8 py-4 rounded-xl font-semibold transition-all duration-300 whitespace-nowrap cursor-pointer text-center transform hover:scale-105"
+                className="group border-2 border-white text-white hover:bg-white hover:text-green-600 px-8 py-4 sm:px-8 sm:py-4 rounded-lg sm:rounded-xl font-semibold text-base sm:text-lg transition-all duration-300 cursor-pointer text-center transform hover:scale-105 w-full sm:w-auto"
               >
                 <span className="flex items-center justify-center">
-                  <i className="ri-whatsapp-line mr-2"></i>
+                  <i className="ri-whatsapp-line mr-2 text-lg sm:text-xl"></i>
                   WhatsApp Chat
                 </span>
               </a>
             </div>
 
-            {/* Headline Indikator */}
-            <div className="flex justify-center lg:justify-start mt-8 space-x-2">
+            {/* Headline Indikator - nur auf Desktop */}
+            <div className="hidden md:flex justify-center lg:justify-start mt-8 space-x-2">
               {headlines.map((_, index) => (
                 <button
                   key={index}
