@@ -95,7 +95,7 @@ export default function Header() {
         <div className="pl-2 pr-4 md:px-6">
           <nav className="flex items-center justify-between h-16">
             {/* Logo */}
-            <Link href="/" className="flex items-center cursor-pointer group -ml-2 md:ml-0">
+            <Link href="/" className="flex items-center cursor-pointer group -ml-4 md:ml-0">
               <img 
                 src="/images/logo.png" 
                 alt="Autogalerie Nord Logo" 
