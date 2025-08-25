@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useState } from 'react';
 
 type Props = {
   apiKey: string;
@@ -13,91 +13,76 @@ export default function MarketplaceEmbed({
   apiKey,
   terms = { de: '' },
   privacy = { de: 'https://autogalerie-nord.de/datenschutz' },
-  imprint = { de: 'https://autogalerie-nord.de/impressum' }, // ← Schreibweise "impressum"
+  imprint = { de: 'https://autogalerie-nord.de/impressum' },
 }: Props) {
-  const anchorRef = useRef<HTMLDivElement>(null);
-  const mountedRef = useRef(false);
-  const scriptRef = useRef<HTMLScriptElement | null>(null);
+  const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
-    if (mountedRef.current) return;
-    mountedRef.current = true;
-
-    const anchor = anchorRef.current;
-    if (!anchor) return;
-
-    // 1) Script-Element programmgesteuert erstellen
-    const s = document.createElement('script');
-    s.src = 'https://cdn.dein.auto/pxc-amm/loader.nocache';
-    s.async = true;
-    s.defer = true;
-
-    // 2) Anbieter-spezifische Attribute GENAU wie gefordert setzen
-    s.setAttribute('api-key', apiKey);
-    s.setAttribute('urls-terms', JSON.stringify(terms));
-    s.setAttribute('urls-privacy', JSON.stringify(privacy));
-    s.setAttribute('urls-imprint', JSON.stringify(imprint));
-
-    // 3) Event-Handler (optional)
-    s.onload = () => {
-      // Wenn der Anbieter auto-initialisiert, reicht das Laden.
-      // Falls ein expliziter Init nötig ist, kannst du ihn hier aufrufen:
-      // window.amm?.init?.({ container: anchor, apiKey, ... });
-      // (Nur verwenden, wenn die Doku einen Init-Call vorsieht.)
-      console.log('✅ AMM script loaded');
-    };
-    s.onerror = () => {
-      // Fallback UI ins Anchor setzen
-      anchor.innerHTML = `
-        <div style="text-align:center;padding:60px 20px;font-family:system-ui,sans-serif">
-          <div style="color:#dc2626;margin-bottom:20px;font-size:48px">⚠️</div>
-          <h3 style="color:#374151;margin:0 0 10px;font-size:20px">Fahrzeugbörse vorübergehend nicht verfügbar</h3>
-          <p style="color:#6b7280;margin:0 0 20px;font-size:16px">Bitte versuchen Sie es später erneut.</p>
-          <button onclick="window.location.reload()"
-            style="background:#dc2626;color:white;padding:12px 24px;border-radius:8px;cursor:pointer;border:none">
-            Seite neu laden
-          </button>
-        </div>
-      `;
-      console.error('❌ AMM loader failed');
-    };
-
-    // 4) Script in den Head einfügen, nicht als Child-Element
-    document.head.appendChild(s);
-    scriptRef.current = s;
+    setIsClient(true);
     
-    // 5) Marketplace-Container-ID setzen für das Script
-    anchor.setAttribute('data-marketplace-container', 'true');
-
-    return () => {
-      // Sanftes Cleanup – keine aggressiven Global-Deletes
-      try {
-        (window as any).amm?.destroy?.(); // nur wenn vorhanden
-      } catch {}
-
-      // Script entfernen (nur das, was wir selbst eingefügt haben)
-      if (scriptRef.current && scriptRef.current.parentNode) {
-        scriptRef.current.parentNode.removeChild(scriptRef.current);
+    // Script nur einmal global laden - bessere Duplikat-Erkennung
+    if (typeof window !== 'undefined') {
+      // Prüfe ob Script bereits existiert oder geladen wird
+      const existingScript = document.querySelector('script[src="https://cdn.dein.auto/pxc-amm/loader.nocache"]');
+      const isLoading = (window as any).marketplaceScriptLoading;
+      const isLoaded = (window as any).marketplaceScriptLoaded;
+      
+      if (!existingScript && !isLoading && !isLoaded) {
+        (window as any).marketplaceScriptLoading = true;
+        
+        const script = document.createElement('script');
+        script.src = 'https://cdn.dein.auto/pxc-amm/loader.nocache';
+        script.async = true;
+        document.head.appendChild(script);
+        
+        script.onload = () => {
+          console.log('✅ Marketplace script loaded');
+          (window as any).marketplaceScriptLoaded = true;
+          (window as any).marketplaceScriptLoading = false;
+        };
+        
+        script.onerror = () => {
+          console.error('❌ Marketplace script failed to load');
+          (window as any).marketplaceScriptLoading = false;
+        };
       }
-      // Gerenderten Inhalt leeren
-      if (anchorRef.current) {
-        anchorRef.current.innerHTML = '';
-      }
-    };
-  }, [apiKey, terms, privacy, imprint]);
+    }
+  }, []);
 
-  // Anchor ist der Platzhalter – hier fügt das Script seinen DOM ein
-  return (
-    <div
+  if (!isClient) {
+    return (
+      <div
+        style={{
+          width: '100%',
+          minHeight: '600px',
+          background: '#fff',
+          borderRadius: 8,
+          boxShadow: '0 4px 6px -1px rgba(0,0,0,.1)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          color: '#666',
+        }}
+      >
+        Fahrzeugbörse wird geladen...
+      </div>
+    );
+  }
+
+  // Methode 2 aus offizieller Dokumentation: Script im Head, Attribute am div
+  // React erkennt custom HTML-Attribute nicht automatisch, daher verwenden wir dangerouslySetInnerHTML
+  const marketplaceHtml = `
+    <div 
       id="am-marketplace"
-      ref={anchorRef}
-      style={{
-        width: '100%',
-        minHeight: '600px',
-        background: '#fff',
-        borderRadius: 8,
-        boxShadow: '0 4px 6px -1px rgba(0,0,0,.1)',
-      }}
-    />
+      api-key="${apiKey}"
+      urls-imprint="${imprint.de || 'https://autogalerie-nord.de/impressum'}"
+      urls-terms="${terms.de || ''}"
+      urls-privacy="${privacy.de || 'https://autogalerie-nord.de/datenschutz'}"
+      style="width: 100%; min-height: 600px; background: #fff; border-radius: 8px; box-shadow: 0 4px 6px -1px rgba(0,0,0,.1);"
+    ></div>
+  `;
+
+  return (
+    <div dangerouslySetInnerHTML={{ __html: marketplaceHtml }} />
   );
 }

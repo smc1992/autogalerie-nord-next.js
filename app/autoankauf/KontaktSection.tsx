@@ -1,11 +1,7 @@
 
 'use client';
 
-import { useState } from 'react';
-import AutoankaufPopup from '../../components/AutoankaufPopup';
-
 export default function KontaktSection() {
-  const [isPopupOpen, setIsPopupOpen] = useState(false);
   return (
     <section className="py-20 bg-white">
       <div className="max-w-6xl mx-auto px-4 md:px-6 lg:px-8">
@@ -43,12 +39,12 @@ export default function KontaktSection() {
             <h3 className="text-xl font-semibold text-gray-900 mb-4 group-hover:text-red-600 transition-colors duration-300">
               E-Mail
             </h3>
-            <button 
-              onClick={() => setIsPopupOpen(true)}
+            <a 
+              href="mailto:info@autogalerie-nord.de"
               className="text-lg text-gray-600 hover:text-red-600 transition-colors duration-300 cursor-pointer block break-all"
             >
               info@autogalerie-nord.de
-            </button>
+            </a>
           </div>
 
           {/* Adresse */}
@@ -82,21 +78,17 @@ export default function KontaktSection() {
               <i className="ri-phone-line mr-2"></i>
               Jetzt anrufen
             </a>
-            <button 
-              onClick={() => setIsPopupOpen(true)}
+            <a 
+              href="https://autogalerie-nord.de/fahrzeuge#!/tradein"
               className="border-2 border-red-600 text-red-600 hover:bg-red-600 hover:text-white px-8 py-4 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105 whitespace-nowrap cursor-pointer inline-flex items-center justify-center"
             >
               <i className="ri-file-text-line mr-2"></i>
               Fahrzeug anbieten
-            </button>
+            </a>
           </div>
         </div>
       </div>
-      
-      <AutoankaufPopup 
-        isOpen={isPopupOpen} 
-        onClose={() => setIsPopupOpen(false)} 
-      />
+
     </section>
   );
 }

@@ -6,12 +6,12 @@ import ProzessSection from './ProzessSection';
 import KontaktSection from './KontaktSection';
 
 export const metadata: Metadata = {
-  title: "Auto verkaufen Hamburg - Fairer Autoankauf | Autogalerie Nord GmbH",
-  description: "🚗 Auto schnell & fair verkaufen in Hamburg ✅ Sofortige Bewertung ✅ Bester Preis ✅ Unkomplizierte Abwicklung. Jetzt kostenlosen Termin vereinbaren!",
-  keywords: "Auto verkaufen Hamburg, Autoankauf Hamburg, Fahrzeug verkaufen, Auto Ankauf, Gebrauchtwagen verkaufen, fairer Autoankauf",
+  title: "Autoankauf Informationen - Ihr Auto fair verkaufen | Autogalerie Nord GmbH",
+  description: "🚗 Informationen zum fairen Autoankauf in Hamburg ✅ Unser Bewertungsprozess ✅ Ihre Vorteile ✅ Transparente Abwicklung. Jetzt direkt Fahrzeug bewerten!",
+  keywords: "Autoankauf Informationen, Auto verkaufen Hamburg, Fahrzeugbewertung, Autoankauf Prozess, fairer Autoankauf",
   openGraph: {
-    title: "Auto verkaufen Hamburg - Fairer Autoankauf",
-    description: "Verkaufen Sie Ihr Auto schnell und fair in Hamburg. Sofortige Bewertung und bester Preis garantiert. Jetzt Termin vereinbaren!",
+    title: "Autoankauf Informationen - Ihr Auto fair verkaufen",
+    description: "Erfahren Sie alles über unseren fairen Autoankauf-Prozess. Transparente Bewertung und beste Preise in Hamburg.",
     url: "https://autogalerie-nord.de/autoankauf",
   },
 };

@@ -1,11 +1,7 @@
 
 'use client';
 
-import { useState } from 'react';
-import AutoankaufPopup from '../../components/AutoankaufPopup';
-
 export default function AutoankaufHero() {
-  const [isPopupOpen, setIsPopupOpen] = useState(false);
   return (
     <section 
       className="relative min-h-[700px] flex items-center bg-cover bg-center bg-no-repeat overflow-hidden"
@@ -24,23 +20,19 @@ export default function AutoankaufHero() {
               Faire Bewertung • Schnelle Abwicklung • Sofortige Barauszahlung
             </p>
             <div className="flex justify-center lg:justify-start">
-              <button 
-                onClick={() => setIsPopupOpen(true)}
+              <a 
+                href="https://autogalerie-nord.de/fahrzeuge#!/tradein"
                 className="bg-red-600 hover:bg-red-700 text-white px-10 py-5 rounded-xl font-bold text-lg transition-all duration-300 transform hover:scale-105 hover:shadow-xl whitespace-nowrap cursor-pointer inline-flex items-center justify-center"
               >
                 <i className="ri-money-dollar-circle-line mr-3 text-xl"></i>
                 Jetzt Fahrzeug verkaufen
                 <i className="ri-arrow-right-line ml-3 transform group-hover:translate-x-2 transition-transform duration-300"></i>
-              </button>
+              </a>
             </div>
           </div>
         </div>
       </div>
-      
-      <AutoankaufPopup 
-        isOpen={isPopupOpen} 
-        onClose={() => setIsPopupOpen(false)} 
-      />
+
     </section>
   );
 }

@@ -21,7 +21,8 @@ export default function Header() {
     { href: '/leistungen/finanzierung', label: 'Finanzierung', icon: 'ri-bank-card-line' },
     { href: '/leistungen/zulassungsservice', label: 'Zulassungsservice', icon: 'ri-file-text-line' },
     { href: '/leistungen/import-export', label: 'Import & Export', icon: 'ri-ship-line' },
-    { href: '/leistungen/kommissionsverkauf', label: 'Kommissionsverkauf', icon: 'ri-exchange-dollar-line' }
+    { href: '/leistungen/kommissionsverkauf', label: 'Kommissionsverkauf', icon: 'ri-exchange-dollar-line' },
+    { href: '/autoankauf', label: 'Fahrzeug verkaufen', icon: 'ri-money-dollar-circle-line' }
   ];
 
   return (
@@ -121,7 +122,7 @@ export default function Header() {
               <Link href="/fahrzeuge" className="text-gray-700 hover:text-red-600 transition-colors duration-300 cursor-pointer">
                 Fahrzeuge
               </Link>
-              <Link href="/autoankauf" className="text-gray-700 hover:text-red-600 transition-colors duration-300 cursor-pointer">
+              <Link href="https://autogalerie-nord.de/fahrzeuge#!/tradein" className="text-gray-700 hover:text-red-600 transition-colors duration-300 cursor-pointer">
                 Autoankauf
               </Link>
               <div 
@@ -239,7 +240,7 @@ export default function Header() {
                       </Link>
                       
                       <Link 
-                        href="/autoankauf" 
+                        href="https://autogalerie-nord.de/fahrzeuge#!/tradein" 
                         className="group flex items-center px-4 py-4 text-gray-700 hover:bg-gradient-to-r hover:from-red-50 hover:to-red-100 hover:text-red-600 rounded-xl transition-all duration-300 cursor-pointer transform hover:scale-105 hover:shadow-md"
                         onClick={() => setIsMenuOpen(false)}
                       >
