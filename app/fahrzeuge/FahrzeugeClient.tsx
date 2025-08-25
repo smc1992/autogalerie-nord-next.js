@@ -7,10 +7,17 @@ export default function FahrzeugeClient() {
     // Einfache Marketplace-Initialisierung gemäß pixelconcept Dokumentation
     const initializeMarketplace = () => {
       // Verhindere doppeltes Laden - prüfe ob Script bereits existiert
-      const existingScript = document.querySelector('script[src*="loader.nocache"]');
+      const existingScript = document.querySelector('script[src*="loader.nocache"], script[src*="am-marketplace"]');
       if (existingScript) {
         console.log('📦 Marketplace script already loaded, skipping initialization');
         return;
+      }
+      
+      // Prüfe auf Angular-Konflikte
+      if (typeof window !== 'undefined' && (window as any).angular) {
+        console.log('⚠️ Angular already exists, cleaning up before marketplace initialization');
+        delete (window as any).angular;
+        delete (window as any).ng;
       }
       
       console.log('🚀 Initializing marketplace according to pixelconcept documentation...');
@@ -200,26 +207,40 @@ export default function FahrzeugeClient() {
     initializeMarketplace();
     
     // Cleanup function
-     return () => {
-       // Entferne alle Marketplace-Scripts
-        const scripts = document.querySelectorAll('script[src*="loader.nocache"], script[src*="pxc-amm"]');
+      return () => {
+        // Entferne alle Marketplace- und Angular-Scripts
+        const scripts = document.querySelectorAll('script[src*="loader.nocache"], script[src*="pxc-amm"], script[src*="angular"], script[src*="am-marketplace"]');
         scripts.forEach(script => {
           console.log('🧹 Removing marketplace script:', (script as HTMLScriptElement).src);
           script.remove();
         });
-       
-       // Entferne Marketplace-Styles
-       const styles = document.querySelectorAll('style[data-marketplace="true"]');
-       styles.forEach(style => style.remove());
-       
-       // Leere Marketplace-Container
-       const container = document.getElementById('am-marketplace');
-       if (container) {
-         container.innerHTML = '';
-       }
-       
-       console.log('🧹 Marketplace cleanup completed');
-     };
+        
+        // Entferne Marketplace-Styles
+        const styles = document.querySelectorAll('style[data-marketplace="true"]');
+        styles.forEach(style => style.remove());
+        
+        // Leere und reset Marketplace-Container
+        const container = document.getElementById('am-marketplace');
+        if (container) {
+          container.innerHTML = '';
+          container.className = '';
+          // Entferne ng-scope Klassen die Angular hinzufügt
+          container.classList.remove('ng-scope');
+        }
+        
+        // Cleanup Angular globals
+        if (typeof window !== 'undefined') {
+          // Entferne Angular-spezifische Globals
+          delete (window as any).angular;
+          delete (window as any).ng;
+          
+          // Entferne Marketplace-spezifische Globals
+          delete (window as any).amm;
+          delete (window as any).marketplace;
+        }
+        
+        console.log('🧹 Marketplace and Angular cleanup completed');
+      };
   }, []);
 
   return (
