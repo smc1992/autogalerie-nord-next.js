@@ -389,14 +389,39 @@ export default function FahrzeugeClient() {
         // Override global error handlers to catch marketplace errors
         const originalError = window.onerror;
         window.onerror = function(event, source, lineno, colno, error) {
-          // Check if error is from marketplace
-          if (source && source.includes('marketplace') || 
-              (error && error.stack && error.stack.includes('marketplace'))) {
-            console.log('Marketplace error caught:', { event, source, error });
+          // Check if error is from marketplace or fullscreen violations
+          if (source && (source.includes('marketplace') || source.includes('fullscreen')) || 
+              (error && error.stack && (error.stack.includes('marketplace') || error.stack.includes('fullscreen'))) ||
+              (typeof event === 'string' && (event.includes('marketplace') || event.includes('fullscreen')))) {
+            console.log('Marketplace/Fullscreen error caught:', { event, source, error });
             return true; // Prevent default error handling
           }
           return originalError ? originalError.call(this, event, source, lineno, colno, error) : false;
         };
+        
+        // Add permissions policy to prevent fullscreen violations
+        const metaPermissions = document.createElement('meta');
+        metaPermissions.httpEquiv = 'Permissions-Policy';
+        metaPermissions.content = 'fullscreen=()';
+        document.head.appendChild(metaPermissions);
+        
+        // Override fullscreen API to prevent violations
+         if (typeof (document as any).requestFullscreen === 'function') {
+           const originalRequestFullscreen = (document as any).requestFullscreen;
+           (document as any).requestFullscreen = function() {
+             console.warn('Fullscreen request blocked for marketplace compatibility');
+             return Promise.reject(new Error('Fullscreen not allowed'));
+           };
+         }
+         
+         // Also override element fullscreen requests
+          if ('requestFullscreen' in Element.prototype) {
+            const originalElementRequestFullscreen = Element.prototype.requestFullscreen;
+            Element.prototype.requestFullscreen = function() {
+              console.warn('Element fullscreen request blocked for marketplace compatibility');
+              return Promise.reject(new Error('Fullscreen not allowed'));
+            };
+          }
 
         // Add unhandled promise rejection handler
         const originalUnhandledRejection = window.onunhandledrejection;
@@ -431,11 +456,27 @@ export default function FahrzeugeClient() {
           script.src = 'https://cdn.dein.auto/pxc-amm/loader.nocache';
           script.async = true;
           
-          // Set attributes
+          // Set attributes with correct URLs
           script.setAttribute('api-key', '0536fa11-99df-43f8-bf26-42af233f5478');
-          script.setAttribute('urls-imprint', '/impressum');
-          script.setAttribute('urls-terms', '/agb');
-          script.setAttribute('urls-privacy', '/datenschutz');
+          script.setAttribute('urls-imprint', 'https://autogalerie-nord.de/impressum');
+          script.setAttribute('urls-terms', 'https://autogalerie-nord.de/agb');
+          script.setAttribute('urls-privacy', 'https://autogalerie-nord.de/datenschutz');
+          script.setAttribute('urls-base', 'https://autogalerie-nord.de');
+          script.setAttribute('urls-detail', 'https://autogalerie-nord.de/fahrzeuge');
+          script.setAttribute('marketplace-url', 'https://autogalerie-nord.de/fahrzeuge');
+          script.setAttribute('detail-page-url', 'https://autogalerie-nord.de/fahrzeuge');
+          script.setAttribute('enable-detail-view', 'true');
+          script.setAttribute('enable-navigation', 'true');
+          script.setAttribute('base-url', 'https://autogalerie-nord.de');
+          script.setAttribute('detail-url-pattern', '/fahrzeuge/#!/vehicles/{id}');
+          script.setAttribute('list-url', '/fahrzeuge');
+          script.setAttribute('enable-routing', 'true');
+          script.setAttribute('routing-mode', 'hash');
+          script.setAttribute('container-id', 'am-marketplace');
+          script.setAttribute('enable-fullscreen', 'false');
+          script.setAttribute('disable-fullscreen', 'true');
+          script.setAttribute('fullscreen-policy', 'none');
+          script.setAttribute('permissions-policy', 'fullscreen=()');
           
           // Promise with shorter timeout for faster fallback
           await new Promise<void>((resolve) => {
