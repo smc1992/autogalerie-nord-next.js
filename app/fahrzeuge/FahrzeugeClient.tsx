@@ -1,38 +1,9 @@
 'use client';
 
 import { useEffect } from 'react';
-import Script from 'next/script';
+import MarketplaceEmbed from '../../components/MarketplaceEmbed';
 
 export default function FahrzeugeClient() {
-  // Handler-Funktionen für Script-Events
-  const handleScriptLoad = () => {
-    console.log('✅ Marketplace script loaded successfully!');
-    if (typeof window !== 'undefined') {
-      // Marketplace Global für Kompatibilität definieren
-      (window as any).marketplace = {
-        initialized: true,
-        config: {
-          apiKey: '0536fa11-99df-43f8-bf26-42af233f5478'
-        }
-      };
-    }
-  };
-
-  const handleScriptError = () => {
-    console.error('❌ Failed to load marketplace script');
-    // Fallback anzeigen
-    const container = document.getElementById('am-marketplace');
-    if (container) {
-      container.innerHTML = `
-        <div style="text-align: center; padding: 60px 20px; font-family: system-ui, sans-serif;">
-          <div style="color: #dc2626; margin-bottom: 20px; font-size: 48px;">⚠️</div>
-          <h3 style="color: #374151; margin: 0 0 10px; font-size: 20px;">Fahrzeugmarktplatz vorübergehend nicht verfügbar</h3>
-          <p style="color: #6b7280; margin: 0 0 20px; font-size: 16px;">Bitte versuchen Sie es später erneut.</p>
-          <button onclick="window.location.reload()" style="background: #dc2626; color: white; padding: 12px 24px; border-radius: 8px; cursor: pointer; border: none;">Seite neu laden</button>
-        </div>
-      `;
-    }
-  };
 
   useEffect(() => {
     // Marketplace-Initialisierung
@@ -115,22 +86,13 @@ export default function FahrzeugeClient() {
             </p>
           </div>
           
-          {/* Marketplace Script als HTML gemäß pixelconcept Dokumentation */}
-          <div style={{
-            width: '100%',
-            minHeight: '600px',
-            background: '#ffffff',
-            borderRadius: '8px',
-            boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
-          }}>
-            <script 
-              src="https://cdn.dein.auto/pxc-amm/loader.nocache"
-              api-key="0536fa11-99df-43f8-bf26-42af233f5478"
-              urls-imprint="https://autogalerie-nord.de/impressum"
-              urls-terms="https://autogalerie-nord.de/agb"
-              urls-privacy="https://autogalerie-nord.de/datenschutz"
-            ></script>
-          </div>
+          {/* Marketplace Embed Komponente */}
+          <MarketplaceEmbed
+            apiKey="0536fa11-99df-43f8-bf26-42af233f5478"
+            imprint={{ de: 'https://autogalerie-nord.de/impressum' }}
+            terms={{ de: 'https://autogalerie-nord.de/agb' }}
+            privacy={{ de: 'https://autogalerie-nord.de/datenschutz' }}
+          />
         </div>
       </section>
 
