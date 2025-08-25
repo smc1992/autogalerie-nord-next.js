@@ -71,6 +71,9 @@ export default function RootLayout({
         {/* jQuery direkt einbinden */}
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         
+        {/* QuickSearch direkt einbinden */}
+        <script src="/quicksearch-norequire_1.4.2.min.js"></script>
+        
         {/* Chat-Widget einbinden */}
         <script async defer src="https://app.chatbot-smc.de/js/widget/knvkqmx3rs1hs1eh/float.js"></script>
         

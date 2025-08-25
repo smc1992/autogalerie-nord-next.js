@@ -43,11 +43,11 @@ export default function FahrzeugeClient() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 fahrzeuge-page">
 
       
       {/* Hero Section */}
-      <section className="bg-gradient-to-r from-red-600 to-red-700 text-white py-20">
+      <section className="bg-gradient-to-r from-red-600 to-red-700 text-white py-20 fahrzeuge-hero">
         <div className="max-w-6xl mx-auto px-6 text-center">
           <h1 className="text-4xl md:text-5xl font-bold mb-6">
             Über 120 Premium-Fahrzeuge
