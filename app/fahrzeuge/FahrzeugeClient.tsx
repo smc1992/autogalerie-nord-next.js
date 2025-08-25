@@ -56,13 +56,7 @@ export default function FahrzeugeClient() {
             Entdecken Sie unsere große Auswahl an hochwertigen Gebrauchtwagen, 
             Jahreswagen und Neuwagen zu fairen Preisen.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a 
-              href="#am-marketplace" 
-              className="bg-white text-red-600 px-8 py-4 rounded-lg font-semibold hover:bg-red-50 transition-colors duration-300 whitespace-nowrap"
-            >
-              Fahrzeuge durchsuchen
-            </a>
+          <div className="flex justify-center">
             <a 
               href="/kontakt" 
               className="border-2 border-white text-white hover:bg-white hover:text-red-600 px-8 py-4 rounded-lg font-semibold transition-colors duration-300 whitespace-nowrap"
