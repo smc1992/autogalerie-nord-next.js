@@ -226,11 +226,16 @@ export default function FahrzeugeClient() {
      console.error = function(...args) {
        const message = args.join(' ');
        if (message.includes('removeChild') || 
-           message.includes('NotFoundError') ||
-           message.includes('scrollToTarget') ||
-           message.includes('Cannot read properties of undefined') ||
-           message.includes('fullscreen') ||
-           message.includes('Potential permissions policy violation')) {
+            message.includes('NotFoundError') ||
+            message.includes('scrollToTarget') ||
+            message.includes('Cannot read properties of undefined') ||
+            message.includes('Cannot read properties of null') ||
+            message.includes('toLowerCase') ||
+            message.includes('currency.js') ||
+            message.includes('ProductSwiperSlide.js') ||
+            message.includes('root node should look like') ||
+            message.includes('fullscreen') ||
+            message.includes('Potential permissions policy violation')) {
          console.warn('Marketplace error suppressed:', message);
          return;
        }
@@ -351,7 +356,7 @@ export default function FahrzeugeClient() {
             </p>
           </div>
           
-          {/* Marketplace DIV mit Attributen gemäß pixelconcept Dokumentation */}
+          {/* Marketplace DIV mit korrekten Attributen für ITT-System */}
           <div
             id="am-marketplace"
             api-key="0536fa11-99df-43f8-bf26-42af233f5478"
@@ -366,6 +371,15 @@ export default function FahrzeugeClient() {
               boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
             }}
           >
+            {/* ITT Root Node für erweiterte Marketplace-Funktionen */}
+            <div 
+              id="itt-sl-ucl"
+              data-dealer-id="0536fa11-99df-43f8-bf26-42af233f5478"
+              style={{
+                width: '100%',
+                minHeight: '100%'
+              }}
+            >
             {/* Loading Indicator */}
             <div style={{
               display: 'flex',
@@ -402,14 +416,15 @@ export default function FahrzeugeClient() {
             </div>
             
             <style jsx>{`
-              @keyframes spin {
-                0% { transform: rotate(0deg); }
-                100% { transform: rotate(360deg); }
-              }
-            `}</style>
-          </div>
-        </div>
-      </section>
+               @keyframes spin {
+                 0% { transform: rotate(0deg); }
+                 100% { transform: rotate(360deg); }
+               }
+             `}</style>
+             </div>
+           </div>
+         </div>
+       </section>
 
       {/* Service Section */}
       <section className="bg-white py-16">
