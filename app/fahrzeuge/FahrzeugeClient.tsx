@@ -223,16 +223,34 @@ export default function FahrzeugeClient() {
              }
              
              #am-marketplace button {
-                background: #dc2626 !important;
-                border: 1px solid #dc2626 !important;
-                padding: 8px 16px !important;
-                font-size: 14px !important;
-                cursor: pointer !important;
-                color: #ffffff !important;
-                border-radius: 6px !important;
-                font-weight: 500 !important;
-                transition: all 0.2s ease !important;
-              }
+                 background: #dc2626 !important;
+                 border: 1px solid #dc2626 !important;
+                 padding: 8px 16px !important;
+                 font-size: 14px !important;
+                 cursor: pointer !important;
+                 color: #ffffff !important;
+                 border-radius: 6px !important;
+                 font-weight: 500 !important;
+                 transition: all 0.2s ease !important;
+                 line-height: 1.4 !important;
+                 text-align: center !important;
+                 display: inline-flex !important;
+                 align-items: center !important;
+                 justify-content: center !important;
+               }
+               
+               #am-marketplace button * {
+                 color: #ffffff !important;
+                 font-size: inherit !important;
+                 line-height: inherit !important;
+               }
+               
+               #am-marketplace button .fa,
+               #am-marketplace button .icon {
+                 margin-right: 6px !important;
+                 font-size: 14px !important;
+                 color: #ffffff !important;
+               }
               
               #am-marketplace button:hover {
                 background: #b91c1c !important;
@@ -343,13 +361,82 @@ export default function FahrzeugeClient() {
               }
               
               /* Fallback für fehlende Icons */
-              #am-marketplace .missing-icon {
-                width: 20px !important;
-                height: 20px !important;
-                background: #dc2626 !important;
-                border-radius: 50% !important;
-                display: inline-block !important;
-              }
+               #am-marketplace .missing-icon {
+                 width: 20px !important;
+                 height: 20px !important;
+                 background: #dc2626 !important;
+                 border-radius: 50% !important;
+                 display: inline-block !important;
+               }
+               
+               /* Modal und Dialog Styles */
+               #am-marketplace .modal,
+               #am-marketplace .dialog,
+               #am-marketplace .popup {
+                 background: #ffffff !important;
+                 color: #1f2937 !important;
+                 border-radius: 8px !important;
+                 box-shadow: 0 10px 25px rgba(0,0,0,0.15) !important;
+                 padding: 20px !important;
+                 z-index: 9999 !important;
+               }
+               
+               #am-marketplace .modal-header,
+               #am-marketplace .dialog-header {
+                 color: #1f2937 !important;
+                 font-weight: 600 !important;
+                 margin-bottom: 15px !important;
+               }
+               
+               #am-marketplace .modal-body,
+               #am-marketplace .dialog-body {
+                 color: #374151 !important;
+                 line-height: 1.5 !important;
+               }
+               
+               #am-marketplace .modal-footer,
+               #am-marketplace .dialog-footer {
+                 margin-top: 20px !important;
+                 text-align: right !important;
+               }
+               
+               /* Zubehör-Bilder korrigieren */
+               #am-marketplace .equipment-list,
+               #am-marketplace .accessory-list,
+               #am-marketplace .options-list {
+                 display: grid !important;
+                 grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)) !important;
+                 gap: 15px !important;
+                 margin: 20px 0 !important;
+               }
+               
+               #am-marketplace .equipment-item img,
+               #am-marketplace .accessory-item img,
+               #am-marketplace .option-item img {
+                 width: 100% !important;
+                 height: 120px !important;
+                 object-fit: cover !important;
+                 border-radius: 6px !important;
+                 margin-bottom: 8px !important;
+                 background: #f3f4f6 !important;
+               }
+               
+               #am-marketplace .equipment-title,
+               #am-marketplace .accessory-title,
+               #am-marketplace .option-title {
+                 font-weight: 600 !important;
+                 color: #1f2937 !important;
+                 font-size: 14px !important;
+                 margin-bottom: 4px !important;
+               }
+               
+               #am-marketplace .equipment-price,
+               #am-marketplace .accessory-price,
+               #am-marketplace .option-price {
+                 color: #dc2626 !important;
+                 font-weight: 700 !important;
+                 font-size: 16px !important;
+               }
           `;
           document.head.appendChild(styleEl);
 
