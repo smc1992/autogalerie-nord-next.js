@@ -73,10 +73,10 @@ export default function FahrzeugeClient() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Marketplace Script im Head gemäß pixelconcept Dokumentation */}
+      {/* Marketplace Script gemäß pixelconcept Dokumentation */}
       <Script
         src="https://cdn.dein.auto/pxc-amm/loader.nocache"
-        strategy="beforeInteractive"
+        strategy="afterInteractive"
         onLoad={handleScriptLoad}
         onError={handleScriptError}
       />
