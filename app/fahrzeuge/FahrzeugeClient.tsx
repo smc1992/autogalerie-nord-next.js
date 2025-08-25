@@ -485,37 +485,7 @@ export default function FahrzeugeClient() {
           script.src = 'https://cdn.dein.auto/pxc-amm/loader.nocache';
           script.async = true;
           
-          // Set attributes with correct URLs and improved detail view configuration
-          script.setAttribute('api-key', '0536fa11-99df-43f8-bf26-42af233f5478');
-          script.setAttribute('urls-imprint', 'https://autogalerie-nord.de/impressum');
-          script.setAttribute('urls-terms', 'https://autogalerie-nord.de/agb');
-          script.setAttribute('urls-privacy', 'https://autogalerie-nord.de/datenschutz');
-          script.setAttribute('urls-base', 'https://autogalerie-nord.de');
-          script.setAttribute('urls-detail', 'https://autogalerie-nord.de/fahrzeuge');
-          script.setAttribute('marketplace-url', 'https://autogalerie-nord.de/fahrzeuge');
-          script.setAttribute('detail-page-url', 'https://autogalerie-nord.de/fahrzeuge');
-          script.setAttribute('enable-detail-view', 'true');
-          script.setAttribute('enable-navigation', 'true');
-          script.setAttribute('base-url', 'https://autogalerie-nord.de');
-          script.setAttribute('detail-url-pattern', '/fahrzeuge/#!/vehicles/{id}');
-          script.setAttribute('list-url', '/fahrzeuge');
-          script.setAttribute('enable-routing', 'true');
-          script.setAttribute('routing-mode', 'hash');
-          script.setAttribute('container-id', 'am-marketplace');
-          script.setAttribute('enable-fullscreen', 'false');
-          script.setAttribute('disable-fullscreen', 'true');
-          script.setAttribute('fullscreen-policy', 'none');
-          script.setAttribute('permissions-policy', 'fullscreen=()');
-          script.setAttribute('detail-view-mode', 'embedded');
-          script.setAttribute('detail-view-width', '100%');
-          script.setAttribute('detail-view-height', 'auto');
-          script.setAttribute('responsive-design', 'true');
-          script.setAttribute('mobile-optimized', 'true');
-          script.setAttribute('container-responsive', 'true');
-          script.setAttribute('layout-mode', 'responsive');
-          script.setAttribute('detail-layout', 'full-width');
-          script.setAttribute('enable-responsive-images', 'true');
-          script.setAttribute('image-optimization', 'true');
+          // No attributes on script tag - they are now on the DIV element as per pixelconcept documentation
           
           // Promise with shorter timeout for faster fallback
           await new Promise<void>((resolve) => {
@@ -729,10 +699,14 @@ export default function FahrzeugeClient() {
       <section className="py-8 bg-gray-50">
         <div className="max-w-full mx-auto">
           <div className="bg-white min-h-[600px]">
-            {/* The correct DIV element with required ID (attributes moved to script tag as per documentation) */}
+            {/* The correct DIV element with required ID and attributes as per pixelconcept documentation */}
             <div 
               id="am-marketplace"
               className="w-full min-h-[600px] am-marketplace-loading"
+              api-key="0536fa11-99df-43f8-bf26-42af233f5478"
+              urls-imprint="https://autogalerie-nord.de/impressum"
+              urls-terms="https://autogalerie-nord.de/agb"
+              urls-privacy="https://autogalerie-nord.de/datenschutz"
               style={{
                 maxWidth: 'none',
                 width: '100%',
