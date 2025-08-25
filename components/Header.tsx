@@ -67,29 +67,29 @@ export default function Header() {
             </div>
 
             {/* Mobile Contact Links */}
-            <div className="flex md:hidden items-center space-x-4">
+            <div className="flex md:hidden items-center space-x-2">
               <a 
                 href="https://wa.me/4941717889111" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="w-8 h-8 flex items-center justify-center hover:text-red-200 transition-all duration-300 cursor-pointer transform hover:scale-125 hover:rotate-12"
+                className="w-12 h-12 flex items-center justify-center hover:text-red-200 transition-all duration-300 cursor-pointer transform hover:scale-110 hover:rotate-12 rounded-lg"
                 aria-label="WhatsApp-Chat mit Autogalerie Nord starten"
               >
-                <i className="ri-whatsapp-fill text-lg"></i>
+                <i className="ri-whatsapp-fill text-xl"></i>
               </a>
               <a 
                 href="tel:+4941745969770" 
-                className="w-8 h-8 flex items-center justify-center hover:text-red-200 transition-all duration-300 cursor-pointer transform hover:scale-125 hover:rotate-12"
+                className="w-12 h-12 flex items-center justify-center hover:text-red-200 transition-all duration-300 cursor-pointer transform hover:scale-110 hover:rotate-12 rounded-lg"
                 aria-label="Autogalerie Nord anrufen"
               >
-                <i className="ri-phone-fill text-lg"></i>
+                <i className="ri-phone-fill text-xl"></i>
               </a>
               <a 
                 href="mailto:info@autogalerie-nord.de" 
-                className="w-8 h-8 flex items-center justify-center hover:text-red-200 transition-all duration-300 cursor-pointer transform hover:scale-125 hover:rotate-12"
+                className="w-12 h-12 flex items-center justify-center hover:text-red-200 transition-all duration-300 cursor-pointer transform hover:scale-110 hover:rotate-12 rounded-lg"
                 aria-label="E-Mail an Autogalerie Nord senden"
               >
-                <i className="ri-mail-fill text-lg"></i>
+                <i className="ri-mail-fill text-xl"></i>
               </a>
             </div>
           </div>
@@ -101,7 +101,11 @@ export default function Header() {
         <div className="pl-2 pr-4 md:px-6">
           <nav className="flex items-center justify-between h-16">
             {/* Logo */}
-            <Link href="/" className="flex items-center cursor-pointer group -ml-4 md:ml-0">
+            <Link 
+              href="/" 
+              className="flex items-center cursor-pointer group -ml-4 md:ml-0"
+              aria-label="Zur Startseite von Autogalerie Nord"
+            >
               <img 
                 src="/images/logo.png" 
                 alt="Autogalerie Nord Logo" 
