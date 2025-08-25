@@ -115,7 +115,7 @@ export default function FahrzeugeClient() {
             </p>
           </div>
           
-          {/* Marketplace Script direkt an Position gemäß pixelconcept Dokumentation Methode 1 */}
+          {/* Marketplace Script als HTML gemäß pixelconcept Dokumentation */}
           <div style={{
             width: '100%',
             minHeight: '600px',
@@ -123,16 +123,13 @@ export default function FahrzeugeClient() {
             borderRadius: '8px',
             boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
           }}>
-            <Script
+            <script 
               src="https://cdn.dein.auto/pxc-amm/loader.nocache"
               api-key="0536fa11-99df-43f8-bf26-42af233f5478"
               urls-imprint="https://autogalerie-nord.de/impressum"
               urls-terms="https://autogalerie-nord.de/agb"
               urls-privacy="https://autogalerie-nord.de/datenschutz"
-              strategy="afterInteractive"
-              onLoad={handleScriptLoad}
-              onError={handleScriptError}
-            />
+            ></script>
           </div>
         </div>
       </section>
