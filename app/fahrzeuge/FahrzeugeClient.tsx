@@ -4,1151 +4,357 @@ import { useEffect } from 'react';
 
 export default function FahrzeugeClient() {
   useEffect(() => {
-    // Clean up any existing scripts first
-    const cleanup = () => {
-      // Remove existing scripts
-      const existingScripts = document.querySelectorAll('script[src*="loader.nocache"], script[src*="jquery"], script[src*="am-marketplace"]');
+    // Einfache Marketplace-Initialisierung gemäß pixelconcept Dokumentation
+    const initializeMarketplace = () => {
+      // Cleanup existing scripts
+      const existingScripts = document.querySelectorAll('script[src*="loader.nocache"]');
       existingScripts.forEach(script => script.remove());
-
-      // Clear marketplace globals
-      if (typeof window !== 'undefined' && window.jQuery) {
-        try {
-          window.jQuery('#am-marketplace').empty();
-          // Clean up any marketplace-specific event handlers
-          window.jQuery(window).off('.marketplace');
-          window.jQuery(document).off('.marketplace');
-        } catch (e) {
-          console.log('jQuery cleanup skipped');
-        }
-      }
-
-      // Remove navigation elements
-      const navElements = document.querySelectorAll('#am-marketplace-nav, .am-marketplace-nav');
-      navElements.forEach(el => el.remove());
-    };
-
-    // Show fallback content if marketplace fails
-
-    // Initialize marketplace with proper error handling
-    const initializeMarketplace = async () => {
-      try {
-        cleanup();
-
-        // Wait for DOM to be ready
-        if (document.readyState !== 'complete') {
-          await new Promise<void>(resolve => {
-            const handleLoad = () => {
-              window.removeEventListener('load', handleLoad);
-              resolve();
-            };
-            window.addEventListener('load', handleLoad);
-          });
-        }
-
-        // Load jQuery first with proper version
-        if (typeof window !== 'undefined' && !window.jQuery) {
-          await new Promise<void>((resolve, reject) => {
-            const script = document.createElement('script');
-            script.src = 'https://code.jquery.com/jquery-3.6.0.min.js';
-            script.crossOrigin = 'anonymous';
-            script.integrity = 'sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=';
-            script.onload = () => {
-              // Ensure global jQuery is available
-              window.$ = window.jQuery;
-              console.log('jQuery loaded successfully');
-              resolve();
-            };
-            script.onerror = (error) => {
-              console.error('Failed to load jQuery:', error);
-              reject(error);
-            };
-            // Append to head as recommended in documentation for better performance
-          document.head.appendChild(script);
-          console.log('Marketplace script added to head with attributes:', {
-            'api-key': script.getAttribute('api-key'),
-            'urls-imprint': script.getAttribute('urls-imprint'),
-            'urls-terms': script.getAttribute('urls-terms'),
-            'urls-privacy': script.getAttribute('urls-privacy')
-          });
-          });
-        }
-
-        // Create required navigation elements BEFORE loading marketplace script
-        const createRequiredElements = () => {
-          // Remove any existing elements first
-          const existingNavs = document.querySelectorAll('#am-marketplace-nav, .am-marketplace-nav');
-          existingNavs.forEach(el => el.remove());
-
-          // Create the main navigation element that the marketplace expects
-          const navDiv = document.createElement('div');
-          navDiv.id = 'am-marketplace-nav';
-          navDiv.className = 'am-marketplace-nav';
-          navDiv.style.cssText = `
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 0;
-            z-index: -1;
-            opacity: 0;
-            pointer-events: none;
-          `;
-          document.body.appendChild(navDiv);
-
-          // Add additional required elements for marketplace functionality
-          const styleEl = document.createElement('style');
-          styleEl.textContent = `
-            #am-marketplace-nav { 
-              display: block !important; 
-              visibility: hidden !important;
-            }
-            .am-marketplace-loading {
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              min-height: 400px;
-            }
-            
-            /* CSS Isolation für Marketplace - verhindert Tailwind-Konflikte */
-            #am-marketplace {
-              width: 100% !important;
-              max-width: none !important;
-              overflow: visible !important;
-              position: relative !important;
-              font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
-              line-height: 1.5 !important;
-              color: #1f2937 !important;
-              background: #ffffff !important;
-              font-size: 14px !important;
-              min-height: 600px !important;
-              display: block !important;
-              visibility: visible !important;
-              opacity: 1 !important;
-            }
-            
-            /* Verhindere schwarze Flächen */
-            #am-marketplace > * {
-              background: transparent !important;
-              color: inherit !important;
-            }
-            
-            #am-marketplace .vehicle-detail-container,
-            #am-marketplace .amm-detail-container {
-              background: #ffffff !important;
-              min-height: 400px !important;
-              padding: 20px !important;
-              display: block !important;
-              visibility: visible !important;
-            }
-            
-            /* Spezielle Styles für Fahrzeugdetailansicht */
-            #am-marketplace .vehicle-detail-view,
-            #am-marketplace .amm-vehicle-detail-view {
-              background: #ffffff !important;
-              padding: 30px !important;
-              border-radius: 8px !important;
-              box-shadow: 0 2px 10px rgba(0,0,0,0.1) !important;
-              margin: 20px auto !important;
-              max-width: 1200px !important;
-            }
-            
-            #am-marketplace .vehicle-images,
-            #am-marketplace .amm-vehicle-images {
-              margin-bottom: 30px !important;
-            }
-            
-            #am-marketplace .vehicle-main-image,
-            #am-marketplace .amm-main-image {
-              width: 100% !important;
-              max-height: 400px !important;
-              object-fit: cover !important;
-              border-radius: 8px !important;
-            }
-            
-            /* Reset alle Tailwind-Klassen innerhalb des Marketplace */
-            #am-marketplace * {
-              box-sizing: border-box !important;
-            }
-            
-            /* Marketplace-spezifische Styles */
-            #am-marketplace .amm-detail-view,
-            #am-marketplace .amm-vehicle-detail,
-            #am-marketplace .vehicle-detail {
-              width: 100% !important;
-              max-width: none !important;
-              margin: 0 !important;
-              padding: 20px !important;
-              box-sizing: border-box !important;
-              background: #fff !important;
-            }
-            
-            #am-marketplace .amm-container,
-            #am-marketplace .marketplace-container {
-              width: 100% !important;
-              max-width: none !important;
-              margin: 0 !important;
-              padding: 0 !important;
-            }
-            
-            #am-marketplace .amm-vehicle-list,
-            #am-marketplace .vehicle-list {
-              width: 100% !important;
-              max-width: 1200px !important;
-              margin: 0 auto !important;
-              padding: 20px !important;
-            }
-            
-            /* Überschreibe Tailwind-Reset für Marketplace-Elemente */
-             #am-marketplace h1, #am-marketplace h2, #am-marketplace h3, 
-             #am-marketplace h4, #am-marketplace h5, #am-marketplace h6 {
-               font-size: revert !important;
-               font-weight: revert !important;
-               margin: revert !important;
-               line-height: revert !important;
-               color: #333 !important;
-             }
-             
-             #am-marketplace p {
-               margin: revert !important;
-               line-height: revert !important;
-               color: #333 !important;
-             }
-             
-             #am-marketplace span {
-               color: inherit !important;
-             }
-             
-             #am-marketplace div {
-               color: inherit !important;
-             }
-             
-             #am-marketplace button {
-                 background: #dc2626 !important;
-                 border: 1px solid #dc2626 !important;
-                 padding: 8px 16px !important;
-                 font-size: 14px !important;
-                 cursor: pointer !important;
-                 color: #ffffff !important;
-                 border-radius: 6px !important;
-                 font-weight: 500 !important;
-                 transition: all 0.2s ease !important;
-                 line-height: 1.4 !important;
-                 text-align: center !important;
-                 display: inline-flex !important;
-                 align-items: center !important;
-                 justify-content: center !important;
-               }
-               
-               #am-marketplace button * {
-                 color: #ffffff !important;
-                 font-size: inherit !important;
-                 line-height: inherit !important;
-               }
-               
-               #am-marketplace button .fa,
-               #am-marketplace button .icon {
-                 margin-right: 6px !important;
-                 font-size: 14px !important;
-                 color: #ffffff !important;
-               }
-              
-              #am-marketplace button:hover {
-                background: #b91c1c !important;
-                border-color: #b91c1c !important;
-              }
-              
-              #am-marketplace .btn-primary,
-              #am-marketplace .button-primary {
-                background: #dc2626 !important;
-                border-color: #dc2626 !important;
-                color: #ffffff !important;
-              }
-              
-              #am-marketplace .btn-secondary,
-              #am-marketplace .button-secondary {
-                background: #6b7280 !important;
-                border-color: #6b7280 !important;
-                color: #ffffff !important;
-              }
-             
-             #am-marketplace a {
-               color: #0066cc !important;
-               text-decoration: revert !important;
-             }
-             
-             #am-marketplace a:hover {
-               color: #004499 !important;
-             }
-             
-             #am-marketplace img {
-               max-width: 100% !important;
-               height: auto !important;
-             }
-             
-             /* Spezifische Marketplace-Klassen */
-             #am-marketplace .price,
-             #am-marketplace .vehicle-price,
-             #am-marketplace .amm-price {
-               color: #d32f2f !important;
-               font-weight: bold !important;
-             }
-             
-             #am-marketplace .vehicle-title,
-             #am-marketplace .amm-title {
-               color: #1976d2 !important;
-               font-weight: bold !important;
-             }
-             
-             #am-marketplace .vehicle-details,
-             #am-marketplace .amm-details {
-               color: #666 !important;
-             }
-             
-             #am-marketplace .vehicle-description,
-             #am-marketplace .amm-description {
-               color: #333 !important;
-               line-height: 1.5 !important;
-             }
-             
-             /* Verhindere Tailwind-Interferenz */
-             #am-marketplace .flex { display: flex !important; }
-             #am-marketplace .block { display: block !important; }
-             #am-marketplace .inline { display: inline !important; }
-             #am-marketplace .hidden { display: none !important; }
-             
-             /* Reset Tailwind text utilities */
-              #am-marketplace .text-white { color: #1f2937 !important; }
-              #am-marketplace .text-gray-500 { color: #6b7280 !important; }
-              #am-marketplace .text-gray-600 { color: #4b5563 !important; }
-              #am-marketplace .text-gray-700 { color: #374151 !important; }
-              #am-marketplace .text-gray-800 { color: #1f2937 !important; }
-              #am-marketplace .text-gray-900 { color: #111827 !important; }
-              
-              /* Zubehör und Bilder */
-              #am-marketplace .accessory-item,
-              #am-marketplace .equipment-item,
-              #am-marketplace .option-item {
-                display: flex !important;
-                align-items: center !important;
-                padding: 8px !important;
-                margin: 4px 0 !important;
-                background: #f9fafb !important;
-                border-radius: 6px !important;
-                border: 1px solid #e5e7eb !important;
-              }
-              
-              #am-marketplace .accessory-image,
-              #am-marketplace .equipment-image,
-              #am-marketplace .option-image {
-                width: 40px !important;
-                height: 40px !important;
-                margin-right: 12px !important;
-                border-radius: 4px !important;
-                object-fit: cover !important;
-                background: #e5e7eb !important;
-              }
-              
-              /* Fragezeichen und unbekannte Zeichen beheben */
-              #am-marketplace *:before,
-              #am-marketplace *:after {
-                content: none !important;
-              }
-              
-              #am-marketplace .icon:before,
-              #am-marketplace .fa:before {
-                font-family: 'Font Awesome 5 Free' !important;
-                font-weight: 900 !important;
-              }
-              
-              /* Fallback für fehlende Icons */
-               #am-marketplace .missing-icon {
-                 width: 20px !important;
-                 height: 20px !important;
-                 background: #dc2626 !important;
-                 border-radius: 50% !important;
-                 display: inline-block !important;
-               }
-               
-               /* Modal und Dialog Styles */
-               #am-marketplace .modal,
-               #am-marketplace .dialog,
-               #am-marketplace .popup {
-                 background: #ffffff !important;
-                 color: #1f2937 !important;
-                 border-radius: 8px !important;
-                 box-shadow: 0 10px 25px rgba(0,0,0,0.15) !important;
-                 padding: 20px !important;
-                 z-index: 9999 !important;
-               }
-               
-               #am-marketplace .modal-header,
-               #am-marketplace .dialog-header {
-                 color: #1f2937 !important;
-                 font-weight: 600 !important;
-                 margin-bottom: 15px !important;
-               }
-               
-               #am-marketplace .modal-body,
-               #am-marketplace .dialog-body {
-                 color: #374151 !important;
-                 line-height: 1.5 !important;
-               }
-               
-               #am-marketplace .modal-footer,
-               #am-marketplace .dialog-footer {
-                 margin-top: 20px !important;
-                 text-align: right !important;
-               }
-               
-               /* Zubehör-Bilder korrigieren */
-               #am-marketplace .equipment-list,
-               #am-marketplace .accessory-list,
-               #am-marketplace .options-list {
-                 display: grid !important;
-                 grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)) !important;
-                 gap: 15px !important;
-                 margin: 20px 0 !important;
-               }
-               
-               #am-marketplace .equipment-item img,
-               #am-marketplace .accessory-item img,
-               #am-marketplace .option-item img {
-                 width: 100% !important;
-                 height: 120px !important;
-                 object-fit: cover !important;
-                 border-radius: 6px !important;
-                 margin-bottom: 8px !important;
-                 background: #f3f4f6 !important;
-               }
-               
-               #am-marketplace .equipment-title,
-               #am-marketplace .accessory-title,
-               #am-marketplace .option-title {
-                 font-weight: 600 !important;
-                 color: #1f2937 !important;
-                 font-size: 14px !important;
-                 margin-bottom: 4px !important;
-               }
-               
-               #am-marketplace .equipment-price,
-                #am-marketplace .accessory-price,
-                #am-marketplace .option-price {
-                  color: #dc2626 !important;
-                  font-weight: 700 !important;
-                  font-size: 16px !important;
-                }
-                
-                /* Navigation Pfeile korrigieren */
-                #am-marketplace .prevnextbuttons .btn {
-                  background: #dc2626 !important;
-                  border: 1px solid #dc2626 !important;
-                  color: #ffffff !important;
-                  padding: 10px 15px !important;
-                  border-radius: 6px !important;
-                  margin: 0 5px !important;
-                  display: inline-flex !important;
-                  align-items: center !important;
-                  justify-content: center !important;
-                }
-                
-                #am-marketplace .prevnextbuttons .btn span {
-                  color: #ffffff !important;
-                  font-size: 16px !important;
-                  font-weight: bold !important;
-                  line-height: 1 !important;
-                  display: inline-block !important;
-                }
-                
-                #am-marketplace .prevnextbuttons .btn:hover {
-                  background: #b91c1c !important;
-                  border-color: #b91c1c !important;
-                }
-                
-                /* Spezifische Pfeil-Symbole */
-                #am-marketplace .prevnextbuttons .btn.prev span:before {
-                  content: '‹' !important;
-                  font-size: 20px !important;
-                  color: #ffffff !important;
-                }
-                
-                #am-marketplace .prevnextbuttons .btn.next span:before {
-                  content: '›' !important;
-                  font-size: 20px !important;
-                  color: #ffffff !important;
-                }
-                
-                /* Fallback für Pfeile */
-                #am-marketplace .prevnextbuttons .btn span:empty:before {
-                  content: '→' !important;
-                  font-size: 16px !important;
-                  color: #ffffff !important;
-                }
-                
-                #am-marketplace .prevnextbuttons .btn.prev span:empty:before {
-                  content: '←' !important;
-                }
-          `;
-          document.head.appendChild(styleEl);
-
-          console.log('Required navigation elements created');
-        };
-
-        createRequiredElements();
-
-        // Wait for jQuery to be fully initialized
-        await new Promise<void>(resolve => setTimeout(resolve, 500));
-
-        // Verify jQuery and required elements are available
-        if (typeof window === 'undefined' || !window.jQuery) {
-          throw new Error('jQuery not available');
-        }
-
-        const navElement = document.getElementById('am-marketplace-nav');
-        if (!navElement) {
-          throw new Error('Navigation element not found');
-        }
-
-        // Add comprehensive jQuery extensions that the marketplace expects
-        if (typeof window !== 'undefined' && window.jQuery) {
-          // Ensure offset method exists and works properly
-          if (!window.jQuery.fn.offset) {
-            window.jQuery.fn.offset = function() {
-              if (!this[0]) return { top: 0, left: 0 };
-              const rect = this[0].getBoundingClientRect();
-              return {
-                top: rect.top + window.pageYOffset,
-                left: rect.left + window.pageXOffset
-              };
-            };
-          }
-
-          // Add unload method if missing
-          if (!window.jQuery.fn.unload) {
-            window.jQuery.fn.unload = function(this: JQuery, handler?: Function) {
-              if (handler) {
-                this.on('beforeunload', handler);
-              }
-              return this;
-            };
-          }
-
-          // Add additional jQuery methods that might be expected
-          if (!window.jQuery.fn.scrollTop) {
-            window.jQuery.fn.scrollTop = function(this: JQuery, value?: number) {
-              if (value !== undefined) {
-                if (this[0]) {
-                  (this[0] as HTMLElement).scrollTop = value;
-                }
-                return this;
-              }
-              return this[0] ? (this[0] as HTMLElement).scrollTop : 0;
-            };
-          }
-
-          // Ensure width and height methods exist
-          if (!window.jQuery.fn.width) {
-            window.jQuery.fn.width = function(this: JQuery) {
-              return this[0] ? (this[0] as HTMLElement).offsetWidth : 0;
-            };
-          }
-
-          if (!window.jQuery.fn.height) {
-            window.jQuery.fn.height = function(this: JQuery) {
-              return this[0] ? (this[0] as HTMLElement).offsetHeight : 0;
-            };
-          }
-
-          // Add show/hide methods
-          if (!window.jQuery.fn.show) {
-            window.jQuery.fn.show = function(this: JQuery) {
-              this.each(function(this: Element) {
-                (this as HTMLElement).style.display = '';
-              });
-              return this;
-            };
-          }
-
-          if (!window.jQuery.fn.hide) {
-            window.jQuery.fn.hide = function(this: JQuery) {
-              this.each(function(this: Element) {
-                (this as HTMLElement).style.display = 'none';
-              });
-              return this;
-            };
-          }
-
-          // Add text method
-          if (!window.jQuery.fn.text) {
-            window.jQuery.fn.text = function(this: JQuery, value?: string) {
-              if (value !== undefined) {
-                this.each(function(this: Element) {
-                  this.textContent = value;
-                });
-                return this;
-              }
-              return this[0] ? this[0].textContent : '';
-            };
-          }
-
-          // Add html method
-          if (!window.jQuery.fn.html) {
-            window.jQuery.fn.html = function(this: JQuery, value?: string) {
-              if (value !== undefined) {
-                this.each(function(this: Element) {
-                  this.innerHTML = value;
-                });
-                return this;
-              }
-              return this[0] ? this[0].innerHTML : '';
-            };
-          }
-
-          // Add addClass method
-          if (!window.jQuery.fn.addClass) {
-            window.jQuery.fn.addClass = function(this: JQuery, className: string) {
-              this.each(function(this: Element) {
-                this.classList.add(className);
-              });
-              return this;
-            };
-          }
-
-          // Add removeClass method
-          if (!window.jQuery.fn.removeClass) {
-            window.jQuery.fn.removeClass = function(this: JQuery, className: string) {
-              this.each(function(this: Element) {
-                if (this.classList) {
-                  this.classList.remove(className);
-                } else {
-                  this.className = '';
-                }
-              });
-              return this;
-            };
-          }
-
-          // Add hasClass method
-          if (!window.jQuery.fn.hasClass) {
-            window.jQuery.fn.hasClass = function(this: JQuery, className: string) {
-              if (!this[0]) return false;
-              return this[0].classList.contains(className);
-            };
-          }
-
-          // Add attr method
-          if (!window.jQuery.fn.attr) {
-            window.jQuery.fn.attr = function(this: JQuery, name: string, value?: string) {
-              if (value !== undefined) {
-                this.each(function(this: Element) {
-                  this.setAttribute(name, value);
-                });
-                return this;
-              }
-              return this[0] ? this[0].getAttribute(name) : null;
-            };
-          }
-
-          // Add css method
-          if (!window.jQuery.fn.css) {
-            window.jQuery.fn.css = function(this: JQuery, property: string | object, value?: string) {
-              if (typeof property === 'object') {
-                this.each(function(this: Element) {
-                  Object.assign((this as HTMLElement).style, property);
-                });
-                return this;
-              }
-              if (value !== undefined && typeof property === 'string') {
-                this.each(function(this: Element) {
-                  ((this as HTMLElement).style)[property as any] = value;
-                });
-                return this;
-              }
-              return this[0] && typeof property === 'string' ? getComputedStyle(this[0])[property as any] : null;
-            };
-          }
-
-          // Add val method
-          if (!window.jQuery.fn.val) {
-            window.jQuery.fn.val = function(this: JQuery, value?: string) {
-              if (value !== undefined) {
-                this.each(function(this: Element) {
-                  if ('value' in this) {
-                    (this as HTMLInputElement).value = value;
-                  }
-                });
-                return this;
-              }
-              return this[0] ? (this[0] as HTMLInputElement).value : '';
-            };
-          }
-
-          // Add find method
-          if (!window.jQuery.fn.find) {
-            window.jQuery.fn.find = function(this: JQuery, selector: string) {
-              const elements: Element[] = [];
-              this.each(function(this: Element) {
-                const found = this.querySelectorAll(selector);
-                elements.push(...Array.from(found).map(el => el as Element));
-              });
-              // Create a proper jQuery object from individual elements
-              if (elements.length > 0 && window.jQuery) {
-                const jq = window.jQuery(elements[0]);
-                if (elements.length > 1) {
-                  return jq.add(elements.slice(1));
-                }
-                return jq;
-              }
-              return window.jQuery ? window.jQuery(document.createDocumentFragment()) : this;
-            };
-          }
-
-          // Add each method
-          if (!window.jQuery.fn.each) {
-            window.jQuery.fn.each = function(this: JQuery, callback: (index: number, element: Element) => void) {
-              for (let i = 0; i < this.length; i++) {
-                callback.call(this[i], i, this[i]);
-              }
-              return this;
-            };
-          }
-
-          // Add append method
-          if (!window.jQuery.fn.append) {
-            window.jQuery.fn.append = function(this: JQuery, content: string | Element) {
-              this.each(function(this: Element) {
-                if (typeof content === 'string') {
-                  this.insertAdjacentHTML('beforeend', content);
-                } else {
-                  this.appendChild(content);
-                }
-              });
-              return this;
-            };
-          }
-
-          // Add remove method
-          if (!window.jQuery.fn.remove) {
-            window.jQuery.fn.remove = function(this: JQuery) {
-              this.each(function(this: Element) {
-                if (this.parentNode) {
-                  this.parentNode.removeChild(this);
-                }
-              });
-              return this;
-            };
-          }
-
-          // Add empty method
-          if (!window.jQuery.fn.empty) {
-            window.jQuery.fn.empty = function(this: JQuery) {
-              this.each(function(this: Element) {
-                this.innerHTML = '';
-              });
-              return this;
-            };
-          }
-
-          // Override the problematic offset method to handle the navigation element
-          const originalOffset = window.jQuery.fn.offset;
-          window.jQuery.fn.offset = function() {
-            // Special handling for the marketplace navigation element
-            if (this.length > 0 && (this[0].id === 'am-marketplace-nav' || this[0].className.includes('am-marketplace-nav'))) {
-              return { top: 0, left: 0 };
-            }
-            
-            if (!this[0]) return { top: 0, left: 0 };
-            const rect = this[0].getBoundingClientRect();
-            return {
-              top: rect.top + window.pageYOffset,
-              left: rect.left + window.pageXOffset
-            };
-          };
-        }
-
-        // Override global error handlers to catch marketplace errors
-        const originalError = window.onerror;
-        window.onerror = function(event, source, lineno, colno, error) {
-          // Check if error is from marketplace or fullscreen violations
-          if (source && (source.includes('marketplace') || source.includes('fullscreen')) || 
-              (error && error.stack && (error.stack.includes('marketplace') || error.stack.includes('fullscreen'))) ||
-              (typeof event === 'string' && (event.includes('marketplace') || event.includes('fullscreen') || event.includes('removeChild')))) {
-            console.log('Marketplace/Fullscreen error caught:', { event, source, error });
-            return true; // Prevent default error handling
-          }
-          return originalError ? originalError.call(this, event, source, lineno, colno, error) : false;
-        };
+      
+      console.log('🚀 Initializing marketplace according to pixelconcept documentation...');
+      
+      // CSS für unser Design-Integration
+      const addCustomStyles = () => {
+        // Remove existing styles
+        const existingStyles = document.querySelectorAll('style[data-marketplace="true"]');
+        existingStyles.forEach(style => style.remove());
         
-        // Spezifisches Error-Handling für React DOM Fehler
-        const originalConsoleError = console.error;
-        console.error = function(...args) {
-          const message = args.join(' ');
-          if (message.includes('removeChild') || message.includes('NotFoundError')) {
-            console.warn('React DOM error suppressed:', message);
-            return;
+        const styleEl = document.createElement('style');
+        styleEl.setAttribute('data-marketplace', 'true');
+        styleEl.textContent = `
+          /* Marketplace Design Integration */
+          #am-marketplace {
+            width: 100% !important;
+            max-width: none !important;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+            line-height: 1.5 !important;
+            color: #1f2937 !important;
+            background: #ffffff !important;
+            font-size: 14px !important;
+            min-height: 600px !important;
           }
-          originalConsoleError.apply(console, args);
-        };
-        
-        // Add permissions policy to prevent fullscreen violations
-        const metaPermissions = document.createElement('meta');
-        metaPermissions.httpEquiv = 'Permissions-Policy';
-        metaPermissions.content = 'fullscreen=()';
-        document.head.appendChild(metaPermissions);
-        
-        // Override fullscreen API to prevent violations
-         if (typeof (document as any).requestFullscreen === 'function') {
-           const originalRequestFullscreen = (document as any).requestFullscreen;
-           (document as any).requestFullscreen = function() {
-             console.warn('Fullscreen request blocked for marketplace compatibility');
-             return Promise.reject(new Error('Fullscreen not allowed'));
-           };
-         }
-         
-         // Also override element fullscreen requests
-          if ('requestFullscreen' in Element.prototype) {
-            const originalElementRequestFullscreen = Element.prototype.requestFullscreen;
-            Element.prototype.requestFullscreen = function() {
-              console.warn('Element fullscreen request blocked for marketplace compatibility');
-              return Promise.reject(new Error('Fullscreen not allowed'));
-            };
-          }
-
-        // Add unhandled promise rejection handler
-        const originalUnhandledRejection = window.onunhandledrejection;
-        window.onunhandledrejection = function(event) {
-          if (event.reason && typeof event.reason === 'object' && Object.keys(event.reason).length === 0) {
-            console.warn('Empty rejection from marketplace script handled');
-            event.preventDefault();
-            return;
-          }
-          if (originalUnhandledRejection && typeof originalUnhandledRejection === 'function') {
-            return originalUnhandledRejection.call(window, event);
-          }
-          return undefined;
-        };
-
-        // Add beforeunload handler
-        window.jQuery(window).on('beforeunload.marketplace', function() {
-          console.log('Page unloading, cleaning up marketplace');
-          return undefined;
-        });
-
-        // Simplified marketplace loading with multiple fallback strategies
-        console.log('🚀 Starting marketplace initialization...');
-        
-        let scriptLoaded = false;
-        
-        // Strategy 1: Direct script injection
-        try {
-          console.log('📦 Loading marketplace script...');
           
-          const script = document.createElement('script');
-          script.src = 'https://cdn.dein.auto/pxc-amm/loader.nocache';
-          script.async = true;
-          
-          // No attributes on script tag - they are now on the DIV element as per pixelconcept documentation
-          
-          // Promise with shorter timeout for faster fallback
-          await new Promise<void>((resolve) => {
-            const timeout = setTimeout(() => {
-              console.warn('⏰ Script loading timeout, proceeding with fallback');
-              resolve();
-            }, 10000); // Reduced to 10 seconds
-            
-            script.onload = () => {
-              clearTimeout(timeout);
-              console.log('✅ Marketplace script loaded!');
-              scriptLoaded = true;
-              
-              // Quick initialization check
-              setTimeout(() => {
-                const container = document.getElementById('am-marketplace');
-                if (container && container.children.length <= 1) {
-                  console.log('🔄 Container still empty, triggering manual check...');
-                  // Container is still showing loading, marketplace might need more time
-                }
-                resolve();
-              }, 2000);
-            };
-            
-            script.onerror = () => {
-              clearTimeout(timeout);
-              console.error('❌ Script loading failed');
-              resolve();
-            };
-            
-            document.head.appendChild(script);
-            console.log('📤 Script injected into head');
-          });
-          
-        } catch (error) {
-          console.error('💥 Script injection failed:', error);
-        }
-        
-        // Strategy 2: Alternative loading if first attempt failed
-        if (!scriptLoaded) {
-          console.log('🔄 Trying alternative loading method...');
-          
-          try {
-            // Create inline script that loads the marketplace
-            const inlineScript = document.createElement('script');
-            inlineScript.innerHTML = `
-              console.log('🔧 Alternative loader starting...');
-              
-              // Set up container first
-              const container = document.getElementById('am-marketplace');
-              if (container) {
-                container.innerHTML = \`
-                  <div style="text-align: center; padding: 60px 20px; font-family: system-ui, sans-serif;">
-                    <div style="width: 60px; height: 60px; border: 4px solid #dc2626; border-top: 4px solid transparent; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 20px;"></div>
-                    <h3 style="color: #374151; margin: 0 0 10px; font-size: 20px;">Fahrzeugmarktplatz wird geladen...</h3>
-                    <p style="color: #6b7280; margin: 0; font-size: 16px;">Einen Moment bitte...</p>
-                  </div>
-                  <style>
-                    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-                  </style>
-                \`;
-              }
-              
-              // Load script with different approach
-              const altScript = document.createElement('script');
-              altScript.src = 'https://cdn.dein.auto/pxc-amm/loader.nocache';
-              altScript.setAttribute('api-key', '0536fa11-99df-43f8-bf26-42af233f5478');
-              altScript.setAttribute('urls-imprint', '/impressum');
-              altScript.setAttribute('urls-terms', '/agb');
-              altScript.setAttribute('urls-privacy', '/datenschutz');
-              
-              altScript.onload = function() {
-                console.log('✅ Alternative script loaded successfully!');
-              };
-              
-              altScript.onerror = function() {
-                console.error('❌ Alternative script failed, showing fallback');
-                if (container) {
-                  container.innerHTML = \`
-                    <div style="text-align: center; padding: 60px 20px; font-family: system-ui, sans-serif;">
-                      <div style="color: #dc2626; margin-bottom: 20px; font-size: 48px;">⚠️</div>
-                      <h3 style="color: #374151; margin: 0 0 10px; font-size: 20px;">Fahrzeugmarktplatz vorübergehend nicht verfügbar</h3>
-                      <p style="color: #6b7280; margin: 0 0 20px; font-size: 16px;">Bitte versuchen Sie es später erneut.</p>
-                      <button onclick="window.location.reload()" style="background: #dc2626; color: white; border: none; padding: 12px 24px; border-radius: 8px; font-size: 16px; cursor: pointer;">Seite neu laden</button>
-                    </div>
-                  \`;
-                }
-              };
-              
-              document.head.appendChild(altScript);
-              console.log('📤 Alternative script injected');
-            `;
-            
-            document.head.appendChild(inlineScript);
-            console.log('🔧 Alternative loader injected');
-            
-          } catch (altError) {
-            console.error('💥 Alternative loading failed:', altError);
-            showFallback();
+          /* Button Styling */
+          #am-marketplace button {
+            background: #dc2626 !important;
+            border: 1px solid #dc2626 !important;
+            color: #ffffff !important;
+            padding: 8px 16px !important;
+            border-radius: 6px !important;
+            font-weight: 500 !important;
+            cursor: pointer !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
           }
-        }
-
-        console.log('Marketplace initialization completed');
-
-      } catch (error) {
-        console.error('Failed to initialize marketplace:', error);
+          
+          #am-marketplace button:hover {
+            background: #b91c1c !important;
+            border-color: #b91c1c !important;
+          }
+          
+          #am-marketplace button * {
+            color: #ffffff !important;
+          }
+          
+          /* Links */
+          #am-marketplace a {
+            color: #0066cc !important;
+            text-decoration: underline !important;
+          }
+          
+          #am-marketplace a:hover {
+            color: #004499 !important;
+          }
+          
+          /* Preise */
+          #am-marketplace .price,
+          #am-marketplace .vehicle-price,
+          #am-marketplace .amm-price {
+            color: #dc2626 !important;
+            font-weight: bold !important;
+          }
+          
+          /* Titel */
+          #am-marketplace .vehicle-title,
+          #am-marketplace .amm-title {
+            color: #1976d2 !important;
+            font-weight: bold !important;
+          }
+          
+          /* Navigation Pfeile */
+          #am-marketplace .prevnextbuttons .btn {
+            background: #dc2626 !important;
+            border: 1px solid #dc2626 !important;
+            color: #ffffff !important;
+            padding: 10px 15px !important;
+            border-radius: 6px !important;
+            margin: 0 5px !important;
+          }
+          
+          #am-marketplace .prevnextbuttons .btn span {
+            color: #ffffff !important;
+            font-size: 16px !important;
+            font-weight: bold !important;
+          }
+          
+          #am-marketplace .prevnextbuttons .btn.prev span:before {
+            content: '‹' !important;
+            font-size: 20px !important;
+          }
+          
+          #am-marketplace .prevnextbuttons .btn.next span:before {
+            content: '›' !important;
+            font-size: 20px !important;
+          }
+          
+          /* Modal Styles */
+          #am-marketplace .modal,
+          #am-marketplace .dialog,
+          #am-marketplace .popup {
+            background: #ffffff !important;
+            color: #1f2937 !important;
+            border-radius: 8px !important;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15) !important;
+            padding: 20px !important;
+          }
+          
+          /* Zubehör Grid */
+          #am-marketplace .equipment-list,
+          #am-marketplace .accessory-list,
+          #am-marketplace .options-list {
+            display: grid !important;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)) !important;
+            gap: 15px !important;
+            margin: 20px 0 !important;
+          }
+          
+          #am-marketplace .equipment-item img,
+          #am-marketplace .accessory-item img,
+          #am-marketplace .option-item img {
+            width: 100% !important;
+            height: 120px !important;
+            object-fit: cover !important;
+            border-radius: 6px !important;
+            background: #f3f4f6 !important;
+          }
+        `;
+        document.head.appendChild(styleEl);
+      };
+      
+      // Styles hinzufügen
+      addCustomStyles();
+      
+      // Marketplace Script laden gemäß Dokumentation
+      // Methode 1: Script im Head mit Attributen auf DIV (empfohlen)
+      const script = document.createElement('script');
+      script.src = 'https://cdn.dein.auto/pxc-amm/loader.nocache';
+      script.async = true;
+      
+      script.onload = () => {
+        console.log('✅ Marketplace script loaded successfully!');
+      };
+      
+      script.onerror = () => {
+        console.error('❌ Failed to load marketplace script');
         showFallback();
-      }
+      };
+      
+      // Script in Head einfügen (wie in Dokumentation empfohlen)
+      document.head.appendChild(script);
+      console.log('📦 Marketplace script added to head');
     };
-
-    // Show fallback content if marketplace fails
+    
+    // Fallback anzeigen bei Fehlern
     const showFallback = () => {
       const container = document.getElementById('am-marketplace');
       if (container) {
         container.innerHTML = `
-          <div class="text-center py-20">
-            <div class="text-red-600 mb-4">
-              <i class="ri-alert-line text-4xl"></i>
-            </div>
-            <h3 class="text-xl font-semibold text-gray-900 mb-2">Fahrzeugmarktplatz vorübergehend nicht verfügbar</h3>
-            <p class="text-gray-600 mb-4">Bitte versuchen Sie es später erneut oder kontaktieren Sie uns direkt.</p>
-            <div class="flex flex-col sm:flex-row gap-4 justify-center">
-              <a href="/kontakt" class="bg-red-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-red-700 transition-colors duration-300 whitespace-nowrap">
-                Jetzt kontaktieren
-              </a>
-              <button onclick="window.location.reload()" class="border border-red-600 text-red-600 hover:bg-red-600 hover:text-white px-6 py-3 rounded-lg font-semibold transition-colors duration-300 whitespace-nowrap">
-                Seite neu laden
-              </button>
+          <div style="text-align: center; padding: 60px 20px; font-family: system-ui, sans-serif;">
+            <div style="color: #dc2626; margin-bottom: 20px; font-size: 48px;">⚠️</div>
+            <h3 style="color: #374151; margin: 0 0 10px; font-size: 20px;">Fahrzeugmarktplatz vorübergehend nicht verfügbar</h3>
+            <p style="color: #6b7280; margin: 0 0 20px; font-size: 16px;">Bitte versuchen Sie es später erneut oder kontaktieren Sie uns direkt.</p>
+            <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+              <a href="/kontakt" style="background: #dc2626; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 500;">Jetzt kontaktieren</a>
+              <button onclick="window.location.reload()" style="background: transparent; color: #dc2626; border: 2px solid #dc2626; padding: 10px 22px; border-radius: 8px; cursor: pointer; font-weight: 500;">Seite neu laden</button>
             </div>
           </div>
         `;
       }
     };
-
-    // Start initialization with delay to ensure DOM is ready
-    const initTimer = setTimeout(() => {
-      initializeMarketplace();
-    }, 100);
-
-    // Cleanup on unmount
-    return () => {
-      clearTimeout(initTimer);
-      cleanup();
-      // Remove marketplace-specific event handlers
-      if (typeof window !== 'undefined' && window.jQuery) {
-        window.jQuery(window).off('.marketplace');
-        window.jQuery(document).off('.marketplace');
+    
+    // Error Handling
+    const originalConsoleError = console.error;
+    console.error = function(...args) {
+      const message = args.join(' ');
+      if (message.includes('removeChild') || message.includes('NotFoundError')) {
+        console.warn('React DOM error suppressed:', message);
+        return;
       }
-      // Restore original error handlers
-      window.onerror = null;
-      window.onunhandledrejection = null;
+      originalConsoleError.apply(console, args);
+    };
+    
+    // Marketplace initialisieren
+    initializeMarketplace();
+    
+    // Cleanup function
+    return () => {
+      const scripts = document.querySelectorAll('script[src*="loader.nocache"]');
+      scripts.forEach(script => script.remove());
+      
+      const styles = document.querySelectorAll('style[data-marketplace="true"]');
+      styles.forEach(style => style.remove());
     };
   }, []);
 
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Hero Section */}
-      <section className="bg-gradient-to-r from-red-600 to-red-700 text-white py-16 relative overflow-hidden">
-        <div className="absolute inset-0">
-          <div className="absolute top-10 left-10 w-32 h-32 bg-white/10 rounded-full animate-pulse"></div>
-          <div className="absolute bottom-10 right-10 w-24 h-24 bg-yellow-300/20 rounded-full animate-bounce"></div>
-        </div>
-
-        <div className="max-w-6xl mx-auto px-6 relative z-10">
-          <div className="text-center">
-            <h1 className="text-4xl md:text-5xl font-bold mb-6 animate-fadeInUp">
-              Unsere Fahrzeuge
-            </h1>
-            <p className="text-xl text-red-100 mb-4 animate-fadeInUp animation-delay-300">
-              Entdecken Sie über 120 hochwertige Gebrauchtwagen
-            </p>
-            <p className="text-lg text-red-200 animate-fadeInUp animation-delay-500">
-              BMW • Mercedes • Audi • Volkswagen • und viele weitere Marken
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* Info Banner */}
-      <section className="bg-white border-b border-gray-200 py-8">
-        <div className="max-w-6xl mx-auto px-6">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
-            <div className="group">
-              <div className="w-16 h-16 flex items-center justify-center bg-red-100 rounded-full mx-auto mb-4 group-hover:bg-red-600 transition-all duration-300">
-                <i className="ri-shield-check-line text-2xl text-red-600 group-hover:text-white transition-colors duration-300"></i>
-              </div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Geprüfte Qualität</h3>
-              <p className="text-gray-600 text-sm">Alle Fahrzeuge werden von unseren Experten geprüft</p>
-            </div>
-
-            <div className="group">
-              <div className="w-16 h-16 flex items-center justify-center bg-red-100 rounded-full mx-auto mb-4 group-hover:bg-red-600 transition-all duration-300">
-                <i className="ri-hand-heart-line text-2xl text-red-600 group-hover:text-white transition-colors duration-300"></i>
-              </div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Faire Preise</h3>
-              <p className="text-gray-600 text-sm">Transparente Preisgestaltung ohne versteckte Kosten</p>
-            </div>
-
-            <div className="group">
-              <div className="w-16 h-16 flex items-center justify-center bg-red-100 rounded-full mx-auto mb-4 group-hover:bg-red-600 transition-all duration-300">
-                <i className="ri-customer-service-2-line text-2xl text-red-600 group-hover:text-white transition-colors duration-300"></i>
-              </div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Persönliche Beratung</h3>
-              <p className="text-gray-600 text-sm">Individuelle Betreuung bei Kauf und Finanzierung</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Vehicle Marketplace Container */}
-      <section className="py-8 bg-gray-50">
-        <div className="max-w-full mx-auto">
-          <div className="bg-white min-h-[600px]">
-            {/* The correct DIV element with required ID and attributes as per pixelconcept documentation */}
-            {/* CSS-Klassen entfernt um Tailwind-Konflikte zu vermeiden */}
-            <div 
-              id="am-marketplace"
-              api-key="0536fa11-99df-43f8-bf26-42af233f5478"
-              urls-imprint="https://autogalerie-nord.de/impressum"
-              urls-terms="https://autogalerie-nord.de/agb"
-              urls-privacy="https://autogalerie-nord.de/datenschutz"
-              style={{
-                width: '100%',
-                minHeight: '600px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                overflow: 'visible',
-                position: 'relative'
-              }}
+      <section className="bg-gradient-to-r from-red-600 to-red-700 text-white py-20">
+        <div className="max-w-6xl mx-auto px-6 text-center">
+          <h1 className="text-4xl md:text-5xl font-bold mb-6">
+            Über 120 Premium-Fahrzeuge
+          </h1>
+          <p className="text-xl text-red-100 mb-8 max-w-3xl mx-auto">
+            Entdecken Sie unsere große Auswahl an hochwertigen Gebrauchtwagen, 
+            Jahreswagen und Neuwagen zu fairen Preisen.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <a 
+              href="#am-marketplace" 
+              className="bg-white text-red-600 px-8 py-4 rounded-lg font-semibold hover:bg-red-50 transition-colors duration-300 whitespace-nowrap"
             >
-              {/* Enhanced loading indicator */}
-              <div className="text-center py-20">
-                <div className="relative mb-6">
-                  <div className="animate-spin rounded-full h-16 w-16 border-4 border-red-600 border-t-transparent mx-auto"></div>
-                  <div className="absolute inset-0 rounded-full h-16 w-16 border-4 border-red-200 mx-auto animate-pulse"></div>
-                </div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-2">Fahrzeugmarktplatz wird geladen...</h3>
-                <p className="text-gray-600 mb-2">Bitte warten Sie, während wir über 120 Fahrzeuge für Sie laden</p>
-                <div className="flex items-center justify-center space-x-1 text-red-600">
-                  <div className="w-2 h-2 bg-red-600 rounded-full animate-bounce"></div>
-                  <div className="w-2 h-2 bg-red-600 rounded-full animate-bounce" style={{animationDelay: '0.1s'}}></div>
-                  <div className="w-2 h-2 bg-red-600 rounded-full animate-bounce" style={{animationDelay: '0.2s'}}></div>
-                </div>
-                <p className="text-sm text-gray-500 mt-4">Falls das Laden länger dauert als erwartet, aktualisieren Sie bitte die Seite</p>
-              </div>
-            </div>
+              Fahrzeuge durchsuchen
+            </a>
+            <a 
+              href="/kontakt" 
+              className="border-2 border-white text-white hover:bg-white hover:text-red-600 px-8 py-4 rounded-lg font-semibold transition-colors duration-300 whitespace-nowrap"
+            >
+              Beratung vereinbaren
+            </a>
           </div>
         </div>
       </section>
 
-      {/* Service Notes */}
+      {/* Marketplace Container */}
+      <section className="py-16">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">
+              Unser Fahrzeugbestand
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Durchsuchen Sie unseren aktuellen Bestand an Premium-Fahrzeugen. 
+              Alle Fahrzeuge sind sofort verfügbar und können besichtigt werden.
+            </p>
+          </div>
+          
+          {/* Marketplace DIV mit Attributen gemäß pixelconcept Dokumentation */}
+          <div
+            id="am-marketplace"
+            api-key="0536fa11-99df-43f8-bf26-42af233f5478"
+            urls-imprint="https://autogalerie-nord.de/impressum"
+            urls-terms="https://autogalerie-nord.de/agb"
+            urls-privacy="https://autogalerie-nord.de/datenschutz"
+            style={{
+              width: '100%',
+              minHeight: '600px',
+              background: '#ffffff',
+              borderRadius: '8px',
+              boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
+            }}
+          >
+            {/* Loading Indicator */}
+            <div style={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+              padding: '60px 20px',
+              textAlign: 'center'
+            }}>
+              <div style={{
+                width: '60px',
+                height: '60px',
+                border: '4px solid #dc2626',
+                borderTop: '4px solid transparent',
+                borderRadius: '50%',
+                animation: 'spin 1s linear infinite',
+                marginBottom: '20px'
+              }}></div>
+              <h3 style={{
+                color: '#374151',
+                margin: '0 0 10px',
+                fontSize: '20px',
+                fontWeight: '600'
+              }}>
+                Fahrzeugmarktplatz wird geladen...
+              </h3>
+              <p style={{
+                color: '#6b7280',
+                margin: '0',
+                fontSize: '16px'
+              }}>
+                Bitte warten Sie, während wir über 120 Fahrzeuge für Sie laden
+              </p>
+            </div>
+            
+            <style jsx>{`
+              @keyframes spin {
+                0% { transform: rotate(0deg); }
+                100% { transform: rotate(360deg); }
+              }
+            `}</style>
+          </div>
+        </div>
+      </section>
+
+      {/* Service Section */}
       <section className="bg-white py-16">
         <div className="max-w-6xl mx-auto px-6">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">
-              Ihr Wunschfahrzeug nicht dabei?
+              Unser Service für Sie
             </h2>
             <p className="text-xl text-gray-600">
-              Kein Problem! Wir beschaffen Ihnen auch individuell Ihr Traumauto.
+              Von der Beratung bis zur Zulassung - wir begleiten Sie bei jedem Schritt
             </p>
           </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div className="bg-gradient-to-br from-red-50 to-red-100 p-8 rounded-2xl">
-              <div className="w-16 h-16 flex items-center justify-center bg-red-600 rounded-full mb-6">
-                <i className="ri-search-line text-2xl text-white"></i>
+          
+          <div className="grid md:grid-cols-3 gap-8">
+            <div className="text-center p-6">
+              <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <i className="ri-search-line text-2xl text-red-600"></i>
               </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-4">Fahrzeugsuche</h3>
-              <p className="text-gray-700 mb-6">
-                Teilen Sie uns Ihre Wünsche mit - wir finden das perfekte Fahrzeug und beschaffen es zu fairen Konditionen für Sie.
+              <h3 className="text-xl font-semibold text-gray-900 mb-2">Fahrzeugsuche</h3>
+              <p className="text-gray-600">
+                Professionelle Beratung bei der Auswahl Ihres Traumfahrzeugs
               </p>
-              <a 
-                href="mailto:info@autogalerie-nord.de?subject=Fahrzeugsuche"
-                className="bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-lg font-semibold transition-all duration-300 whitespace-nowrap cursor-pointer inline-flex items-center"
-              >
-                <i className="ri-mail-line mr-2"></i>
-                Anfrage senden
-              </a>
             </div>
-
-            <div className="bg-gradient-to-br from-gray-50 to-gray-100 p-8 rounded-2xl">
-              <div className="w-16 h-16 flex items-center justify-center bg-red-600 rounded-full mb-6">
-                <i className="ri-phone-line text-2xl text-white"></i>
+            
+            <div className="text-center p-6">
+              <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <i className="ri-shield-check-line text-2xl text-red-600"></i>
               </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-4">Persönliche Beratung</h3>
-              <p className="text-gray-700 mb-6">
-                Rufen Sie uns für eine unverbindliche Beratung an. Gerne besprechen wir Ihre Anforderungen und Wünsche.
+              <h3 className="text-xl font-semibold text-gray-900 mb-2">Qualitätsprüfung</h3>
+              <p className="text-gray-600">
+                Alle Fahrzeuge werden von unseren Experten gründlich geprüft
               </p>
-              <a 
-                href="tel:+4941745969770"
-                className="bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-lg font-semibold transition-all duration-300 whitespace-nowrap cursor-pointer inline-flex items-center"
-              >
-                <i className="ri-phone-line mr-2"></i>
-                Jetzt anrufen
-              </a>
+            </div>
+            
+            <div className="text-center p-6">
+              <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <i className="ri-file-text-line text-2xl text-red-600"></i>
+              </div>
+              <h3 className="text-xl font-semibold text-gray-900 mb-2">Komplettservice</h3>
+              <p className="text-gray-600">
+                Finanzierung, Versicherung und Zulassung aus einer Hand
+              </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Financing CTA */}
+      {/* CTA Section */}
       <section className="bg-gradient-to-r from-red-600 to-red-700 text-white py-16">
         <div className="max-w-6xl mx-auto px-6 text-center">
           <div className="max-w-3xl mx-auto">
@@ -1160,33 +366,21 @@ export default function FahrzeugeClient() {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <a 
-                href="/leistungen/finanzierung"
-                className="bg-white text-red-600 px-8 py-4 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105 hover:shadow-xl whitespace-nowrap cursor-pointer inline-flex items-center justify-center"
+                href="/leistungen/finanzierung" 
+                className="bg-white text-red-600 px-8 py-4 rounded-lg font-semibold hover:bg-red-50 transition-colors duration-300 whitespace-nowrap"
               >
-                <i className="ri-calculator-line mr-2"></i>
-                Finanzierung berechnen
+                Finanzierung anfragen
               </a>
               <a 
-                href="/kontakt"
-                className="border-2 border-white text-white hover:bg-white hover:text-red-600 px-8 py-4 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105 whitespace-nowrap cursor-pointer inline-flex items-center justify-center"
+                href="/kontakt" 
+                className="border-2 border-white text-white hover:bg-white hover:text-red-600 px-8 py-4 rounded-lg font-semibold transition-colors duration-300 whitespace-nowrap"
               >
-                <i className="ri-user-line mr-2"></i>
-                Beratungstermin
+                Persönliche Beratung
               </a>
             </div>
           </div>
         </div>
       </section>
-
-      <style jsx>{`
-        @keyframes fadeInUp {
-          from { transform: translateY(30px); opacity: 0; }
-          to { transform: translateY(0); opacity: 1; }
-        }
-        .animate-fadeInUp { animation: fadeInUp 0.8s ease-out forwards; }
-        .animation-delay-300 { animation-delay: 300ms; }
-        .animation-delay-500 { animation-delay: 500ms; }
-      `}</style>
     </div>
   );
 }
