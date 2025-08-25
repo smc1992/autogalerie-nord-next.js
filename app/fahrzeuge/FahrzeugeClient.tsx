@@ -13,11 +13,40 @@ export default function FahrzeugeClient() {
         return;
       }
       
-      // Prüfe auf Angular-Konflikte
-      if (typeof window !== 'undefined' && (window as any).angular) {
-        console.log('⚠️ Angular already exists, cleaning up before marketplace initialization');
-        delete (window as any).angular;
-        delete (window as any).ng;
+      // Aggressive Angular-Prävention
+      if (typeof window !== 'undefined') {
+        // Verhindere Angular Bootstrap komplett
+        const preventAngularBootstrap = () => {
+          // Überschreibe angular.bootstrap um ng:btstrpd zu verhindern
+          if ((window as any).angular && (window as any).angular.bootstrap) {
+            const originalBootstrap = (window as any).angular.bootstrap;
+            (window as any).angular.bootstrap = function() {
+              console.warn('Angular bootstrap prevented to avoid ng:btstrpd error');
+              return { $$destroyed: true };
+            };
+          }
+          
+          // Entferne bestehende Angular-Instanzen
+          delete (window as any).angular;
+          delete (window as any).ng;
+          
+          // Verhindere automatische Angular-Initialisierung
+          if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => {
+              setTimeout(() => {
+                delete (window as any).angular;
+                delete (window as any).ng;
+              }, 0);
+            });
+          }
+        };
+        
+        preventAngularBootstrap();
+        
+        // Wiederhole Prävention nach Script-Load
+        setTimeout(preventAngularBootstrap, 100);
+        setTimeout(preventAngularBootstrap, 500);
+        setTimeout(preventAngularBootstrap, 1000);
       }
       
       console.log('🚀 Initializing marketplace according to pixelconcept documentation...');
@@ -261,16 +290,20 @@ export default function FahrzeugeClient() {
           container.classList.remove('ng-scope');
         }
         
-        // Cleanup Angular globals
-        if (typeof window !== 'undefined') {
-          // Entferne Angular-spezifische Globals
-          delete (window as any).angular;
-          delete (window as any).ng;
-          
-          // Entferne Marketplace-spezifische Globals
-          delete (window as any).amm;
-          delete (window as any).marketplace;
-        }
+        // Cleanup Angular globals und Event-Listener
+         if (typeof window !== 'undefined') {
+           // Entferne Angular-spezifische Globals
+           delete (window as any).angular;
+           delete (window as any).ng;
+           
+           // Entferne Marketplace-spezifische Globals
+           delete (window as any).amm;
+           delete (window as any).marketplace;
+           
+           // Entferne Event-Listener
+           window.removeEventListener('error', () => {});
+           window.removeEventListener('unhandledrejection', () => {});
+         }
         
         console.log('🧹 Marketplace and Angular cleanup completed');
       };
