@@ -27,9 +27,9 @@ export default function Footer() {
               </p>
               <div className="flex space-x-4 justify-center md:justify-start">
                 {[
-                  { icon: 'ri-facebook-fill', href: 'https://www.facebook.com/profile.php?id=61565890614324' },
-                  { icon: 'ri-instagram-line', href: 'https://www.instagram.com/autogalerie.nord.gmbh/' },
-                  { icon: 'ri-youtube-line', href: 'https://www.youtube.com/channel/UCJgqiKOxC-9VRx53LF8aZKg' },
+                  { icon: 'ri-facebook-fill', href: 'https://www.facebook.com/profile.php?id=61565890614324', label: 'Facebook-Seite von Autogalerie Nord besuchen' },
+                  { icon: 'ri-instagram-line', href: 'https://www.instagram.com/autogalerie.nord.gmbh/', label: 'Instagram-Profil von Autogalerie Nord besuchen' },
+                  { icon: 'ri-youtube-line', href: 'https://www.youtube.com/channel/UCJgqiKOxC-9VRx53LF8aZKg', label: 'YouTube-Kanal von Autogalerie Nord besuchen' },
                 ].map((social, index) => (
                   <a
                     key={index}
@@ -37,6 +37,7 @@ export default function Footer() {
                     target="_blank"
                     rel="noopener noreferrer"
                     className="group/social w-12 h-12 sm:w-10 sm:h-10 md:w-8 md:h-8 flex items-center justify-center bg-gray-100 rounded-lg cursor-pointer hover:bg-red-100 transition-all duration-300 transform hover:scale-125 hover:-translate-y-1"
+                    aria-label={social.label}
                   >
                     <i className={`${social.icon} text-lg sm:text-base md:text-sm text-gray-600 group-hover/social:text-red-600 transition-colors duration-300`}></i>
                   </a>

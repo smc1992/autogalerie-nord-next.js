@@ -37,6 +37,7 @@ export default function Header() {
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="group flex items-center hover:text-red-200 transition-all duration-300 cursor-pointer transform hover:scale-105"
+                aria-label="WhatsApp-Chat mit Autogalerie Nord starten"
               >
                 <div className="w-4 h-4 flex items-center justify-center mr-2 transform group-hover:rotate-12 transition-transform duration-300">
                   <i className="ri-whatsapp-line text-sm"></i>
@@ -46,6 +47,7 @@ export default function Header() {
               <a 
                 href="tel:+4941745969770" 
                 className="group flex items-center hover:text-red-200 transition-all duration-300 cursor-pointer transform hover:scale-105"
+                aria-label="Autogalerie Nord anrufen: +49 41 745 969 70"
               >
                 <div className="w-4 h-4 flex items-center justify-center mr-2 transform group-hover:rotate-12 transition-transform duration-300">
                   <i className="ri-phone-line text-sm"></i>
@@ -55,6 +57,7 @@ export default function Header() {
               <a 
                 href="mailto:info@autogalerie-nord.de" 
                 className="group flex items-center hover:text-red-200 transition-all duration-300 cursor-pointer transform hover:scale-105"
+                aria-label="E-Mail an Autogalerie Nord senden: info@autogalerie-nord.de"
               >
                 <div className="w-4 h-4 flex items-center justify-center mr-2 transform group-hover:rotate-12 transition-transform duration-300">
                   <i className="ri-mail-line text-sm"></i>
@@ -70,18 +73,21 @@ export default function Header() {
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="w-8 h-8 flex items-center justify-center hover:text-red-200 transition-all duration-300 cursor-pointer transform hover:scale-125 hover:rotate-12"
+                aria-label="WhatsApp-Chat mit Autogalerie Nord starten"
               >
                 <i className="ri-whatsapp-fill text-lg"></i>
               </a>
               <a 
                 href="tel:+4941745969770" 
                 className="w-8 h-8 flex items-center justify-center hover:text-red-200 transition-all duration-300 cursor-pointer transform hover:scale-125 hover:rotate-12"
+                aria-label="Autogalerie Nord anrufen"
               >
                 <i className="ri-phone-fill text-lg"></i>
               </a>
               <a 
                 href="mailto:info@autogalerie-nord.de" 
                 className="w-8 h-8 flex items-center justify-center hover:text-red-200 transition-all duration-300 cursor-pointer transform hover:scale-125 hover:rotate-12"
+                aria-label="E-Mail an Autogalerie Nord senden"
               >
                 <i className="ri-mail-fill text-lg"></i>
               </a>
