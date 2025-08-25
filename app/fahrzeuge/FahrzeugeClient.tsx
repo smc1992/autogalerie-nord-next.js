@@ -4,52 +4,44 @@ import { useEffect } from 'react';
 
 export default function FahrzeugeClient() {
   useEffect(() => {
-    // Einfache Marketplace-Initialisierung gemäß pixelconcept Dokumentation
+    // Vollständige Marketplace-Neuimplementierung gemäß pixelconcept Dokumentation
     const initializeMarketplace = () => {
-      // Verhindere doppeltes Laden - prüfe ob Script bereits existiert
-      const existingScript = document.querySelector('script[src*="loader.nocache"], script[src*="am-marketplace"]');
-      if (existingScript) {
-        console.log('📦 Marketplace script already loaded, skipping initialization');
-        return;
-      }
-      
-      // Aggressive Angular-Prävention
-      if (typeof window !== 'undefined') {
-        // Verhindere Angular Bootstrap komplett
-        const preventAngularBootstrap = () => {
-          // Überschreibe angular.bootstrap um ng:btstrpd zu verhindern
-          if ((window as any).angular && (window as any).angular.bootstrap) {
-            const originalBootstrap = (window as any).angular.bootstrap;
-            (window as any).angular.bootstrap = function() {
-              console.warn('Angular bootstrap prevented to avoid ng:btstrpd error');
-              return { $$destroyed: true };
-            };
-          }
-          
-          // Entferne bestehende Angular-Instanzen
+      // Cleanup aller bestehenden Systeme
+      const cleanup = () => {
+        // Entferne alle Scripts
+        const scripts = document.querySelectorAll('script[src*="loader.nocache"], script[src*="am-marketplace"], script[src*="angular"], script[src*="quicksearch"]');
+        scripts.forEach(script => script.remove());
+        
+        // Cleanup Globals
+        if (typeof window !== 'undefined') {
           delete (window as any).angular;
           delete (window as any).ng;
-          
-          // Verhindere automatische Angular-Initialisierung
-          if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', () => {
-              setTimeout(() => {
-                delete (window as any).angular;
-                delete (window as any).ng;
-              }, 0);
-            });
+          delete (window as any).amm;
+          delete (window as any).marketplace;
+          delete (window as any).quicksearch;
+        }
+        
+        // Reset Container
+        const container = document.getElementById('am-marketplace');
+        if (container) {
+          container.innerHTML = '';
+          container.className = '';
+        }
+      };
+      
+      cleanup();
+      
+      console.log('🚀 Starting fresh marketplace initialization...');
+      
+      // Marketplace Global definieren (für QuickSearch-Kompatibilität)
+      if (typeof window !== 'undefined') {
+        (window as any).marketplace = {
+          initialized: false,
+          config: {
+            apiKey: '0536fa11-99df-43f8-bf26-42af233f5478'
           }
         };
-        
-        preventAngularBootstrap();
-        
-        // Wiederhole Prävention nach Script-Load
-        setTimeout(preventAngularBootstrap, 100);
-        setTimeout(preventAngularBootstrap, 500);
-        setTimeout(preventAngularBootstrap, 1000);
       }
-      
-      console.log('🚀 Initializing marketplace according to pixelconcept documentation...');
       
       // CSS für unser Design-Integration
       const addCustomStyles = () => {
@@ -183,24 +175,32 @@ export default function FahrzeugeClient() {
       // Styles hinzufügen
       addCustomStyles();
       
-      // Marketplace Script laden gemäß Dokumentation
-      // Methode 1: Script im Head mit Attributen auf DIV (empfohlen)
-      const script = document.createElement('script');
-      script.src = 'https://cdn.dein.auto/pxc-amm/loader.nocache';
-      script.async = true;
-      
-      script.onload = () => {
-        console.log('✅ Marketplace script loaded successfully!');
-      };
-      
-      script.onerror = () => {
-        console.error('❌ Failed to load marketplace script');
-        showFallback();
-      };
-      
-      // Script in Head einfügen (wie in Dokumentation empfohlen)
-      document.head.appendChild(script);
-      console.log('📦 Marketplace script added to head');
+      // Marketplace Script laden - Einfache Methode gemäß Dokumentation
+       const loadMarketplaceScript = () => {
+         const script = document.createElement('script');
+         script.src = 'https://cdn.dein.auto/pxc-amm/loader.nocache';
+         script.async = true;
+         
+         script.onload = () => {
+           console.log('✅ Marketplace script loaded successfully!');
+           // Marketplace als initialisiert markieren
+           if (typeof window !== 'undefined' && (window as any).marketplace) {
+             (window as any).marketplace.initialized = true;
+           }
+         };
+         
+         script.onerror = () => {
+           console.error('❌ Failed to load marketplace script');
+           showFallback();
+         };
+         
+         // Script in Head einfügen (wie in Dokumentation empfohlen)
+         document.head.appendChild(script);
+         console.log('📦 Marketplace script added to head');
+       };
+       
+       // Lade Script nach kurzer Verzögerung
+       setTimeout(loadMarketplaceScript, 100);
     };
     
     // Fallback anzeigen bei Fehlern
@@ -236,6 +236,10 @@ export default function FahrzeugeClient() {
              message.includes('root node should look like') ||
              message.includes('marketplace is not defined') ||
              message.includes('ReferenceError') ||
+             message.includes('quicksearch-norequire') ||
+             message.includes('initSelectors') ||
+             message.includes('QuickSearchWidget') ||
+             message.includes('Externes AMM-System') ||
              message.includes('fullscreen') ||
             message.includes('Potential permissions policy violation')) {
          console.warn('Marketplace error suppressed:', message);
