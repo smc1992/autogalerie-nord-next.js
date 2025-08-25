@@ -4,6 +4,36 @@ import { useEffect } from 'react';
 import Script from 'next/script';
 
 export default function FahrzeugeClient() {
+  // Handler-Funktionen für Script-Events
+  const handleScriptLoad = () => {
+    console.log('✅ Marketplace script loaded successfully!');
+    if (typeof window !== 'undefined') {
+      // Marketplace Global für Kompatibilität definieren
+      (window as any).marketplace = {
+        initialized: true,
+        config: {
+          apiKey: '0536fa11-99df-43f8-bf26-42af233f5478'
+        }
+      };
+    }
+  };
+
+  const handleScriptError = () => {
+    console.error('❌ Failed to load marketplace script');
+    // Fallback anzeigen
+    const container = document.getElementById('am-marketplace');
+    if (container) {
+      container.innerHTML = `
+        <div style="text-align: center; padding: 60px 20px; font-family: system-ui, sans-serif;">
+          <div style="color: #dc2626; margin-bottom: 20px; font-size: 48px;">⚠️</div>
+          <h3 style="color: #374151; margin: 0 0 10px; font-size: 20px;">Fahrzeugmarktplatz vorübergehend nicht verfügbar</h3>
+          <p style="color: #6b7280; margin: 0 0 20px; font-size: 16px;">Bitte versuchen Sie es später erneut.</p>
+          <button onclick="window.location.reload()" style="background: #dc2626; color: white; padding: 12px 24px; border-radius: 8px; cursor: pointer; border: none;">Seite neu laden</button>
+        </div>
+      `;
+    }
+  };
+
   useEffect(() => {
     // Marketplace-Initialisierung mit Next.js Best Practices
     const initializeMarketplace = () => {
@@ -270,30 +300,6 @@ export default function FahrzeugeClient() {
         console.log('🧹 Marketplace and Angular cleanup completed');
       };
   }, []);
-
-  // Handler-Funktionen für Script-Events
-  const handleScriptLoad = () => {
-    console.log('✅ Marketplace script loaded successfully!');
-    if (typeof window !== 'undefined' && (window as any).marketplace) {
-      (window as any).marketplace.initialized = true;
-    }
-  };
-
-  const handleScriptError = () => {
-    console.error('❌ Failed to load marketplace script');
-    // Fallback anzeigen
-    const container = document.getElementById('am-marketplace');
-    if (container) {
-      container.innerHTML = `
-        <div style="text-align: center; padding: 60px 20px; font-family: system-ui, sans-serif;">
-          <div style="color: #dc2626; margin-bottom: 20px; font-size: 48px;">⚠️</div>
-          <h3 style="color: #374151; margin: 0 0 10px; font-size: 20px;">Fahrzeugmarktplatz vorübergehend nicht verfügbar</h3>
-          <p style="color: #6b7280; margin: 0 0 20px; font-size: 16px;">Bitte versuchen Sie es später erneut.</p>
-          <button onclick="window.location.reload()" style="background: #dc2626; color: white; padding: 12px 24px; border-radius: 8px; cursor: pointer; border: none;">Seite neu laden</button>
-        </div>
-      `;
-    }
-  };
 
   return (
     <div className="min-h-screen bg-gray-50">
