@@ -108,6 +108,35 @@ export default function FahrzeugeClient() {
               justify-content: center;
               min-height: 400px;
             }
+            #am-marketplace {
+              width: 100% !important;
+              max-width: none !important;
+              overflow: visible !important;
+              position: relative !important;
+            }
+            #am-marketplace .amm-detail-view,
+            #am-marketplace .amm-vehicle-detail,
+            #am-marketplace .vehicle-detail {
+              width: 100% !important;
+              max-width: none !important;
+              margin: 0 !important;
+              padding: 20px !important;
+              box-sizing: border-box !important;
+            }
+            #am-marketplace .amm-container,
+            #am-marketplace .marketplace-container {
+              width: 100% !important;
+              max-width: none !important;
+              margin: 0 !important;
+              padding: 0 !important;
+            }
+            #am-marketplace .amm-vehicle-list,
+            #am-marketplace .vehicle-list {
+              width: 100% !important;
+              max-width: 1200px !important;
+              margin: 0 auto !important;
+              padding: 20px !important;
+            }
           `;
           document.head.appendChild(styleEl);
 
@@ -456,7 +485,7 @@ export default function FahrzeugeClient() {
           script.src = 'https://cdn.dein.auto/pxc-amm/loader.nocache';
           script.async = true;
           
-          // Set attributes with correct URLs
+          // Set attributes with correct URLs and improved detail view configuration
           script.setAttribute('api-key', '0536fa11-99df-43f8-bf26-42af233f5478');
           script.setAttribute('urls-imprint', 'https://autogalerie-nord.de/impressum');
           script.setAttribute('urls-terms', 'https://autogalerie-nord.de/agb');
@@ -477,6 +506,16 @@ export default function FahrzeugeClient() {
           script.setAttribute('disable-fullscreen', 'true');
           script.setAttribute('fullscreen-policy', 'none');
           script.setAttribute('permissions-policy', 'fullscreen=()');
+          script.setAttribute('detail-view-mode', 'embedded');
+          script.setAttribute('detail-view-width', '100%');
+          script.setAttribute('detail-view-height', 'auto');
+          script.setAttribute('responsive-design', 'true');
+          script.setAttribute('mobile-optimized', 'true');
+          script.setAttribute('container-responsive', 'true');
+          script.setAttribute('layout-mode', 'responsive');
+          script.setAttribute('detail-layout', 'full-width');
+          script.setAttribute('enable-responsive-images', 'true');
+          script.setAttribute('image-optimization', 'true');
           
           // Promise with shorter timeout for faster fallback
           await new Promise<void>((resolve) => {
@@ -688,12 +727,19 @@ export default function FahrzeugeClient() {
 
       {/* Vehicle Marketplace Container */}
       <section className="py-8 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="bg-white rounded-lg shadow-sm overflow-hidden min-h-[600px]">
+        <div className="max-w-full mx-auto">
+          <div className="bg-white min-h-[600px]">
             {/* The correct DIV element with required ID (attributes moved to script tag as per documentation) */}
             <div 
               id="am-marketplace"
-              className="w-full min-h-[600px] flex items-center justify-center am-marketplace-loading"
+              className="w-full min-h-[600px] am-marketplace-loading"
+              style={{
+                maxWidth: 'none',
+                width: '100%',
+                height: 'auto',
+                minHeight: '600px',
+                overflow: 'visible'
+              }}
             >
               {/* Enhanced loading indicator */}
               <div className="text-center py-20">
