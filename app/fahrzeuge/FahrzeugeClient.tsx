@@ -6,9 +6,12 @@ export default function FahrzeugeClient() {
   useEffect(() => {
     // Einfache Marketplace-Initialisierung gemäß pixelconcept Dokumentation
     const initializeMarketplace = () => {
-      // Cleanup existing scripts
-      const existingScripts = document.querySelectorAll('script[src*="loader.nocache"]');
-      existingScripts.forEach(script => script.remove());
+      // Verhindere doppeltes Laden - prüfe ob Script bereits existiert
+      const existingScript = document.querySelector('script[src*="loader.nocache"]');
+      if (existingScript) {
+        console.log('📦 Marketplace script already loaded, skipping initialization');
+        return;
+      }
       
       console.log('🚀 Initializing marketplace according to pixelconcept documentation...');
       
@@ -197,13 +200,26 @@ export default function FahrzeugeClient() {
     initializeMarketplace();
     
     // Cleanup function
-    return () => {
-      const scripts = document.querySelectorAll('script[src*="loader.nocache"]');
-      scripts.forEach(script => script.remove());
-      
-      const styles = document.querySelectorAll('style[data-marketplace="true"]');
-      styles.forEach(style => style.remove());
-    };
+     return () => {
+       // Entferne alle Marketplace-Scripts
+        const scripts = document.querySelectorAll('script[src*="loader.nocache"], script[src*="pxc-amm"]');
+        scripts.forEach(script => {
+          console.log('🧹 Removing marketplace script:', (script as HTMLScriptElement).src);
+          script.remove();
+        });
+       
+       // Entferne Marketplace-Styles
+       const styles = document.querySelectorAll('style[data-marketplace="true"]');
+       styles.forEach(style => style.remove());
+       
+       // Leere Marketplace-Container
+       const container = document.getElementById('am-marketplace');
+       if (container) {
+         container.innerHTML = '';
+       }
+       
+       console.log('🧹 Marketplace cleanup completed');
+     };
   }, []);
 
   return (
