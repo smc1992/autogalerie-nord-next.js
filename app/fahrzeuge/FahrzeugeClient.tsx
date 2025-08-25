@@ -120,6 +120,49 @@ export default function FahrzeugeClient() {
               color: #1f2937 !important;
               background: #ffffff !important;
               font-size: 14px !important;
+              min-height: 600px !important;
+              display: block !important;
+              visibility: visible !important;
+              opacity: 1 !important;
+            }
+            
+            /* Verhindere schwarze Flächen */
+            #am-marketplace > * {
+              background: transparent !important;
+              color: inherit !important;
+            }
+            
+            #am-marketplace .vehicle-detail-container,
+            #am-marketplace .amm-detail-container {
+              background: #ffffff !important;
+              min-height: 400px !important;
+              padding: 20px !important;
+              display: block !important;
+              visibility: visible !important;
+            }
+            
+            /* Spezielle Styles für Fahrzeugdetailansicht */
+            #am-marketplace .vehicle-detail-view,
+            #am-marketplace .amm-vehicle-detail-view {
+              background: #ffffff !important;
+              padding: 30px !important;
+              border-radius: 8px !important;
+              box-shadow: 0 2px 10px rgba(0,0,0,0.1) !important;
+              margin: 20px auto !important;
+              max-width: 1200px !important;
+            }
+            
+            #am-marketplace .vehicle-images,
+            #am-marketplace .amm-vehicle-images {
+              margin-bottom: 30px !important;
+            }
+            
+            #am-marketplace .vehicle-main-image,
+            #am-marketplace .amm-main-image {
+              width: 100% !important;
+              max-height: 400px !important;
+              object-fit: cover !important;
+              border-radius: 8px !important;
             }
             
             /* Reset alle Tailwind-Klassen innerhalb des Marketplace */
@@ -591,11 +634,22 @@ export default function FahrzeugeClient() {
           // Check if error is from marketplace or fullscreen violations
           if (source && (source.includes('marketplace') || source.includes('fullscreen')) || 
               (error && error.stack && (error.stack.includes('marketplace') || error.stack.includes('fullscreen'))) ||
-              (typeof event === 'string' && (event.includes('marketplace') || event.includes('fullscreen')))) {
+              (typeof event === 'string' && (event.includes('marketplace') || event.includes('fullscreen') || event.includes('removeChild')))) {
             console.log('Marketplace/Fullscreen error caught:', { event, source, error });
             return true; // Prevent default error handling
           }
           return originalError ? originalError.call(this, event, source, lineno, colno, error) : false;
+        };
+        
+        // Spezifisches Error-Handling für React DOM Fehler
+        const originalConsoleError = console.error;
+        console.error = function(...args) {
+          const message = args.join(' ');
+          if (message.includes('removeChild') || message.includes('NotFoundError')) {
+            console.warn('React DOM error suppressed:', message);
+            return;
+          }
+          originalConsoleError.apply(console, args);
         };
         
         // Add permissions policy to prevent fullscreen violations
