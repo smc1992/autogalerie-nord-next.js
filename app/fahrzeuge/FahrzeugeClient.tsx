@@ -156,42 +156,90 @@ export default function FahrzeugeClient() {
             }
             
             /* Überschreibe Tailwind-Reset für Marketplace-Elemente */
-            #am-marketplace h1, #am-marketplace h2, #am-marketplace h3, 
-            #am-marketplace h4, #am-marketplace h5, #am-marketplace h6 {
-              font-size: revert !important;
-              font-weight: revert !important;
-              margin: revert !important;
-              line-height: revert !important;
-            }
-            
-            #am-marketplace p {
-              margin: revert !important;
-              line-height: revert !important;
-            }
-            
-            #am-marketplace button {
-              background: revert !important;
-              border: revert !important;
-              padding: revert !important;
-              font-size: revert !important;
-              cursor: pointer !important;
-            }
-            
-            #am-marketplace a {
-              color: revert !important;
-              text-decoration: revert !important;
-            }
-            
-            #am-marketplace img {
-              max-width: 100% !important;
-              height: auto !important;
-            }
-            
-            /* Verhindere Tailwind-Interferenz */
-            #am-marketplace .flex { display: flex !important; }
-            #am-marketplace .block { display: block !important; }
-            #am-marketplace .inline { display: inline !important; }
-            #am-marketplace .hidden { display: none !important; }
+             #am-marketplace h1, #am-marketplace h2, #am-marketplace h3, 
+             #am-marketplace h4, #am-marketplace h5, #am-marketplace h6 {
+               font-size: revert !important;
+               font-weight: revert !important;
+               margin: revert !important;
+               line-height: revert !important;
+               color: #333 !important;
+             }
+             
+             #am-marketplace p {
+               margin: revert !important;
+               line-height: revert !important;
+               color: #333 !important;
+             }
+             
+             #am-marketplace span {
+               color: inherit !important;
+             }
+             
+             #am-marketplace div {
+               color: inherit !important;
+             }
+             
+             #am-marketplace button {
+               background: revert !important;
+               border: revert !important;
+               padding: revert !important;
+               font-size: revert !important;
+               cursor: pointer !important;
+               color: revert !important;
+             }
+             
+             #am-marketplace a {
+               color: #0066cc !important;
+               text-decoration: revert !important;
+             }
+             
+             #am-marketplace a:hover {
+               color: #004499 !important;
+             }
+             
+             #am-marketplace img {
+               max-width: 100% !important;
+               height: auto !important;
+             }
+             
+             /* Spezifische Marketplace-Klassen */
+             #am-marketplace .price,
+             #am-marketplace .vehicle-price,
+             #am-marketplace .amm-price {
+               color: #d32f2f !important;
+               font-weight: bold !important;
+             }
+             
+             #am-marketplace .vehicle-title,
+             #am-marketplace .amm-title {
+               color: #1976d2 !important;
+               font-weight: bold !important;
+             }
+             
+             #am-marketplace .vehicle-details,
+             #am-marketplace .amm-details {
+               color: #666 !important;
+             }
+             
+             #am-marketplace .vehicle-description,
+             #am-marketplace .amm-description {
+               color: #333 !important;
+               line-height: 1.5 !important;
+             }
+             
+             /* Verhindere Tailwind-Interferenz */
+             #am-marketplace .flex { display: flex !important; }
+             #am-marketplace .block { display: block !important; }
+             #am-marketplace .inline { display: inline !important; }
+             #am-marketplace .hidden { display: none !important; }
+             
+             /* Reset Tailwind text utilities */
+             #am-marketplace .text-white { color: #333 !important; }
+             #am-marketplace .text-gray-500 { color: #666 !important; }
+             #am-marketplace .text-gray-600 { color: #555 !important; }
+             #am-marketplace .text-gray-700 { color: #444 !important; }
+             #am-marketplace .text-gray-800 { color: #333 !important; }
+             #am-marketplace .text-gray-900 { color: #222 !important; }
           `;
           document.head.appendChild(styleEl);
 
