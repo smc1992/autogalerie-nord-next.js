@@ -62,10 +62,12 @@ export default function MarketplaceEmbed({
       console.error('❌ AMM loader failed');
     };
 
-    // 4) Wichtig: Das Skript GENAU an der Stelle platzieren, wo gerendert werden soll.
-    // Viele Loader verwenden document.currentScript als Anker.
-    anchor.appendChild(s);
+    // 4) Script in den Head einfügen, nicht als Child-Element
+    document.head.appendChild(s);
     scriptRef.current = s;
+    
+    // 5) Marketplace-Container-ID setzen für das Script
+    anchor.setAttribute('data-marketplace-container', 'true');
 
     return () => {
       // Sanftes Cleanup – keine aggressiven Global-Deletes
