@@ -431,12 +431,62 @@ export default function FahrzeugeClient() {
                }
                
                #am-marketplace .equipment-price,
-               #am-marketplace .accessory-price,
-               #am-marketplace .option-price {
-                 color: #dc2626 !important;
-                 font-weight: 700 !important;
-                 font-size: 16px !important;
-               }
+                #am-marketplace .accessory-price,
+                #am-marketplace .option-price {
+                  color: #dc2626 !important;
+                  font-weight: 700 !important;
+                  font-size: 16px !important;
+                }
+                
+                /* Navigation Pfeile korrigieren */
+                #am-marketplace .prevnextbuttons .btn {
+                  background: #dc2626 !important;
+                  border: 1px solid #dc2626 !important;
+                  color: #ffffff !important;
+                  padding: 10px 15px !important;
+                  border-radius: 6px !important;
+                  margin: 0 5px !important;
+                  display: inline-flex !important;
+                  align-items: center !important;
+                  justify-content: center !important;
+                }
+                
+                #am-marketplace .prevnextbuttons .btn span {
+                  color: #ffffff !important;
+                  font-size: 16px !important;
+                  font-weight: bold !important;
+                  line-height: 1 !important;
+                  display: inline-block !important;
+                }
+                
+                #am-marketplace .prevnextbuttons .btn:hover {
+                  background: #b91c1c !important;
+                  border-color: #b91c1c !important;
+                }
+                
+                /* Spezifische Pfeil-Symbole */
+                #am-marketplace .prevnextbuttons .btn.prev span:before {
+                  content: '‹' !important;
+                  font-size: 20px !important;
+                  color: #ffffff !important;
+                }
+                
+                #am-marketplace .prevnextbuttons .btn.next span:before {
+                  content: '›' !important;
+                  font-size: 20px !important;
+                  color: #ffffff !important;
+                }
+                
+                /* Fallback für Pfeile */
+                #am-marketplace .prevnextbuttons .btn span:empty:before {
+                  content: '→' !important;
+                  font-size: 16px !important;
+                  color: #ffffff !important;
+                }
+                
+                #am-marketplace .prevnextbuttons .btn.prev span:empty:before {
+                  content: '←' !important;
+                }
           `;
           document.head.appendChild(styleEl);
 
