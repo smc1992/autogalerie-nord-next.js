@@ -1,39 +1,15 @@
 'use client';
 
 import { useEffect } from 'react';
+import Script from 'next/script';
 
 export default function FahrzeugeClient() {
   useEffect(() => {
-    // Vollständige Marketplace-Neuimplementierung gemäß pixelconcept Dokumentation
+    // Marketplace-Initialisierung mit Next.js Best Practices
     const initializeMarketplace = () => {
-      // Cleanup aller bestehenden Systeme
-      const cleanup = () => {
-        // Entferne alle Scripts
-        const scripts = document.querySelectorAll('script[src*="loader.nocache"], script[src*="am-marketplace"], script[src*="angular"], script[src*="quicksearch"]');
-        scripts.forEach(script => script.remove());
-        
-        // Cleanup Globals
-        if (typeof window !== 'undefined') {
-          delete (window as any).angular;
-          delete (window as any).ng;
-          delete (window as any).amm;
-          delete (window as any).marketplace;
-          delete (window as any).quicksearch;
-        }
-        
-        // Reset Container
-        const container = document.getElementById('am-marketplace');
-        if (container) {
-          container.innerHTML = '';
-          container.className = '';
-        }
-      };
+      console.log('🚀 Initializing marketplace with Next.js Script component...');
       
-      cleanup();
-      
-      console.log('🚀 Starting fresh marketplace initialization...');
-      
-      // Marketplace Global definieren (für QuickSearch-Kompatibilität)
+      // Marketplace Global für Kompatibilität definieren
       if (typeof window !== 'undefined') {
         (window as any).marketplace = {
           initialized: false,
@@ -175,32 +151,7 @@ export default function FahrzeugeClient() {
       // Styles hinzufügen
       addCustomStyles();
       
-      // Marketplace Script laden - Einfache Methode gemäß Dokumentation
-       const loadMarketplaceScript = () => {
-         const script = document.createElement('script');
-         script.src = 'https://cdn.dein.auto/pxc-amm/loader.nocache';
-         script.async = true;
-         
-         script.onload = () => {
-           console.log('✅ Marketplace script loaded successfully!');
-           // Marketplace als initialisiert markieren
-           if (typeof window !== 'undefined' && (window as any).marketplace) {
-             (window as any).marketplace.initialized = true;
-           }
-         };
-         
-         script.onerror = () => {
-           console.error('❌ Failed to load marketplace script');
-           showFallback();
-         };
-         
-         // Script in Head einfügen (wie in Dokumentation empfohlen)
-         document.head.appendChild(script);
-         console.log('📦 Marketplace script added to head');
-       };
-       
-       // Lade Script nach kurzer Verzögerung
-       setTimeout(loadMarketplaceScript, 100);
+      // Script wird jetzt über Next.js Script-Komponente geladen
     };
     
     // Fallback anzeigen bei Fehlern
@@ -320,8 +271,40 @@ export default function FahrzeugeClient() {
       };
   }, []);
 
+  // Handler-Funktionen für Script-Events
+  const handleScriptLoad = () => {
+    console.log('✅ Marketplace script loaded successfully!');
+    if (typeof window !== 'undefined' && (window as any).marketplace) {
+      (window as any).marketplace.initialized = true;
+    }
+  };
+
+  const handleScriptError = () => {
+    console.error('❌ Failed to load marketplace script');
+    // Fallback anzeigen
+    const container = document.getElementById('am-marketplace');
+    if (container) {
+      container.innerHTML = `
+        <div style="text-align: center; padding: 60px 20px; font-family: system-ui, sans-serif;">
+          <div style="color: #dc2626; margin-bottom: 20px; font-size: 48px;">⚠️</div>
+          <h3 style="color: #374151; margin: 0 0 10px; font-size: 20px;">Fahrzeugmarktplatz vorübergehend nicht verfügbar</h3>
+          <p style="color: #6b7280; margin: 0 0 20px; font-size: 16px;">Bitte versuchen Sie es später erneut.</p>
+          <button onclick="window.location.reload()" style="background: #dc2626; color: white; padding: 12px 24px; border-radius: 8px; cursor: pointer; border: none;">Seite neu laden</button>
+        </div>
+      `;
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gray-50">
+      {/* Next.js Script-Komponente für Marketplace */}
+      <Script
+        src="https://cdn.dein.auto/pxc-amm/loader.nocache"
+        strategy="afterInteractive"
+        onLoad={handleScriptLoad}
+        onError={handleScriptError}
+      />
+      
       {/* Hero Section */}
       <section className="bg-gradient-to-r from-red-600 to-red-700 text-white py-20">
         <div className="max-w-6xl mx-auto px-6 text-center">
