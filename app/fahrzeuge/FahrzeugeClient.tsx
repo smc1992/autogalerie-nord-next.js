@@ -108,12 +108,26 @@ export default function FahrzeugeClient() {
               justify-content: center;
               min-height: 400px;
             }
+            
+            /* CSS Isolation für Marketplace - verhindert Tailwind-Konflikte */
             #am-marketplace {
+              all: initial !important;
               width: 100% !important;
               max-width: none !important;
               overflow: visible !important;
               position: relative !important;
+              font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+              line-height: 1.5 !important;
+              color: #333 !important;
+              background: #fff !important;
             }
+            
+            /* Reset alle Tailwind-Klassen innerhalb des Marketplace */
+            #am-marketplace * {
+              box-sizing: border-box !important;
+            }
+            
+            /* Marketplace-spezifische Styles */
             #am-marketplace .amm-detail-view,
             #am-marketplace .amm-vehicle-detail,
             #am-marketplace .vehicle-detail {
@@ -122,7 +136,9 @@ export default function FahrzeugeClient() {
               margin: 0 !important;
               padding: 20px !important;
               box-sizing: border-box !important;
+              background: #fff !important;
             }
+            
             #am-marketplace .amm-container,
             #am-marketplace .marketplace-container {
               width: 100% !important;
@@ -130,6 +146,7 @@ export default function FahrzeugeClient() {
               margin: 0 !important;
               padding: 0 !important;
             }
+            
             #am-marketplace .amm-vehicle-list,
             #am-marketplace .vehicle-list {
               width: 100% !important;
@@ -137,6 +154,44 @@ export default function FahrzeugeClient() {
               margin: 0 auto !important;
               padding: 20px !important;
             }
+            
+            /* Überschreibe Tailwind-Reset für Marketplace-Elemente */
+            #am-marketplace h1, #am-marketplace h2, #am-marketplace h3, 
+            #am-marketplace h4, #am-marketplace h5, #am-marketplace h6 {
+              font-size: revert !important;
+              font-weight: revert !important;
+              margin: revert !important;
+              line-height: revert !important;
+            }
+            
+            #am-marketplace p {
+              margin: revert !important;
+              line-height: revert !important;
+            }
+            
+            #am-marketplace button {
+              background: revert !important;
+              border: revert !important;
+              padding: revert !important;
+              font-size: revert !important;
+              cursor: pointer !important;
+            }
+            
+            #am-marketplace a {
+              color: revert !important;
+              text-decoration: revert !important;
+            }
+            
+            #am-marketplace img {
+              max-width: 100% !important;
+              height: auto !important;
+            }
+            
+            /* Verhindere Tailwind-Interferenz */
+            #am-marketplace .flex { display: flex !important; }
+            #am-marketplace .block { display: block !important; }
+            #am-marketplace .inline { display: inline !important; }
+            #am-marketplace .hidden { display: none !important; }
           `;
           document.head.appendChild(styleEl);
 
@@ -700,19 +755,21 @@ export default function FahrzeugeClient() {
         <div className="max-w-full mx-auto">
           <div className="bg-white min-h-[600px]">
             {/* The correct DIV element with required ID and attributes as per pixelconcept documentation */}
+            {/* CSS-Klassen entfernt um Tailwind-Konflikte zu vermeiden */}
             <div 
               id="am-marketplace"
-              className="w-full min-h-[600px] am-marketplace-loading"
               api-key="0536fa11-99df-43f8-bf26-42af233f5478"
               urls-imprint="https://autogalerie-nord.de/impressum"
               urls-terms="https://autogalerie-nord.de/agb"
               urls-privacy="https://autogalerie-nord.de/datenschutz"
               style={{
-                maxWidth: 'none',
                 width: '100%',
-                height: 'auto',
                 minHeight: '600px',
-                overflow: 'visible'
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                overflow: 'visible',
+                position: 'relative'
               }}
             >
               {/* Enhanced loading indicator */}
