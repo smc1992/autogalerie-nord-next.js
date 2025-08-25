@@ -87,6 +87,7 @@ export default function MarketplaceEmbed({
   // Anchor ist der Platzhalter – hier fügt das Script seinen DOM ein
   return (
     <div
+      id="am-marketplace"
       ref={anchorRef}
       style={{
         width: '100%',
