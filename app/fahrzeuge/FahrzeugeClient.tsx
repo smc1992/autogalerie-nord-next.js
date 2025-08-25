@@ -73,13 +73,7 @@ export default function FahrzeugeClient() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Marketplace Script gemäß pixelconcept Dokumentation */}
-      <Script
-        src="https://cdn.dein.auto/pxc-amm/loader.nocache"
-        strategy="afterInteractive"
-        onLoad={handleScriptLoad}
-        onError={handleScriptError}
-      />
+
       
       {/* Hero Section */}
       <section className="bg-gradient-to-r from-red-600 to-red-700 text-white py-20">
@@ -121,22 +115,24 @@ export default function FahrzeugeClient() {
             </p>
           </div>
           
-          {/* Marketplace DIV - Leer für Script-Initialisierung */}
-          <div
-            id="am-marketplace"
-            api-key="0536fa11-99df-43f8-bf26-42af233f5478"
-            urls-imprint="https://autogalerie-nord.de/impressum"
-            urls-terms="https://autogalerie-nord.de/agb"
-            urls-privacy="https://autogalerie-nord.de/datenschutz"
-            style={{
-              width: '100%',
-              minHeight: '600px',
-              background: '#ffffff',
-              borderRadius: '8px',
-              boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
-            }}
-          >
-            {/* Leer - wird vom Marketplace-Script befüllt */}
+          {/* Marketplace Script direkt an Position gemäß pixelconcept Dokumentation Methode 1 */}
+          <div style={{
+            width: '100%',
+            minHeight: '600px',
+            background: '#ffffff',
+            borderRadius: '8px',
+            boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
+          }}>
+            <Script
+              src="https://cdn.dein.auto/pxc-amm/loader.nocache"
+              api-key="0536fa11-99df-43f8-bf26-42af233f5478"
+              urls-imprint="https://autogalerie-nord.de/impressum"
+              urls-terms="https://autogalerie-nord.de/agb"
+              urls-privacy="https://autogalerie-nord.de/datenschutz"
+              strategy="afterInteractive"
+              onLoad={handleScriptLoad}
+              onError={handleScriptError}
+            />
           </div>
         </div>
       </section>
