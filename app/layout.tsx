@@ -207,73 +207,7 @@ export default function RootLayout({
           })
         }} />
         
-        {/* Globale Variablen und Initialisierung */}
-        <script dangerouslySetInnerHTML={{
-          __html: `
-            // Globale Variablen setzen
-            window.baseUri = "https://api.pixel-base.de/marketplace/v3-11365/";
-            window.culture = "de-DE";
-            window.apikey = "0536fa11-99df-43f8-bf26-42af233f5478";
-            window.marketplace = {
-              culture: "de-DE",
-              url: "/fahrzeuge/",
-              target: "/fahrzeuge",
-              hash: "",
-              hideOtherManufactueres: false,
-              renameManufacturers: true,
-              modelsWithoutFinds: 'hide',
-              modelsWithCounter: false,
-              sortManAlphabetic: false,
-              api: {
-                url: "https://api.pixel-base.de/marketplace/v3-11365/",
-                key: "0536fa11-99df-43f8-bf26-42af233f5478"
-              }
-            };
-            
-            // URL dynamisch setzen wenn window verfügbar ist
-            if (typeof window !== 'undefined') {
-              window.marketplace.url = window.location.origin + "/fahrzeuge/";
-            }
-            
-            // Initialisierungsfunktion
-            function initQuickSearch() {
-              if (window.jQuery && window.quicksearch && window.quicksearch.init) {
-                console.log('QuickSearch wird initialisiert');
-                if (window.quicksearch.initialized) {
-                  try {
-                    window.quicksearch.destroy();
-                    console.log('Alte QuickSearch-Instanz zerstört');
-                  } catch (e) {
-                    console.error('Fehler beim Zerstören der alten Instanz:', e);
-                  }
-                }
-                try {
-                  window.quicksearch.init(window.marketplace);
-                  window.quicksearch.initialized = true;
-                  console.log('QuickSearch erfolgreich initialisiert');
-                } catch (e) {
-                  console.error('Fehler bei der Initialisierung von QuickSearch:', e);
-                }
-              } else {
-                console.log('QuickSearch oder jQuery noch nicht verfügbar, versuche erneut in 300ms');
-                setTimeout(initQuickSearch, 300);
-              }
-            }
-            
-            // Initialisierung nach dem Laden der Seite
-            document.addEventListener('DOMContentLoaded', function() {
-              setTimeout(initQuickSearch, 300);
-            });
-            
-            // Zusätzlicher Fallback
-            window.addEventListener('load', function() {
-              if (!window.quicksearch || !window.quicksearch.initialized) {
-                console.log('QuickSearch nicht initialisiert, versuche erneut');
-                setTimeout(initQuickSearch, 500);
-              }
-            });
-          `
-        }} />
+
       </head>
       <body className="font-klavika antialiased">
         <Header />
