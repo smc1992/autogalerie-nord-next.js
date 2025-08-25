@@ -231,10 +231,12 @@ export default function FahrzeugeClient() {
             message.includes('Cannot read properties of undefined') ||
             message.includes('Cannot read properties of null') ||
             message.includes('toLowerCase') ||
-            message.includes('currency.js') ||
-            message.includes('ProductSwiperSlide.js') ||
-            message.includes('root node should look like') ||
-            message.includes('fullscreen') ||
+             message.includes('currency.js') ||
+             message.includes('ProductSwiperSlide.js') ||
+             message.includes('root node should look like') ||
+             message.includes('marketplace is not defined') ||
+             message.includes('ReferenceError') ||
+             message.includes('fullscreen') ||
             message.includes('Potential permissions policy violation')) {
          console.warn('Marketplace error suppressed:', message);
          return;
