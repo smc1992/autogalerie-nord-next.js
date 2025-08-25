@@ -111,15 +111,15 @@ export default function FahrzeugeClient() {
             
             /* CSS Isolation für Marketplace - verhindert Tailwind-Konflikte */
             #am-marketplace {
-              all: initial !important;
               width: 100% !important;
               max-width: none !important;
               overflow: visible !important;
               position: relative !important;
-              font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+              font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
               line-height: 1.5 !important;
-              color: #333 !important;
-              background: #fff !important;
+              color: #1f2937 !important;
+              background: #ffffff !important;
+              font-size: 14px !important;
             }
             
             /* Reset alle Tailwind-Klassen innerhalb des Marketplace */
@@ -180,13 +180,35 @@ export default function FahrzeugeClient() {
              }
              
              #am-marketplace button {
-               background: revert !important;
-               border: revert !important;
-               padding: revert !important;
-               font-size: revert !important;
-               cursor: pointer !important;
-               color: revert !important;
-             }
+                background: #dc2626 !important;
+                border: 1px solid #dc2626 !important;
+                padding: 8px 16px !important;
+                font-size: 14px !important;
+                cursor: pointer !important;
+                color: #ffffff !important;
+                border-radius: 6px !important;
+                font-weight: 500 !important;
+                transition: all 0.2s ease !important;
+              }
+              
+              #am-marketplace button:hover {
+                background: #b91c1c !important;
+                border-color: #b91c1c !important;
+              }
+              
+              #am-marketplace .btn-primary,
+              #am-marketplace .button-primary {
+                background: #dc2626 !important;
+                border-color: #dc2626 !important;
+                color: #ffffff !important;
+              }
+              
+              #am-marketplace .btn-secondary,
+              #am-marketplace .button-secondary {
+                background: #6b7280 !important;
+                border-color: #6b7280 !important;
+                color: #ffffff !important;
+              }
              
              #am-marketplace a {
                color: #0066cc !important;
@@ -234,12 +256,57 @@ export default function FahrzeugeClient() {
              #am-marketplace .hidden { display: none !important; }
              
              /* Reset Tailwind text utilities */
-             #am-marketplace .text-white { color: #333 !important; }
-             #am-marketplace .text-gray-500 { color: #666 !important; }
-             #am-marketplace .text-gray-600 { color: #555 !important; }
-             #am-marketplace .text-gray-700 { color: #444 !important; }
-             #am-marketplace .text-gray-800 { color: #333 !important; }
-             #am-marketplace .text-gray-900 { color: #222 !important; }
+              #am-marketplace .text-white { color: #1f2937 !important; }
+              #am-marketplace .text-gray-500 { color: #6b7280 !important; }
+              #am-marketplace .text-gray-600 { color: #4b5563 !important; }
+              #am-marketplace .text-gray-700 { color: #374151 !important; }
+              #am-marketplace .text-gray-800 { color: #1f2937 !important; }
+              #am-marketplace .text-gray-900 { color: #111827 !important; }
+              
+              /* Zubehör und Bilder */
+              #am-marketplace .accessory-item,
+              #am-marketplace .equipment-item,
+              #am-marketplace .option-item {
+                display: flex !important;
+                align-items: center !important;
+                padding: 8px !important;
+                margin: 4px 0 !important;
+                background: #f9fafb !important;
+                border-radius: 6px !important;
+                border: 1px solid #e5e7eb !important;
+              }
+              
+              #am-marketplace .accessory-image,
+              #am-marketplace .equipment-image,
+              #am-marketplace .option-image {
+                width: 40px !important;
+                height: 40px !important;
+                margin-right: 12px !important;
+                border-radius: 4px !important;
+                object-fit: cover !important;
+                background: #e5e7eb !important;
+              }
+              
+              /* Fragezeichen und unbekannte Zeichen beheben */
+              #am-marketplace *:before,
+              #am-marketplace *:after {
+                content: none !important;
+              }
+              
+              #am-marketplace .icon:before,
+              #am-marketplace .fa:before {
+                font-family: 'Font Awesome 5 Free' !important;
+                font-weight: 900 !important;
+              }
+              
+              /* Fallback für fehlende Icons */
+              #am-marketplace .missing-icon {
+                width: 20px !important;
+                height: 20px !important;
+                background: #dc2626 !important;
+                border-radius: 50% !important;
+                display: inline-block !important;
+              }
           `;
           document.head.appendChild(styleEl);
 
