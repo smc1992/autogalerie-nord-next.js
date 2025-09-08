@@ -104,40 +104,40 @@ export default function Header() {
             {/* Logo */}
             <Link 
               href="/" 
-              className="flex items-center cursor-pointer group -ml-4 md:ml-0"
+              className="flex items-center cursor-pointer -ml-4 md:ml-0"
               aria-label="Zur Startseite von Autogalerie Nord"
             >
               <img 
                 src="/images/logo.png" 
                 alt="Autogalerie Nord Logo" 
-                className="h-32 md:h-36 lg:h-40 w-auto transform transition-all duration-300 group-hover:scale-110"
+                className="h-32 md:h-36 lg:h-40 w-auto"
               />
             </Link>
 
             {/* Desktop Navigation */}
             <div className="hidden lg:flex items-center space-x-8">
-              <Link href="/" className="text-gray-700 hover:text-red-600 transition-colors duration-300 cursor-pointer">
+              <Link href="/" className="text-gray-700 cursor-pointer">
                 Home
               </Link>
-              <Link href="/fahrzeuge" className="text-gray-700 hover:text-red-600 transition-colors duration-300 cursor-pointer">
+              <Link href="/fahrzeuge" className="text-gray-700 cursor-pointer">
                 Fahrzeuge
               </Link>
-              <Link href="https://autogalerie-nord.de/fahrzeuge#!/tradein" className="text-gray-700 hover:text-red-600 transition-colors duration-300 cursor-pointer">
+              <a href="https://autogalerie-nord.de/fahrzeuge#!/tradein" target="_blank" rel="noopener noreferrer" className="text-gray-700 cursor-pointer">
                 Autoankauf
-              </Link>
+              </a>
               <div 
                 className="relative"
                 onMouseEnter={() => setIsLeistungenOpen(true)}
                 onMouseLeave={() => setIsLeistungenOpen(false)}
               >
-                <Link href="/leistungen" className="text-gray-700 hover:text-red-600 transition-colors duration-300 cursor-pointer flex items-center">
+                <Link href="/leistungen" className="text-gray-700 cursor-pointer flex items-center">
                   Leistungen
                   <i className="ri-arrow-down-s-line ml-1"></i>
                 </Link>
                 {isLeistungenOpen && (
                   <div className="absolute top-full left-0 mt-0 w-64 bg-white rounded-lg shadow-xl border border-gray-100 py-2 z-50">
                     {leistungenSubMenu.map((item, index) => (
-                      <Link key={index} href={item.href} className="flex items-center px-4 py-3 text-gray-700 hover:bg-red-50 hover:text-red-600 transition-colors duration-300 cursor-pointer">
+                      <Link key={index} href={item.href} className="flex items-center px-4 py-3 text-gray-700 cursor-pointer">
                         <i className={`${item.icon} w-5 h-5 mr-3`}></i>
                         {item.label}
                       </Link>
@@ -146,19 +146,19 @@ export default function Header() {
                 )}
               </div>
 
-              <Link href="/businessloesungen" className="text-gray-700 hover:text-red-600 transition-colors duration-300 cursor-pointer">
+              <Link href="/businessloesungen" className="text-gray-700 cursor-pointer">
                 Business
               </Link>
 
-              <Link href="/service" className="text-gray-700 hover:text-red-600 transition-colors duration-300 cursor-pointer">
+              <Link href="/service" className="text-gray-700 cursor-pointer">
                 Service
               </Link>
 
-              <Link href="/ueber-uns" className="text-gray-700 hover:text-red-600 transition-colors duration-300 cursor-pointer">
+              <Link href="/ueber-uns" className="text-gray-700 cursor-pointer">
                 Über Uns
               </Link>
 
-              <Link href="/kontakt" className="text-gray-700 hover:text-red-600 transition-colors duration-300 cursor-pointer">
+              <Link href="/kontakt" className="text-gray-700 cursor-pointer">
                 Kontakt
               </Link>
             </div>
@@ -166,36 +166,36 @@ export default function Header() {
             {/* Mobile menu button */}
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="lg:hidden p-3 rounded-xl text-gray-700 hover:text-red-600 hover:bg-red-50 z-50 relative transition-all duration-300 transform hover:scale-110"
+              className="lg:hidden p-3 rounded-xl text-gray-700 z-50 relative"
               aria-label={isMenuOpen ? "Menü schließen" : "Menü öffnen"}
               aria-expanded={isMenuOpen}
             >
               {!isMenuOpen ? (
                 <div className="relative w-6 h-6">
-                  <span className="absolute top-1 left-0 w-6 h-0.5 bg-current transform transition-all duration-300 rounded-full"></span>
-                  <span className="absolute top-3 left-0 w-6 h-0.5 bg-current transform transition-all duration-300 rounded-full"></span>
-                  <span className="absolute top-5 left-0 w-4 h-0.5 bg-current transform transition-all duration-300 rounded-full"></span>
+                  <span className="absolute top-1 left-0 w-6 h-0.5 bg-current rounded-full"></span>
+                  <span className="absolute top-3 left-0 w-6 h-0.5 bg-current rounded-full"></span>
+                  <span className="absolute top-5 left-0 w-4 h-0.5 bg-current rounded-full"></span>
                 </div>
               ) : (
                 <div className="relative w-6 h-6">
-                  <span className="absolute top-3 left-0 w-6 h-0.5 bg-current transform rotate-45 transition-all duration-300 rounded-full"></span>
-                  <span className="absolute top-3 left-0 w-6 h-0.5 bg-current transform -rotate-45 transition-all duration-300 rounded-full"></span>
+                  <span className="absolute top-3 left-0 w-6 h-0.5 bg-current rotate-45 rounded-full"></span>
+                  <span className="absolute top-3 left-0 w-6 h-0.5 bg-current -rotate-45 rounded-full"></span>
                 </div>
               )}
             </button>
           </nav>
 
           {/* Mobile Navigation Overlay */}
-          <div className={`fixed inset-0 z-40 lg:hidden transition-all duration-500 ease-in-out ${
+          <div className={`fixed inset-0 z-40 lg:hidden ${
             isMenuOpen ? 'opacity-100 visible' : 'opacity-0 invisible'
           }`}>
             <div 
-              className="absolute inset-0 bg-black transition-opacity duration-500 ease-in-out"
+              className="absolute inset-0 bg-black"
               style={{ opacity: isMenuOpen ? 0.6 : 0 }}
               onClick={() => setIsMenuOpen(false)}
             ></div>
             
-            <div className={`absolute top-0 right-0 h-full w-80 max-w-full bg-white shadow-2xl transform transition-all duration-500 ease-out ${
+            <div className={`absolute top-0 right-0 h-full w-80 max-w-full bg-white shadow-2xl ${
               isMenuOpen ? 'translate-x-0' : 'translate-x-full'
             }`}>
               <div className="flex flex-col h-full">
@@ -217,39 +217,41 @@ export default function Header() {
                     <div className="space-y-3 px-4">
                       <Link 
                         href="/" 
-                        className="group flex items-center px-4 py-4 text-gray-700 hover:bg-gradient-to-r hover:from-red-50 hover:to-red-100 hover:text-red-600 rounded-xl transition-all duration-300 cursor-pointer transform hover:scale-105 hover:shadow-md"
+                        className="flex items-center px-4 py-4 text-gray-700 rounded-xl cursor-pointer"
                         onClick={() => setIsMenuOpen(false)}
                       >
-                        <div className="w-10 h-10 bg-gray-100 group-hover:bg-red-600 rounded-lg flex items-center justify-center mr-4 transition-all duration-300">
-                          <i className="ri-home-line text-lg group-hover:text-white transition-colors duration-300"></i>
+                        <div className="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center mr-4">
+                          <i className="ri-home-line text-lg"></i>
                         </div>
                         <span className="font-medium">Home</span>
-                        <i className="ri-arrow-right-s-line ml-auto text-gray-400 group-hover:text-red-600 transform group-hover:translate-x-1 transition-all duration-300"></i>
+                        <i className="ri-arrow-right-s-line ml-auto text-gray-400"></i>
                       </Link>
                       
                       <Link 
                         href="/fahrzeuge" 
-                        className="group flex items-center px-4 py-4 text-gray-700 hover:bg-gradient-to-r hover:from-red-50 hover:to-red-100 hover:text-red-600 rounded-xl transition-all duration-300 cursor-pointer transform hover:scale-105 hover:shadow-md"
+                        className="flex items-center px-4 py-4 text-gray-700 rounded-xl cursor-pointer"
                         onClick={() => setIsMenuOpen(false)}
                       >
-                        <div className="w-10 h-10 bg-gray-100 group-hover:bg-red-600 rounded-lg flex items-center justify-center mr-4 transition-all duration-300">
-                          <i className="ri-car-line text-lg group-hover:text-white transition-colors duration-300"></i>
+                        <div className="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center mr-4">
+                          <i className="ri-car-line text-lg"></i>
                         </div>
                         <span className="font-medium">Fahrzeuge</span>
-                        <i className="ri-arrow-right-s-line ml-auto text-gray-400 group-hover:text-red-600 transform group-hover:translate-x-1 transition-all duration-300"></i>
+                        <i className="ri-arrow-right-s-line ml-auto text-gray-400"></i>
                       </Link>
                       
-                      <Link 
+                      <a 
                         href="https://autogalerie-nord.de/fahrzeuge#!/tradein" 
-                        className="group flex items-center px-4 py-4 text-gray-700 hover:bg-gradient-to-r hover:from-red-50 hover:to-red-100 hover:text-red-600 rounded-xl transition-all duration-300 cursor-pointer transform hover:scale-105 hover:shadow-md"
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="flex items-center px-4 py-4 text-gray-700 rounded-xl cursor-pointer"
                         onClick={() => setIsMenuOpen(false)}
                       >
-                        <div className="w-10 h-10 bg-gray-100 group-hover:bg-red-600 rounded-lg flex items-center justify-center mr-4 transition-all duration-300">
-                          <i className="ri-money-dollar-circle-line text-lg group-hover:text-white transition-colors duration-300"></i>
+                        <div className="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center mr-4">
+                          <i className="ri-money-dollar-circle-line text-lg"></i>
                         </div>
                         <span className="font-medium">Autoankauf</span>
-                        <i className="ri-arrow-right-s-line ml-auto text-gray-400 group-hover:text-red-600 transform group-hover:translate-x-1 transition-all duration-300"></i>
-                      </Link>
+                        <i className="ri-arrow-right-s-line ml-auto text-gray-400"></i>
+                      </a>
                       
                       <Link 
                         href="/leistungen" 

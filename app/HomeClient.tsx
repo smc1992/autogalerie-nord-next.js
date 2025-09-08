@@ -102,75 +102,47 @@ export default function HomeClient() {
         )}
 
         <div className="relative z-10 flex items-center h-full px-6 3xl:px-12 4xl:px-16">
-          <div className={`w-full max-w-4xl 3xl:max-w-6xl 4xl:max-w-7xl transform transition-all duration-1000 ${
-            heroLoaded ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'
-          }`}>
+          <div className="w-full max-w-4xl 3xl:max-w-6xl 4xl:max-w-7xl">
             {/* SEO-optimierte dynamische H1 Überschrift */}
-            <div className="relative h-32 sm:h-36 md:h-40 lg:h-48 3xl:h-56 4xl:h-64 mb-4 sm:mb-6 3xl:mb-8 4xl:mb-10 overflow-hidden">
-              {headlines.map((headline, index) => (
-                <h1 
-                  key={index}
-                  className={`absolute inset-0 text-4xl sm:text-5xl md:text-5xl lg:text-6xl 3xl:text-7xl 4xl:text-8xl font-bold text-white leading-tight transition-all duration-1800 ease-in-out transform ${
-                    index === currentHeadline 
-                      ? 'translate-y-0 opacity-100 scale-100' 
-                      : index < currentHeadline 
-                        ? '-translate-y-full opacity-0 scale-98'
-                        : 'translate-y-full opacity-0 scale-98'
-                  }`}
-                  style={{ 
-                    transitionDelay: index === currentHeadline ? '500ms' : '0ms',
-                    textShadow: '2px 2px 4px rgba(0,0,0,0.8), 0 0 8px rgba(0,0,0,0.6)'
-                  }}
-                >
-                  {headline.part1}<br />
-                  <span className="text-red-400 font-extrabold" style={{
-                    textShadow: '2px 2px 4px rgba(0,0,0,0.9), 0 0 12px rgba(220,38,38,0.4)'
-                  }}>
-                    {headline.part2}
-                  </span>
-                </h1>
-              ))}
+            <div className="relative h-32 sm:h-36 md:h-40 lg:h-48 3xl:h-56 4xl:h-64 mb-4 sm:mb-6 3xl:mb-8 4xl:mb-10">
+              <h1 
+                className="text-4xl sm:text-5xl md:text-5xl lg:text-6xl 3xl:text-7xl 4xl:text-8xl font-bold text-white leading-tight"
+                style={{ 
+                  textShadow: '2px 2px 4px rgba(0,0,0,0.8), 0 0 8px rgba(0,0,0,0.6)'
+                }}
+              >
+                {headlines[currentHeadline].part1}<br />
+                <span className="text-red-400 font-extrabold" style={{
+                  textShadow: '2px 2px 4px rgba(0,0,0,0.9), 0 0 12px rgba(220,38,38,0.4)'
+                }}>
+                  {headlines[currentHeadline].part2}
+                </span>
+              </h1>
             </div>
 
             {/* Dynamischer Untertitel */}
-            <div className="relative h-12 sm:h-16 mb-3 sm:mb-4 overflow-hidden">
-              {headlines.map((headline, index) => (
-                <p 
-                  key={index}
-                  className={`absolute inset-0 text-lg sm:text-xl text-gray-100 transition-all duration-1500 ease-in-out transform ${
-                    index === currentHeadline 
-                      ? 'translate-x-0 opacity-100' 
-                      : index < currentHeadline 
-                        ? '-translate-x-full opacity-0'
-                        : 'translate-x-full opacity-0'
-                  }`}
-                  style={{ 
-                    transitionDelay: index === currentHeadline ? '800ms' : '0ms',
-                    textShadow: '1px 1px 3px rgba(0,0,0,0.7)'
-                  }}
-                >
-                  {headline.subtitle}
-                </p>
-              ))}
+            <div className="relative h-12 sm:h-16 mb-3 sm:mb-4">
+              <p 
+                className="text-lg sm:text-xl text-gray-100"
+                style={{ 
+                  textShadow: '1px 1px 3px rgba(0,0,0,0.7)'
+                }}
+              >
+                {headlines[currentHeadline].subtitle}
+              </p>
             </div>
 
-            <p className={`text-xl sm:text-2xl font-semibold text-red-400 mb-3 sm:mb-4 transform transition-all duration-700 delay-600 ${
-              heroLoaded ? 'translate-x-0 opacity-100' : '-translate-x-10 opacity-0'
-            }`}
+            <p className="text-xl sm:text-2xl font-semibold text-red-400 mb-3 sm:mb-4"
             style={{ textShadow: '1px 1px 3px rgba(0,0,0,0.7)' }}
             >
               BMW • Mercedes • Audi • VW • Porsche
             </p>
-            <p className={`text-lg sm:text-lg text-red-100 mb-6 sm:mb-8 transform transition-all duration-700 delay-700 ${
-              heroLoaded ? 'translate-x-0 opacity-100' : '-translate-x-10 opacity-0'
-            }`}
+            <p className="text-lg sm:text-lg text-red-100 mb-6 sm:mb-8"
             style={{ textShadow: '1px 1px 2px rgba(0,0,0,0.6)' }}
             >
               ✓ Faire Preise  ✓ Sofortige Finanzierung
             </p>
-            <div className={`flex flex-col gap-4 sm:flex-row sm:gap-4 transform transition-all duration-700 delay-700 ${
-              heroLoaded ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'
-            }`}>
+            <div className="flex flex-col gap-4 sm:flex-row sm:gap-4">
               <Link href="/fahrzeuge" className="group bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white px-8 py-4 sm:px-10 sm:py-5 rounded-lg sm:rounded-xl font-bold text-base sm:text-lg transition-all duration-300 cursor-pointer text-center transform hover:scale-105 hover:shadow-2xl w-full sm:w-auto">
                 <span className="flex items-center justify-center">
                   <i className="ri-car-line mr-2 sm:mr-3 text-lg sm:text-xl"></i>
@@ -226,13 +198,13 @@ export default function HomeClient() {
       {/* Google Reviews Section */}
       <GoogleReviews />
 
-      {/* Services Section */}
-      <section className="py-20 bg-gray-50 relative overflow-hidden">
+      {/* Services Section mit dezenter Akzentfarbe */}
+      <section className="py-20 section-accent relative overflow-hidden">
         {/* Fixed background decoration - only render on client */}
         {isClient && (
           <>
-            <div className="absolute top-0 right-0 w-96 h-96 bg-red-100 rounded-full -translate-y-48 translate-x-48 opacity-20"></div>
-            <div className="absolute bottom-0 left-0 w-72 h-72 bg-gray-200 rounded-full translate-y-36 -translate-x-36 opacity-20"></div>
+            <div className="absolute top-0 right-0 w-96 h-96 bg-primary-100 rounded-full -translate-y-48 translate-x-48 opacity-20"></div>
+            <div className="absolute bottom-0 left-0 w-72 h-72 bg-accent-200 rounded-full translate-y-36 -translate-x-36 opacity-20"></div>
           </>
         )}
 
@@ -240,15 +212,15 @@ export default function HomeClient() {
           <div className={`text-center mb-16 transform transition-all duration-700 ${
             isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'
           }`}>
-            <h2 className="text-4xl font-bold text-gray-900 mb-6">
-              Unsere <span className="text-red-600 relative">
+            <h2 className="text-4xl font-bold text-neutral-900 mb-6">
+              Unsere <span className="text-primary-600 relative bg-accent-950 bg-opacity-10 px-4 py-2 rounded-lg">
                 Services
-                <div className="absolute -bottom-2 left-0 w-full h-1 bg-red-600 rounded-full transform scale-x-0 animate-scaleX"></div>
+                <div className="absolute -bottom-2 left-0 w-full h-1 bg-primary-600 rounded-full transform scale-x-0 animate-scaleX"></div>
               </span>
             </h2>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid-modern lg:grid-cols-4">
             {[ 
               { icon: 'ri-car-line', title: 'Fahrzeugankauf', desc: 'Faire Preise und schnelle Abwicklung beim Ankauf Ihres Gebrauchtwagens.', delay: 0 },
               { icon: 'ri-tools-line', title: 'Werkstattservice', desc: 'Professionelle Wartung und Reparatur für alle Marken.', delay: 100 },
@@ -257,14 +229,14 @@ export default function HomeClient() {
             ].map((service, index) => (
               <div
                 key={index}
-                className={`group bg-white rounded-lg p-8 text-center shadow-md hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-3 hover:scale-105 cursor-pointer animate-fadeInUp`}
+                className={`service-card hover-lift animate-fadeInUp`}
                 style={{ animationDelay: `${service.delay}ms` }}
               >
-                <div className="w-16 h-16 flex items-center justify-center bg-red-100 rounded-full mx-auto mb-6 group-hover:bg-red-600 transition-all duration-300 transform group-hover:rotate-12">
-                  <i className={`${service.icon} text-2xl text-red-600 group-hover:text-white transition-colors duration-300`}></i>
+                <div className="w-16 h-16 flex items-center justify-center bg-primary-100 rounded-full mx-auto mb-6 group-hover:bg-primary-600 transition-all duration-300 transform group-hover:rotate-12">
+                  <i className={`${service.icon} text-2xl text-primary-600 group-hover:text-white transition-colors duration-300`}></i>
                 </div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-4 group-hover:text-red-600 transition-colors duration-300">{service.title}</h3>
-                <p className="text-gray-600 text-sm leading-relaxed group-hover:text-gray-700 transition-colors duration-300">
+                <h3 className="text-xl font-semibold text-neutral-900 mb-4 group-hover:text-primary-600 transition-colors duration-300">{service.title}</h3>
+                <p className="text-muted text-sm leading-relaxed group-hover:text-neutral-700 transition-colors duration-300">
                   {service.desc}
                 </p>
               </div>
@@ -278,25 +250,25 @@ export default function HomeClient() {
         {/* Fixed animated background elements - only render on client */}
         {isClient && (
           <>
-            <div className="absolute top-1/2 left-0 w-32 h-32 bg-gradient-to-r from-red-200 to-transparent rounded-full animate-pulse opacity-30"></div>
-            <div className="absolute bottom-0 right-0 w-24 h-24 bg-gradient-to-l from-gray-300 to-transparent rounded-full animate-pulse opacity-30"></div>
+            <div className="absolute top-1/2 left-0 w-32 h-32 bg-gradient-to-r from-primary-200 to-transparent rounded-full animate-pulse opacity-30"></div>
+            <div className="absolute bottom-0 right-0 w-24 h-24 bg-gradient-to-l from-accent-300 to-transparent rounded-full animate-pulse opacity-30"></div>
           </>
         )}
 
         <div className="px-6 max-w-6xl mx-auto relative z-10">
           <div className="text-center mb-16 animate-fadeInUp">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">
-              Über <span className="text-red-600 animate-countUp">120</span> sofort verfügbare Fahrzeuge
+            <h2 className="text-4xl font-bold text-neutral-900 mb-4">
+              Über <span className="text-primary animate-countUp">120</span> sofort verfügbare Fahrzeuge
             </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            <p className="text-xl text-muted max-w-3xl mx-auto">
               Finden Sie Ihren Traumwagen in wenigen Klicks aus einer großen Auswahl hochwertiger Fahrzeuge.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-            <div className="group bg-gradient-to-br from-red-50 to-red-100 rounded-xl p-8 transform transition-all duration-500 hover:scale-105 hover:shadow-2xl animate-slideInLeft">
-              <h3 className="text-2xl font-semibold text-gray-900 mb-4 group-hover:text-red-700 transition-colors duration-300">Flexible Finanzierung & Leasing</h3>
-              <p className="text-gray-600 mb-6 group-hover:text-gray-700 transition-colors duration-300">
+          <div className="grid-modern-large items-center">
+            <div className="group bg-gradient-to-br from-primary-50 to-primary-100 rounded-xl p-8 transform transition-all duration-500 hover:scale-105 hover:shadow-card-hover animate-slideInLeft">
+              <h3 className="text-2xl font-semibold text-neutral-900 mb-4 group-hover:text-primary-700 transition-colors duration-300">Flexible Finanzierung & Leasing</h3>
+              <p className="text-muted mb-6 group-hover:text-neutral-700 transition-colors duration-300">
                 Maßgeschneiderte Lösungen für Ihr Traumauto mit günstigen Konditionen und schneller Abwicklung.
               </p>
               <button className="group bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-lg font-semibold transition-all duration-300 whitespace-nowrap cursor-pointer flex items-center transform hover:scale-105 hover:shadow-lg">

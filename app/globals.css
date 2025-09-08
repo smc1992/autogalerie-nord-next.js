@@ -147,3 +147,138 @@
 .fahrzeuge-hero a[href*="durchsuchen"] {
   display: none !important;
 }
+
+/* Moderne Komponenten-Styles mit neuen Farben */
+@layer components {
+  /* Card-Komponenten mit dezenter Akzentfarbe */
+  .card {
+    @apply bg-white rounded-lg shadow-card border border-neutral-200 transition-all duration-300;
+  }
+  
+  .card:hover {
+    @apply shadow-card-hover transform -translate-y-1;
+  }
+  
+  .card-dark {
+    @apply bg-accent-950 text-white rounded-lg shadow-card border border-accent-800 transition-all duration-300;
+  }
+  
+  /* Grid-Hintergründe mit dezenter Akzentfarbe */
+  .grid-background {
+    @apply bg-accent-950 bg-opacity-5 backdrop-blur-sm;
+  }
+  
+  .grid-background-subtle {
+    @apply bg-accent-950 bg-opacity-[0.03];
+  }
+  
+  /* Service-Kacheln */
+  .service-card {
+    @apply bg-white p-6 rounded-lg border border-neutral-200 hover:border-primary-200 transition-all duration-300 hover:shadow-card-hover;
+  }
+  
+  .service-card-dark {
+    @apply bg-accent-950 p-6 rounded-lg border border-accent-800 hover:border-primary-600 transition-all duration-300 hover:shadow-card-hover;
+  }
+  
+  /* Buttons mit neuen Farben */
+  .btn-primary {
+    @apply bg-primary-600 hover:bg-primary-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors duration-300 shadow-subtle hover:shadow-card;
+  }
+  
+  .btn-secondary {
+    @apply bg-accent-950 hover:bg-accent-900 text-white px-6 py-3 rounded-lg font-semibold transition-colors duration-300 shadow-subtle hover:shadow-card;
+  }
+  
+  .btn-outline {
+    @apply border-2 border-primary-600 text-primary-600 hover:bg-primary-600 hover:text-white px-6 py-3 rounded-lg font-semibold transition-all duration-300;
+  }
+  
+  /* Navigation-Styles */
+  .nav-item {
+    @apply text-neutral-700 hover:text-primary-600 px-4 py-2 rounded-md transition-colors duration-200;
+  }
+  
+  .nav-item.active {
+    @apply text-primary-600 bg-primary-50;
+  }
+  
+  /* Hero-Sections mit Gradient */
+  .hero-gradient {
+    @apply bg-gradient-to-r from-primary-600 to-primary-700;
+  }
+  
+  .hero-gradient-dark {
+    @apply bg-gradient-to-r from-accent-900 to-accent-950;
+  }
+  
+  /* Moderne Grid-Layouts */
+  .grid-modern {
+    @apply grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3;
+  }
+  
+  .grid-modern-large {
+    @apply grid gap-8 grid-cols-1 md:grid-cols-2;
+  }
+  
+  /* Fahrzeug-Cards */
+  .vehicle-card {
+    @apply bg-white rounded-lg shadow-card border border-neutral-200 overflow-hidden transition-all duration-300 hover:shadow-card-hover hover:-translate-y-1;
+  }
+  
+  .vehicle-card-image {
+    @apply w-full h-48 object-cover;
+  }
+  
+  .vehicle-card-content {
+    @apply p-6;
+  }
+  
+  .vehicle-card-price {
+    @apply text-2xl font-bold text-primary-600;
+  }
+  
+  /* Sections mit dezenten Hintergründen */
+  .section-light {
+    @apply bg-neutral-50;
+  }
+  
+  .section-accent {
+    @apply bg-accent-950 bg-opacity-[0.03];
+  }
+  
+  .section-primary {
+    @apply bg-primary-50;
+  }
+  
+  /* Text-Styles */
+  .text-primary {
+    @apply text-primary-600;
+  }
+  
+  .text-accent {
+    @apply text-accent-700;
+  }
+  
+  .text-muted {
+    @apply text-neutral-600;
+  }
+  
+  /* Hover-Effekte */
+  .hover-lift {
+    @apply transition-transform duration-300 hover:-translate-y-1;
+  }
+  
+  .hover-scale {
+    @apply transition-transform duration-300 hover:scale-105;
+  }
+  
+  /* Moderne Schatten */
+  .shadow-modern {
+    @apply shadow-card;
+  }
+  
+  .shadow-modern-hover {
+    @apply shadow-card-hover;
+  }
+}

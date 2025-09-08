@@ -2,44 +2,12 @@
 
 import { useEffect } from 'react';
 import MarketplaceEmbed from '../../components/MarketplaceEmbed';
+// import MarketplaceEmbedProxy from '../../components/MarketplaceEmbedProxy';
 
 export default function FahrzeugeClient() {
 
   useEffect(() => {
-    // Marketplace-Initialisierung
-    console.log('🚀 Initializing marketplace with Next.js Script component...');
-    
-    // Marketplace Global für Kompatibilität definieren
-    if (typeof window !== 'undefined') {
-      (window as any).marketplace = {
-        initialized: false,
-        config: {
-          apiKey: '0536fa11-99df-43f8-bf26-42af233f5478'
-        }
-      };
-    }
-
-    // Cleanup-Funktion für Component Unmount
-    return () => {
-      console.log('🧹 Starting marketplace cleanup...');
-      
-      // Entferne alle Marketplace-Scripts
-      const scripts = document.querySelectorAll('script[src*="loader.nocache"], script[src*="pxc-amm"]');
-      scripts.forEach(script => {
-        console.log('Removing script:', (script as HTMLScriptElement).src);
-        script.remove();
-      });
-      
-      // Cleanup Globals
-      if (typeof window !== 'undefined') {
-        delete (window as any).angular;
-        delete (window as any).ng;
-        delete (window as any).amm;
-        delete (window as any).marketplace;
-      }
-      
-      console.log('🧹 Marketplace cleanup completed');
-    };
+    console.log('🚗 Fahrzeuge page loaded - Marketplace integration with Next.js Script component');
   }, []);
 
   return (
@@ -80,12 +48,21 @@ export default function FahrzeugeClient() {
             </p>
           </div>
           
-          {/* Marketplace Embed Komponente */}
+          {/* AUTOMANAGER Marketplace mit Router-Events-Reinitialisierung */}
+          {/* Original AUTOMANAGER (mit API-Problemen) */}
+          {/* <MarketplaceEmbed
+            apiKey="0536fa11-99df-43f8-bf26-42af233f5478"
+            imprint="https://autogalerie-nord.de/impressum"
+            terms=""
+            privacy="https://autogalerie-nord.de/datenschutz"
+          /> */}
+          
+          {/* Original AUTOMANAGER mit Router-Events-Reinitialisierung */}
           <MarketplaceEmbed
             apiKey="0536fa11-99df-43f8-bf26-42af233f5478"
-            imprint={{ de: 'https://autogalerie-nord.de/impressum' }}
-            terms={{ de: 'https://autogalerie-nord.de/agb' }}
-            privacy={{ de: 'https://autogalerie-nord.de/datenschutz' }}
+            imprint="https://autogalerie-nord.de/impressum"
+            terms=""
+            privacy="https://autogalerie-nord.de/datenschutz"
           />
         </div>
       </section>
