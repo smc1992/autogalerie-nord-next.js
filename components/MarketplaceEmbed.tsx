@@ -52,25 +52,70 @@ export default function MarketplaceEmbed() {
       // Erstelle das Skript-Element nach pixelconcept-Spezifikation
       // Das Skript wird direkt an der Position eingefügt, wo die Fahrzeugbörse erscheinen soll
       const script = document.createElement('script');
-      script.src = 'https://cdn.dein.auto/pxc-amm/loader.nocache';
-      script.setAttribute('api-key', '0536fa11-99df-43f8-bf26-42af233f5478');
-      script.setAttribute('urls-terms', '{"de":"","en":"","fr":"","es":""}');
-      script.setAttribute('urls-privacy', '{"de":"https://autogalerie-nord.de/datenschutz","en":"","fr":"","es":""}');
-      script.setAttribute('urls-imprint', '{"de":"https://autogalerie-nord.de/impressum","en":"","fr":"","es":""}');
+      // Liste möglicher AUTOMANAGER-Script-URLs (Fallback-System)
+      const scriptUrls = [
+        'https://cdn.dein.auto/pxc-amm/loader.nocache',
+        'https://www.dein.auto/automanager/loader.nocache',
+        'https://api.dein.auto/v1/automanager/loader.nocache',
+        'https://automanager.pixelconcept.de/loader.nocache'
+      ];
+      
+      let currentUrlIndex = 0;
+      
+      const tryLoadScript = () => {
+        if (currentUrlIndex >= scriptUrls.length) {
+          console.error('AUTOMANAGER: Alle Script-URLs fehlgeschlagen');
+          // Fallback: Zeige Nachricht an
+          if (containerRef.current) {
+            containerRef.current.innerHTML = `
+              <div class="bg-gray-100 border border-gray-300 rounded-lg p-6 text-center">
+                <h3 class="text-lg font-semibold text-gray-800 mb-2">Fahrzeugbörse temporär nicht verfügbar</h3>
+                <p class="text-gray-600 mb-4">Die Fahrzeugbörse kann momentan nicht geladen werden. Bitte versuchen Sie es später erneut.</p>
+                <a href="/fahrzeuge" class="inline-block bg-red-600 text-white px-6 py-2 rounded-lg hover:bg-red-700 transition-colors">
+                  Zu unseren Fahrzeugen
+                </a>
+              </div>
+            `;
+          }
+          isInitializing = false;
+          return;
+        }
+        
+        const script = document.createElement('script');
+        script.src = scriptUrls[currentUrlIndex];
+        script.setAttribute('api-key', '0536fa11-99df-43f8-bf26-42af233f5478');
+        script.setAttribute('urls-terms', '{"de":"","en":"","fr":"","es":""}');
+        script.setAttribute('urls-privacy', '{"de":"https://autogalerie-nord.de/datenschutz","en":"","fr":"","es":""}');
+        script.setAttribute('urls-imprint', '{"de":"https://autogalerie-nord.de/impressum","en":"","fr":"","es":""}');
+        
+        // Zusätzliche Attribute für bessere Kompatibilität
+        script.setAttribute('crossorigin', 'anonymous');
+        script.setAttribute('referrerpolicy', 'no-referrer-when-downgrade');
 
-      script.onload = () => {
-        console.log('AUTOMANAGER script loaded successfully');
-        isInitializing = false;
+        script.onload = () => {
+          console.log(`AUTOMANAGER script loaded successfully from: ${scriptUrls[currentUrlIndex]}`);
+          isInitializing = false;
+        };
+
+        script.onerror = () => {
+          console.warn(`Failed to load AUTOMANAGER script from: ${scriptUrls[currentUrlIndex]}`);
+          currentUrlIndex++;
+          // Entferne fehlgeschlagenes Script
+          if (script.parentNode) {
+            script.parentNode.removeChild(script);
+          }
+          // Versuche nächste URL
+          setTimeout(tryLoadScript, 500);
+        };
+        
+        // Füge das Skript in den Container ein
+        if (containerRef.current) {
+          containerRef.current.appendChild(script);
+        }
       };
-
-      script.onerror = () => {
-        console.error('Failed to load AUTOMANAGER script');
-        isInitializing = false;
-      };
-
-      // Füge das Skript direkt in den Container ein
-      // Nach pixelconcept-Dokumentation: "Die Fahrzeugbörse wird an genau der Stelle eingeblendet, an der sich die Skriptreferenz befindet"
-      containerRef.current.appendChild(script);
+      
+      // Starte Fallback-System
+       tryLoadScript();
     };
     
     // Verzögerung um DOM-Bereitschaft sicherzustellen
