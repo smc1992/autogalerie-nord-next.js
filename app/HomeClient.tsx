@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import QuickSearchWidget from '../components/QuickSearchWidget';
+import VehicleHighlights from '../components/VehicleHighlights';
 import GoogleReviews from '../components/GoogleReviews';
 import { useState, useEffect } from 'react';
 
@@ -194,6 +195,9 @@ export default function HomeClient() {
       <div className="transform transition-all duration-700 hover:scale-[1.02]">
         <QuickSearchWidget />
       </div>
+
+      {/* Vehicle Highlights Section */}
+      <VehicleHighlights />
 
       {/* Google Reviews Section */}
       <GoogleReviews />

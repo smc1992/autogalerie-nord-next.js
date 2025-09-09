@@ -74,8 +74,8 @@ export default function RootLayout({
         {/* QuickSearch direkt einbinden */}
         <script src="/quicksearch-norequire_1.4.2.min.js"></script>
         
-        {/* Chat-Widget temporär deaktiviert wegen React-Rendering-Fehler */}
-        {/* <script async defer src="https://app.chatbot-smc.de/js/widget/knvkqmx3rs1hs1eh/float.js"></script> */}
+        {/* Chat-Widget */}
+        <script async defer src="https://app.chatbot-smc.de/js/widget/knvkqmx3rs1hs1eh/float.js"></script>
         
         {/* Schema Markup für Website und Sitelinks */}
         <script type="application/ld+json" dangerouslySetInnerHTML={{
