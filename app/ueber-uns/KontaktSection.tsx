@@ -19,7 +19,7 @@ export default function KontaktSection() {
             </div>
             <h3 className="text-xl font-semibold text-white mb-4">Telefonisch erreichen</h3>
             <a 
-              href="tel:+4941745969770" 
+              href="tel:+4904174596970" 
               className="text-2xl text-red-400 hover:text-red-300 transition-colors duration-300 cursor-pointer font-semibold"
             >
               041 745 969 70
@@ -55,7 +55,7 @@ export default function KontaktSection() {
         {/* CTA Buttons */}
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <a 
-            href="tel:+4941745969770"
+            href="tel:+4904174596970"
             className="bg-red-600 hover:bg-red-700 text-white px-8 py-4 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105 hover:shadow-xl whitespace-nowrap cursor-pointer inline-flex items-center justify-center"
           >
             <i className="ri-phone-line mr-2"></i>

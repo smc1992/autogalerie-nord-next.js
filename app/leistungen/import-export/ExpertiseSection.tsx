@@ -29,7 +29,7 @@ export default function ExpertiseSection() {
             </p>
           </div>
 
-          <div className="bg-gradient-to-br from-blue-50 to-blue-100 p-8 rounded-2xl text-center">
+          <div className="bg-gradient-to-br from-red-50 to-red-100 p-8 rounded-2xl text-center">
             <div className="w-16 h-16 flex items-center justify-center bg-red-600 rounded-full mx-auto mb-6">
               <i className="ri-translate-2 text-2xl text-white"></i>
             </div>
@@ -39,7 +39,7 @@ export default function ExpertiseSection() {
             </p>
           </div>
 
-          <div className="bg-gradient-to-br from-green-50 to-green-100 p-8 rounded-2xl text-center">
+          <div className="bg-gradient-to-br from-red-50 to-red-100 p-8 rounded-2xl text-center">
             <div className="w-16 h-16 flex items-center justify-center bg-red-600 rounded-full mx-auto mb-6">
               <i className="ri-earth-line text-2xl text-white"></i>
             </div>

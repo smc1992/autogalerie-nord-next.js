@@ -24,8 +24,8 @@ export default function ServicesGrid() {
         'Versicherung inklusive',
         'Steuern inklusive'
       ],
-      color: 'from-blue-50 to-blue-100',
-      iconBg: 'bg-blue-600'
+      color: 'from-red-50 to-red-100',
+      iconBg: 'bg-red-600'
     },
     {
       title: 'EU-Netto Export',
@@ -36,8 +36,8 @@ export default function ServicesGrid() {
         'Tax Free',
         'Netto-Preise'
       ],
-      color: 'from-green-50 to-green-100',
-      iconBg: 'bg-green-600'
+      color: 'from-red-50 to-red-100',
+      iconBg: 'bg-red-600'
     },
     {
       title: 'Zolldokumente',
@@ -48,8 +48,8 @@ export default function ServicesGrid() {
         'Professionelle Erstellung',
         'Vollständige Abwicklung'
       ],
-      color: 'from-purple-50 to-purple-100',
-      iconBg: 'bg-purple-600'
+      color: 'from-red-50 to-red-100',
+      iconBg: 'bg-red-600'
     },
     {
       title: 'Unterkunft',
@@ -60,8 +60,8 @@ export default function ServicesGrid() {
         'In unserer Nähe',
         'Komfortable Unterbringung'
       ],
-      color: 'from-orange-50 to-orange-100',
-      iconBg: 'bg-orange-600'
+      color: 'from-red-50 to-red-100',
+      iconBg: 'bg-red-600'
     },
     {
       title: 'Pick Up Service',
@@ -72,8 +72,8 @@ export default function ServicesGrid() {
         'Hauptbahnhof Mülheim',
         'Hamburg Abholung'
       ],
-      color: 'from-teal-50 to-teal-100',
-      iconBg: 'bg-teal-600'
+      color: 'from-red-50 to-red-100',
+      iconBg: 'bg-red-600'
     }
   ];
 
@@ -124,7 +124,7 @@ export default function ServicesGrid() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a 
-              href="tel:+4941745969770"
+              href="tel:+4904174596970"
               className="bg-red-600 hover:bg-red-700 text-white px-8 py-4 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105 hover:shadow-xl whitespace-nowrap cursor-pointer inline-flex items-center justify-center"
             >
               <i className="ri-phone-line mr-2"></i>

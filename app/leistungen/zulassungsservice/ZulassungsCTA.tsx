@@ -13,7 +13,7 @@ export default function ZulassungsCTA() {
         
         <div className="flex flex-col sm:flex-row gap-6 justify-center">
           <a 
-            href="tel:+4941745969770"
+            href="tel:+4904174596970"
             className="bg-red-600 hover:bg-red-700 text-white px-12 py-5 rounded-lg font-bold text-xl transition-all duration-300 transform hover:scale-105 hover:shadow-xl whitespace-nowrap cursor-pointer inline-flex items-center justify-center"
           >
             04174 596 97 00

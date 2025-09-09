@@ -168,7 +168,7 @@ export default function HomeClient() {
                 </span>
               </Link>
               <a 
-                href="tel:+4941745969770"
+                href="tel:+4904174596970"
                 className="group border-2 border-white text-white hover:bg-white hover:text-red-600 px-8 py-4 rounded-xl font-semibold transition-all duration-300 whitespace-nowrap cursor-pointer text-center transform hover:scale-105"
               >
                 <span className="flex items-center justify-center">

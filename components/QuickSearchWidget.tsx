@@ -114,10 +114,13 @@ export default function QuickSearchWidget({ className = '' }: QuickSearchWidgetP
     try {
       console.log('QuickSearch: Starte Initialisierung...');
       
-      // Externe AMM/Marketplace-Skripte blockieren
-      if ((window as any).ammInfo) {
-        console.log('AMM-System erkannt - deaktiviere externes Marketplace');
+      // Externe AMM/Marketplace-Skripte nur blockieren wenn nicht auf Fahrzeuge-Seite
+      const currentPath = window.location.pathname;
+      if ((window as any).ammInfo && !currentPath.includes('/fahrzeuge')) {
+        console.log('AMM-System erkannt - deaktiviere externes Marketplace (nicht auf Fahrzeuge-Seite)');
         delete (window as any).ammInfo;
+      } else if (currentPath.includes('/fahrzeuge')) {
+        console.log('Fahrzeuge-Seite erkannt - AMM/Marketplace-Skripte erlaubt');
       }
       
       // Container bereinigen vor Initialisierung
@@ -154,9 +157,9 @@ export default function QuickSearchWidget({ className = '' }: QuickSearchWidgetP
             
             // Fahrzeuganzahl nach Initialisierung laden - einmalig und robust
             setTimeout(() => {
-              console.log('Initiale Fahrzeuganzahl-Aktualisierung nach Initialisierung');
-              updateVehicleCount(true); // Erzwinge direkte API-Abfrage
-            }, 1500);
+              console.log('Lade Fahrzeuganzahl nach Initialisierung...');
+              updateVehicleCount(true); // Erzwinge direkte API-Abfrage für zuverlässige Aktualisierung
+            }, 1000);
             
             // QuickSearch verwaltet die Fahrzeuganzahl selbst nach Initialisierung
             console.log('QuickSearch-Initialisierung abgeschlossen - interne Logik übernimmt Fahrzeuganzahl-Verwaltung');
@@ -167,7 +170,10 @@ export default function QuickSearchWidget({ className = '' }: QuickSearchWidgetP
                 console.warn('Externes AMM-System nach Initialisierung erkannt - Neuinitialisierung');
                 (window as any).quicksearch.init(settings);
                 // Nach Neuinitialisierung erneut Fahrzeuganzahl laden
-                setTimeout(() => updateVehicleCount(), 1000);
+                setTimeout(() => {
+                  console.log('Lade Fahrzeuganzahl nach AMM-Neuinitialisierung...');
+                  updateVehicleCount(true);
+                }, 1000);
               }
             }, 4000);
             
@@ -258,7 +264,7 @@ export default function QuickSearchWidget({ className = '' }: QuickSearchWidgetP
   // Bei Routenwechsel prüfen und neu initialisieren
   useEffect(() => {
     if (pathname === '/') {
-      console.log('Navigation zur Startseite erkannt');
+      console.log('Navigation zur Startseite erkannt - QuickSearch wird neu initialisiert');
       
       // Reset der Initialisierung bei Navigation
       initializationRef.current = false;
@@ -298,6 +304,12 @@ export default function QuickSearchWidget({ className = '' }: QuickSearchWidgetP
         if (quicksearchContainer && jqueryAvailable && quicksearchAvailable) {
           console.log('QuickSearch Container und Scripts gefunden, initialisiere...');
           initializeQuickSearch();
+          
+          // Fahrzeuganzahl nach erfolgreicher Initialisierung aktualisieren
+          setTimeout(() => {
+            console.log('Aktualisiere Fahrzeuganzahl nach Navigation...');
+            updateVehicleCount(true); // Erzwinge direkte API-Abfrage
+          }, 1500);
         } else if (attempt < maxAttempts) {
           console.log(`Versuch ${attempt} fehlgeschlagen, wiederhole in 300ms...`);
           setTimeout(() => attemptInitialization(attempt + 1, maxAttempts), 300);
@@ -399,15 +411,19 @@ export default function QuickSearchWidget({ className = '' }: QuickSearchWidgetP
 
   // Externe Marketplace-Skripte blockieren und Script-Verfügbarkeit sicherstellen
   useEffect(() => {
-    // Blockiere externe AMM/Marketplace-Skripte
+    // Blockiere externe AMM/Marketplace-Skripte nur wenn nicht auf Fahrzeuge-Seite
     const blockExternalMarketplace = () => {
-      // Überschreibe globale Funktionen die externe Skripte laden könnten
       if (typeof window !== 'undefined') {
-        // Blockiere AMM-System
-        (window as any).ammInfo = undefined;
+        const currentPath = window.location.pathname;
         
-        // Marketplace-Scripts sind auf der Fahrzeuge-Seite erwünscht
-        console.log('Script-Blockierung für Marketplace deaktiviert');
+        if (!currentPath.includes('/fahrzeuge')) {
+          // Blockiere AMM-System nur auf anderen Seiten
+          (window as any).ammInfo = undefined;
+          console.log('Script-Blockierung für Marketplace aktiviert (nicht auf Fahrzeuge-Seite)');
+        } else {
+          // Marketplace-Scripts sind auf der Fahrzeuge-Seite erwünscht
+          console.log('Fahrzeuge-Seite erkannt - Script-Blockierung für Marketplace deaktiviert');
+        }
       }
     };
     

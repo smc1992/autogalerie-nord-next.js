@@ -64,7 +64,7 @@ export default function NotFound() {
           <p className="text-gray-400 mb-4">Benötigen Sie Hilfe?</p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <a 
-              href="tel:+4941745969770"
+              href="tel:+4904174596970"
               className="text-gray-300 hover:text-white transition-colors duration-300 flex items-center"
             >
               <i className="ri-phone-line mr-2"></i>

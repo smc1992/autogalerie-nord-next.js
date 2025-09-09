@@ -75,7 +75,7 @@ export default function TeamSection() {
 
             <div className="mt-8">
               <a 
-                href="tel:+4941745969770"
+                href="tel:+4904174596970"
                 className="bg-red-600 hover:bg-red-700 text-white px-8 py-4 rounded-lg font-semibold transition-all duration-300 whitespace-nowrap cursor-pointer inline-flex items-center transform hover:scale-105 hover:shadow-xl"
               >
                 <i className="ri-phone-line mr-2"></i>

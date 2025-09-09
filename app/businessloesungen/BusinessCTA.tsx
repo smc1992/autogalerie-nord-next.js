@@ -18,7 +18,7 @@ export default function BusinessCTA() {
           
           <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
             <a
-              href="tel:+4941745969770"
+              href="tel:+4904174596970"
               className="group bg-white hover:bg-gray-100 text-red-600 px-8 py-4 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105 hover:shadow-xl cursor-pointer whitespace-nowrap flex items-center"
             >
               <i className="ri-phone-fill mr-3 text-xl transform group-hover:rotate-12 transition-transform duration-300"></i>

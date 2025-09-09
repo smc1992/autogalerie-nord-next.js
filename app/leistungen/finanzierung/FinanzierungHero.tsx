@@ -25,7 +25,7 @@ export default function FinanzierungHero() {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
               <a 
-                href="tel:+4941745969770"
+                href="tel:+4904174596970"
                 className="bg-red-600 hover:bg-red-700 text-white px-8 py-4 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105 hover:shadow-xl whitespace-nowrap cursor-pointer inline-flex items-center justify-center"
               >
                 <i className="ri-phone-line mr-2"></i>

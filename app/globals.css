@@ -282,3 +282,396 @@
     @apply shadow-card-hover;
   }
 }
+
+/* AUTOMANAGER Marketplace Mobile Optimierungen */
+@layer components {
+  .marketplace-container {
+    /* Basis-Container-Styles */
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow-x: hidden !important;
+    box-sizing: border-box !important;
+    /* Scroll-Probleme beheben */
+    position: relative !important;
+    min-height: 400px !important;
+  }
+  
+  /* Font-Preload-Fixes für AUTOMANAGER */
+  .marketplace-container * {
+    font-display: swap !important;
+  }
+  
+  /* API-Fehler-Toleranz */
+   .marketplace-container .error-message,
+   .marketplace-container .loading-error {
+     display: none !important;
+   }
+   
+   /* Angular Bootstrap-Fixes */
+   .marketplace-container .ng-scope {
+     position: relative !important;
+     overflow: visible !important;
+   }
+   
+   /* Verhindere doppelte Initialisierung */
+   .marketplace-container[data-initialized="true"] {
+     pointer-events: auto !important;
+   }
+   
+   /* API-Verbindungsfehler ausblenden */
+   .marketplace-container .api-error,
+   .marketplace-container .connection-error {
+     display: none !important;
+   }
+   
+   /* Erweiterte API-Fehlerbehandlung */
+   .marketplace-container [class*="error"],
+   .marketplace-container [class*="failed"],
+   .marketplace-container [class*="abort"] {
+     display: none !important;
+   }
+   
+   /* DOM-Stabilität für AUTOMANAGER-Elemente */
+   .marketplace-container #am-marketplace {
+     /* Verhindere ungewollte Entfernung */
+     position: relative !important;
+     z-index: 1 !important;
+   }
+   
+   /* Sichere parentNode-Struktur */
+   .marketplace-container {
+     /* Stelle sicher, dass Container immer verfügbar ist */
+     min-height: 1px !important;
+     position: relative !important;
+   }
+  
+  /* AUTOMANAGER Scroll-Fix */
+   .marketplace-container #am-marketplace {
+     position: relative !important;
+     overflow: visible !important;
+     min-height: 400px !important;
+     /* DOM-Stabilität */
+     contain: layout !important;
+   }
+   
+   /* Verhindere parentNode-Fehler */
+   .marketplace-container * {
+     pointer-events: auto !important;
+   }
+   
+   /* AUTOMANAGER DOM-Fixes */
+   .marketplace-container [id*="am-"],
+   .marketplace-container [class*="am-"] {
+     position: relative !important;
+     display: block !important;
+   }
+  
+  /* Verhindere Scroll-Fehler */
+  .marketplace-container * {
+    scroll-behavior: auto !important;
+  }
+  
+  /* Angular-spezifische Fixes */
+   .marketplace-container [ng-app],
+   .marketplace-container [data-ng-app],
+   .marketplace-container .ng-scope {
+     position: relative !important;
+     overflow: visible !important;
+   }
+   
+   /* Scroll-Target-Fixes für AUTOMANAGER */
+   .marketplace-container .scroll-target,
+   .marketplace-container [data-scroll-target],
+   .marketplace-container .am-scroll-target {
+     position: relative !important;
+     top: 0 !important;
+     left: 0 !important;
+   }
+   
+   /* Verhindere undefined scroll targets */
+   .marketplace-container .result-list,
+   .marketplace-container .vehicle-list,
+   .marketplace-container .search-results {
+     position: relative !important;
+     top: 0 !important;
+   }
+   
+   /* AUTOMANAGER Layout-Stabilisierung */
+   .marketplace-container .am-content,
+   .marketplace-container .am-main,
+   .marketplace-container .am-wrapper {
+     position: relative !important;
+     width: 100% !important;
+     max-width: 100% !important;
+     overflow-x: hidden !important;
+   }
+  
+  /* Globale Marketplace-Optimierungen */
+  .marketplace-container * {
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+  }
+  
+  /* Spezifische AUTOMANAGER-Elemente */
+  .marketplace-container #am-marketplace,
+  .marketplace-container [id*="am-"],
+  .marketplace-container [class*="am-"],
+  .marketplace-container [class*="marketplace"] {
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow-x: hidden !important;
+    box-sizing: border-box !important;
+  }
+  
+  /* Text-Elemente im Marketplace */
+  .marketplace-container p,
+  .marketplace-container div,
+  .marketplace-container span,
+  .marketplace-container h1,
+  .marketplace-container h2,
+  .marketplace-container h3,
+  .marketplace-container h4,
+  .marketplace-container h5,
+  .marketplace-container h6 {
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+    hyphens: auto !important;
+    max-width: 100% !important;
+  }
+  
+  /* Tabellen im Marketplace */
+  .marketplace-container table {
+    width: 100% !important;
+    max-width: 100% !important;
+    table-layout: fixed !important;
+    overflow-x: auto !important;
+  }
+  
+  .marketplace-container td,
+  .marketplace-container th {
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+    max-width: 0 !important;
+  }
+  
+  /* Bilder im Marketplace */
+  .marketplace-container img {
+    max-width: 100% !important;
+    height: auto !important;
+    object-fit: contain !important;
+  }
+  
+  /* Mobile-spezifische Anpassungen */
+  @media (max-width: 768px) {
+    .marketplace-container {
+      padding: 5px !important;
+      margin: 0 !important;
+      width: 100vw !important;
+      max-width: 100vw !important;
+      left: 50% !important;
+      right: 50% !important;
+      margin-left: -50vw !important;
+      margin-right: -50vw !important;
+      position: relative !important;
+    }
+    
+    /* Volle Breite für alle Marketplace-Elemente */
+    .marketplace-container #am-marketplace,
+    .marketplace-container [id*="am-"],
+    .marketplace-container [class*="am-"],
+    .marketplace-container [class*="marketplace"] {
+      width: 100% !important;
+      max-width: 100% !important;
+      margin: 0 !important;
+      padding: 5px !important;
+    }
+    
+    /* Optimierte Schriftgrößen und Zeilenumbrüche */
+    .marketplace-container {
+      font-size: 14px !important;
+      line-height: 1.5 !important;
+      white-space: normal !important;
+      word-break: break-word !important;
+      overflow-wrap: break-word !important;
+      hyphens: auto !important;
+    }
+    
+    /* Bessere Textumbrüche für alle Elemente */
+    .marketplace-container p,
+    .marketplace-container div,
+    .marketplace-container span,
+    .marketplace-container h1,
+    .marketplace-container h2,
+    .marketplace-container h3,
+    .marketplace-container h4,
+    .marketplace-container h5,
+    .marketplace-container h6 {
+      white-space: normal !important;
+      word-break: break-word !important;
+      overflow-wrap: break-word !important;
+      hyphens: auto !important;
+      line-height: 1.4 !important;
+    }
+    
+    /* Buttons und Links */
+    .marketplace-container button,
+    .marketplace-container a {
+      min-height: 44px !important;
+      padding: 8px 12px !important;
+      font-size: 14px !important;
+      white-space: normal !important;
+      word-wrap: break-word !important;
+    }
+    
+    /* Formulare */
+    .marketplace-container input,
+    .marketplace-container select,
+    .marketplace-container textarea {
+      width: 100% !important;
+      max-width: 100% !important;
+      font-size: 16px !important; /* Verhindert Zoom auf iOS */
+      box-sizing: border-box !important;
+    }
+    
+    /* Fahrzeugkarten und Listen */
+     .marketplace-container .vehicle-card,
+     .marketplace-container .vehicle-item,
+     .marketplace-container .car-item,
+     .marketplace-container .result-item,
+     .marketplace-container .result-item-data {
+       width: 100% !important;
+       max-width: 100% !important;
+       margin: 5px 0 !important;
+       padding: 10px !important;
+       box-sizing: border-box !important;
+     }
+     
+     /* Spezifische AUTOMANAGER result-item Optimierungen */
+     .marketplace-container .result-item-data .row,
+     .marketplace-container .result-item-data .col,
+     .marketplace-container .result-item-data .col-12,
+     .marketplace-container .result-item-data .col-sm-4,
+     .marketplace-container .result-item-data .col-sm-8,
+     .marketplace-container .result-item-data .col-xl-3,
+     .marketplace-container .result-item-data .col-xl-9 {
+       width: 100% !important;
+       max-width: 100% !important;
+       flex: 0 0 100% !important;
+       padding-left: 5px !important;
+       padding-right: 5px !important;
+       margin: 0 !important;
+     }
+     
+     /* Fahrzeugbilder in result-items */
+     .marketplace-container .result-item-data img,
+     .marketplace-container .result-item-data .img-fluid {
+       width: 100% !important;
+       max-width: 100% !important;
+       height: auto !important;
+       object-fit: cover !important;
+     }
+     
+     /* Fahrzeugtitel und Links */
+     .marketplace-container .result-item-data h4,
+     .marketplace-container .result-item-data .item-title {
+       font-size: 16px !important;
+       line-height: 1.3 !important;
+       margin-bottom: 8px !important;
+       word-wrap: break-word !important;
+       overflow-wrap: break-word !important;
+     }
+     
+     /* Badges und Labels */
+     .marketplace-container .result-item-data .badge,
+     .marketplace-container .result-item-data .badge-outline-secondary {
+       font-size: 12px !important;
+       padding: 4px 8px !important;
+       margin: 2px !important;
+       white-space: nowrap !important;
+     }
+    
+    /* Preise und wichtige Informationen */
+    .marketplace-container .price,
+    .marketplace-container .vehicle-price,
+    .marketplace-container .car-price {
+      font-size: 16px !important;
+      font-weight: bold !important;
+      white-space: nowrap !important;
+    }
+  }
+  
+  /* Extra kleine Bildschirme */
+  @media (max-width: 480px) {
+    .marketplace-container {
+      padding: 3px !important;
+      width: 100vw !important;
+      max-width: 100vw !important;
+      font-size: 13px !important;
+      line-height: 1.3 !important;
+    }
+    
+    /* Noch kompaktere Darstellung für sehr kleine Bildschirme */
+    .marketplace-container #am-marketplace,
+    .marketplace-container [id*="am-"],
+    .marketplace-container [class*="am-"],
+    .marketplace-container [class*="marketplace"] {
+      padding: 3px !important;
+      margin: 0 !important;
+    }
+    
+    /* Kleinere Buttons für Touch-Bedienung */
+    .marketplace-container button,
+    .marketplace-container a {
+      min-height: 40px !important;
+      padding: 6px 10px !important;
+      font-size: 13px !important;
+    }
+    
+    /* Fahrzeugkarten kompakter */
+     .marketplace-container .vehicle-card,
+     .marketplace-container .vehicle-item,
+     .marketplace-container .car-item,
+     .marketplace-container .result-item,
+     .marketplace-container .result-item-data {
+       padding: 8px !important;
+       margin: 3px 0 !important;
+     }
+     
+     /* Result-item Spalten für sehr kleine Bildschirme */
+     .marketplace-container .result-item-data .row,
+     .marketplace-container .result-item-data .col,
+     .marketplace-container .result-item-data .col-12,
+     .marketplace-container .result-item-data .col-sm-4,
+     .marketplace-container .result-item-data .col-sm-8,
+     .marketplace-container .result-item-data .col-xl-3,
+     .marketplace-container .result-item-data .col-xl-9 {
+       padding-left: 3px !important;
+       padding-right: 3px !important;
+     }
+     
+     /* Kleinere Fahrzeugtitel */
+     .marketplace-container .result-item-data h4,
+     .marketplace-container .result-item-data .item-title {
+       font-size: 14px !important;
+       line-height: 1.2 !important;
+       margin-bottom: 6px !important;
+     }
+     
+     /* Kompakte Badges */
+     .marketplace-container .result-item-data .badge,
+     .marketplace-container .result-item-data .badge-outline-secondary {
+       font-size: 11px !important;
+       padding: 3px 6px !important;
+       margin: 1px !important;
+     }
+    
+    /* Preise bleiben gut lesbar */
+    .marketplace-container .price,
+    .marketplace-container .vehicle-price,
+    .marketplace-container .car-price {
+      font-size: 15px !important;
+    }
+  }
+}

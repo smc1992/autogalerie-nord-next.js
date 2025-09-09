@@ -72,7 +72,7 @@ export default function ProzessSection() {
             nach Vertragsabschluss.
           </p>
           <a
-            href="tel:+4941745969770"
+            href="tel:+4904174596970"
             className="bg-red-600 hover:bg-red-700 text-white px-12 py-4 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105 hover:shadow-xl whitespace-nowrap cursor-pointer inline-flex items-center"
           >
             <i className="ri-phone-line mr-2"></i>

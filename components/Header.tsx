@@ -46,7 +46,7 @@ export default function Header() {
                 <span className="text-sm whitespace-nowrap">WhatsApp</span>
               </a>
               <a 
-                href="tel:+4941745969770" 
+                href="tel:+4904174596970" 
                 className="group flex items-center hover:text-red-200 transition-all duration-300 cursor-pointer transform hover:scale-105"
                 aria-label="Autogalerie Nord anrufen: +49 41 745 969 70"
               >
@@ -79,7 +79,7 @@ export default function Header() {
                 <i className="ri-whatsapp-fill text-xl"></i>
               </a>
               <a 
-                href="tel:+4941745969770" 
+                href="tel:+4904174596970" 
                 className="w-12 h-12 flex items-center justify-center hover:text-red-200 transition-all duration-300 cursor-pointer transform hover:scale-110 hover:rotate-12 rounded-lg"
                 aria-label="Autogalerie Nord anrufen"
               >
@@ -340,7 +340,7 @@ export default function Header() {
                       <p className="text-xs text-gray-500">Wir sind für Sie da!</p>
                     </div>
                     <a 
-                      href="tel:+4941745969770"
+                      href="tel:+4904174596970"
                       className="group w-full bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white px-6 py-4 rounded-xl font-semibold transition-all duration-300 cursor-pointer inline-flex items-center justify-center transform hover:scale-105 hover:shadow-lg"
                       onClick={() => setIsMenuOpen(false)}
                     >

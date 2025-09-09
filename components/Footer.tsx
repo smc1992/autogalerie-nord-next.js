@@ -92,7 +92,7 @@ export default function Footer() {
                     </div>
                   </div>
 
-                  <a href="tel:+4941745969770" className="group/item flex flex-col sm:flex-row items-center justify-center sm:justify-start py-3 sm:py-2 md:py-0 transform transition-all duration-300 hover:translate-x-2 cursor-pointer">
+                  <a href="tel:+4904174596970" className="group/item flex flex-col sm:flex-row items-center justify-center sm:justify-start py-3 sm:py-2 md:py-0 transform transition-all duration-300 hover:translate-x-2 cursor-pointer">
                     <div className="w-5 h-5 sm:w-4 sm:h-4 flex items-center justify-center mb-2 sm:mb-1 md:mb-0 sm:mr-3 transform group-hover/item:rotate-12 transition-transform duration-300">
                       <i className="ri-phone-line text-red-600 text-base sm:text-sm"></i>
                     </div>

@@ -2,7 +2,6 @@
 
 import { useEffect } from 'react';
 import MarketplaceEmbed from '../../components/MarketplaceEmbed';
-// import MarketplaceEmbedProxy from '../../components/MarketplaceEmbedProxy';
 
 export default function FahrzeugeClient() {
 
@@ -48,22 +47,8 @@ export default function FahrzeugeClient() {
             </p>
           </div>
           
-          {/* AUTOMANAGER Marketplace mit Router-Events-Reinitialisierung */}
-          {/* Original AUTOMANAGER (mit API-Problemen) */}
-          {/* <MarketplaceEmbed
-            apiKey="0536fa11-99df-43f8-bf26-42af233f5478"
-            imprint="https://autogalerie-nord.de/impressum"
-            terms=""
-            privacy="https://autogalerie-nord.de/datenschutz"
-          /> */}
-          
-          {/* Original AUTOMANAGER mit Router-Events-Reinitialisierung */}
-          <MarketplaceEmbed
-            apiKey="0536fa11-99df-43f8-bf26-42af233f5478"
-            imprint="https://autogalerie-nord.de/impressum"
-            terms=""
-            privacy="https://autogalerie-nord.de/datenschutz"
-          />
+          {/* AUTOMANAGER Marketplace */}
+          <MarketplaceEmbed />
         </div>
       </section>
 

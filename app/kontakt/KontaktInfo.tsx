@@ -32,7 +32,7 @@ export default function KontaktInfo() {
             </div>
             <h3 className="text-xl font-semibold text-gray-900 mb-4 group-hover:text-red-600 transition-colors duration-300">Telefon</h3>
             <a 
-              href="tel:+4941745969770" 
+              href="tel:+4904174596970" 
               className="text-gray-600 hover:text-red-600 transition-colors duration-300 cursor-pointer text-lg font-medium"
             >
               041 745 969 70
