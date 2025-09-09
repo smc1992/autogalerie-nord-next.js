@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import Link from 'next/link';
 import { fetchFromApi } from '../app/lib/apiClient';
 
@@ -45,11 +45,12 @@ export default function VehicleHighlights({ className = '' }: VehicleHighlightsP
   const [error, setError] = useState<string | null>(null);
   const [vehiclesPerPage] = useState(12); // Anzahl Fahrzeuge pro Seite
   const [currentPage, setCurrentPage] = useState(1);
-  const [showModal, setShowModal] = useState(false);
+
   const [activeFilter, setActiveFilter] = useState<FilterCategory>('alle');
   const [loadingCategories, setLoadingCategories] = useState<Record<FilterCategory, boolean>>({} as Record<FilterCategory, boolean>);
 
-  const filterOptions: FilterOption[] = [
+  // Alle möglichen Filter-Optionen
+  const allFilterOptions: FilterOption[] = [
     { id: 'alle', label: 'Alle Fahrzeuge', icon: 'ri-car-line', description: 'Alle verfügbaren Fahrzeuge' },
     { id: 'coupe', label: 'Sportwagen/Coupé', icon: 'ri-rocket-line', description: 'Hochleistungs-Sportwagen', apiValue: 'coupe' },
     { id: 'offroad', label: 'SUV/Geländewagen', icon: 'ri-truck-line', description: 'Geländewagen und SUVs', apiValue: 'offroad' },
@@ -58,6 +59,25 @@ export default function VehicleHighlights({ className = '' }: VehicleHighlightsP
     { id: 'station', label: 'Kombi', icon: 'ri-car-line', description: 'Praktische Kombis', apiValue: 'station' },
     { id: 'compact', label: 'Kleinwagen', icon: 'ri-car-line', description: 'Kompakte Stadtfahrzeuge', apiValue: 'compact' }
   ];
+
+  // Dynamische Filter basierend auf verfügbaren Fahrzeugen
+  const filterOptions = useMemo(() => {
+    if (vehicles.length === 0) {
+      return [allFilterOptions[0]]; // Nur "Alle Fahrzeuge" wenn keine Daten
+    }
+
+    // Sammle alle verfügbaren bodyGroups aus den Fahrzeugdaten
+    const availableBodyGroups = new Set<string>();
+    vehicles.forEach(vehicle => {
+      vehicle.bodyGroups?.forEach(group => availableBodyGroups.add(group));
+    });
+
+    // Filtere nur die Optionen, die tatsächlich Fahrzeuge haben
+    return allFilterOptions.filter(option => {
+      if (option.id === 'alle') return true; // "Alle Fahrzeuge" immer anzeigen
+      return option.apiValue && availableBodyGroups.has(option.apiValue);
+    });
+  }, [vehicles]);
 
   useEffect(() => {
     const fetchLatestVehicles = async () => {
@@ -199,12 +219,14 @@ export default function VehicleHighlights({ className = '' }: VehicleHighlightsP
   const fetchVehiclesByCategory = async (category: FilterCategory) => {
     if (category === 'alle') {
       setFilteredVehicles(vehicles);
+      updateDisplayedVehicles(vehicles, 1); // Reset zu erster Seite
       return;
     }
 
     // Check if we already have vehicles for this category
     if (categoryVehicles[category] && categoryVehicles[category].length > 0) {
       setFilteredVehicles(categoryVehicles[category]);
+      updateDisplayedVehicles(categoryVehicles[category], 1); // Reset zu erster Seite
       return;
     }
 
@@ -289,15 +311,7 @@ export default function VehicleHighlights({ className = '' }: VehicleHighlightsP
     await fetchVehiclesByCategory(category);
   };
 
-  const openModal = () => {
-    setShowModal(true);
-    document.body.style.overflow = 'hidden';
-  };
 
-  const closeModal = () => {
-    setShowModal(false);
-    document.body.style.overflow = 'unset';
-  };
 
   if (loading) {
     return (
@@ -372,16 +386,56 @@ export default function VehicleHighlights({ className = '' }: VehicleHighlightsP
             Entdecken Sie unsere neuesten Premium-Fahrzeuge mit geprüfter Qualität
           </p>
           
-          {/* Filter Button */}
-          <div className="flex justify-center mb-8">
-            <button
-              onClick={openModal}
-              className="inline-flex items-center bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 hover:shadow-lg"
-            >
-              <i className="ri-filter-line mr-2 text-lg"></i>
-              Nach Kategorie filtern
-              <i className="ri-arrow-down-s-line ml-2"></i>
-            </button>
+          {/* Horizontal Filter Buttons */}
+          <div className="mb-8">
+            <div className="flex flex-wrap justify-center gap-3 mb-6">
+              {filterOptions.map((option) => {
+                const isLoading = loadingCategories[option.id];
+                const cachedVehicles = categoryVehicles[option.id] || [];
+                
+                // Calculate vehicle count
+                let vehicleCount = 0;
+                if (option.id === 'alle') {
+                  vehicleCount = vehicles.length;
+                } else {
+                  if (cachedVehicles.length > 0) {
+                    vehicleCount = cachedVehicles.length;
+                  } else if (!isLoading && vehicles.length > 0) {
+                    const estimatedCount = vehicles.filter(vehicle => 
+                      vehicle.bodyGroups?.includes(option.apiValue || '')
+                    ).length;
+                    vehicleCount = estimatedCount;
+                  }
+                }
+                
+                return (
+                  <button
+                    key={option.id}
+                    onClick={() => filterVehicles(option.id)}
+                    disabled={isLoading}
+                    className={`inline-flex items-center px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed ${
+                      activeFilter === option.id
+                        ? 'bg-red-600 text-white shadow-lg'
+                        : 'bg-white text-gray-700 border border-gray-300 hover:border-red-300 hover:text-red-600 shadow-sm'
+                    }`}
+                  >
+                    {isLoading ? (
+                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-current mr-2"></div>
+                    ) : (
+                      <i className={`${option.icon} mr-2`}></i>
+                    )}
+                    {option.label}
+                    <span className={`ml-2 px-2 py-0.5 rounded-full text-xs ${
+                      activeFilter === option.id
+                        ? 'bg-red-500 text-white'
+                        : 'bg-gray-100 text-gray-600'
+                    }`}>
+                      {isLoading ? '...' : vehicleCount}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
           </div>
           
           {/* Active Filter Display */}
@@ -409,7 +463,7 @@ export default function VehicleHighlights({ className = '' }: VehicleHighlightsP
               className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:scale-105 group"
             >
               {/* Vehicle Image */}
-              <div className="relative h-48 overflow-hidden">
+              <div className="relative h-72 sm:h-48 overflow-hidden">
                 {vehicle.images && vehicle.images.length > 0 ? (
                   <img 
                     src={vehicle.images[0].url} 
@@ -512,95 +566,7 @@ export default function VehicleHighlights({ className = '' }: VehicleHighlightsP
         </div>
       </div>
 
-      {/* Filter Modal */}
-      {showModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
-            {/* Modal Header */}
-            <div className="flex items-center justify-between p-6 border-b border-gray-200">
-              <h3 className="text-2xl font-bold text-gray-900">Fahrzeuge nach Kategorie filtern</h3>
-              <button
-                onClick={closeModal}
-                className="text-gray-400 hover:text-gray-600 transition-colors duration-200"
-              >
-                <i className="ri-close-line text-2xl"></i>
-              </button>
-            </div>
-            
-            {/* Modal Content */}
-            <div className="p-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                 {filterOptions.map((option) => {
-                    const isLoading = loadingCategories[option.id];
-                    const cachedVehicles = categoryVehicles[option.id] || [];
-                    
-                    // For 'alle' show total vehicles, for others show cached filtered count
-                    let vehicleCount = 0;
-                    if (option.id === 'alle') {
-                      vehicleCount = vehicles.length;
-                    } else {
-                      // If we have cached vehicles for this category, show that count
-                      // Otherwise, try to estimate from current vehicles
-                      if (cachedVehicles.length > 0) {
-                        vehicleCount = cachedVehicles.length;
-                      } else if (!isLoading && vehicles.length > 0) {
-                        // Estimate count by filtering current vehicles
-                        const estimatedCount = vehicles.filter(vehicle => 
-                          vehicle.bodyGroups?.includes(option.apiValue || '')
-                        ).length;
-                        vehicleCount = estimatedCount;
-                      }
-                    }
-                   
-                   return (
-                     <button
-                       key={option.id}
-                       onClick={async () => {
-                         await filterVehicles(option.id);
-                         closeModal();
-                       }}
-                       disabled={isLoading}
-                       className={`p-6 rounded-xl border-2 transition-all duration-300 text-left hover:shadow-lg transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed ${
-                         activeFilter === option.id
-                           ? 'border-red-500 bg-red-50'
-                           : 'border-gray-200 hover:border-red-300'
-                       }`}
-                     >
-                       <div className="flex items-center mb-3">
-                         {isLoading ? (
-                           <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-red-600 mr-3"></div>
-                         ) : (
-                           <i className={`${option.icon} text-2xl text-red-600 mr-3`}></i>
-                         )}
-                         <h4 className="text-lg font-semibold text-gray-900">{option.label}</h4>
-                       </div>
-                       <p className="text-sm text-gray-600 mb-3">{option.description}</p>
-                       <div className="flex items-center justify-between">
-                         <span className="text-sm font-medium text-red-600">
-                           {isLoading ? 'Lädt...' : `${vehicleCount} Fahrzeuge`}
-                         </span>
-                         {activeFilter === option.id && !isLoading && (
-                           <i className="ri-check-line text-red-600 text-lg"></i>
-                         )}
-                       </div>
-                     </button>
-                   );
-                 })}
-              </div>
-              
-              {/* Modal Footer */}
-              <div className="mt-8 pt-6 border-t border-gray-200 flex justify-end">
-                <button
-                  onClick={closeModal}
-                  className="bg-gray-100 hover:bg-gray-200 text-gray-800 px-6 py-3 rounded-lg font-semibold transition-all duration-300"
-                >
-                  Schließen
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
+
     </section>
   );
 }
