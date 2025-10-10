@@ -14,7 +14,8 @@ export default function FahrzeugeClient() {
 
       
       {/* Hero Section */}
-      <section className="bg-gradient-to-r from-red-600 to-red-700 text-white py-20 fahrzeuge-hero">
+      {/* Größerer Offset unter festem Header, angeglichen an Startseite */}
+      <section className="bg-gradient-to-r from-red-600 to-red-700 text-white pt-36 sm:pt-40 md:pt-32 lg:pt-36 xl:pt-40 2xl:pt-44 pb-20 fahrzeuge-hero">
         <div className="max-w-6xl mx-auto px-6 text-center">
           <h1 className="text-4xl md:text-5xl font-bold mb-6">
             Über 120 Premium-Fahrzeuge
