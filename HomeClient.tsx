@@ -90,7 +90,7 @@ export default function HomeClient() {
           </div>
         )}
 
-        <div className="relative z-10 flex items-center h-full px-6">
+        <div className="relative z-10 flex items-center h-full px-6 pt-24 md:pt-0">
           <div className={`w-full max-w-4xl transform transition-all duration-1000 ${
             heroLoaded ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'
           }`}>

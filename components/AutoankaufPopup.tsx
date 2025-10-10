@@ -24,6 +24,14 @@ export default function AutoankaufPopup({ isOpen, onClose }: AutoankaufPopupProp
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [formStartedAt] = useState(() => Date.now());
+  const [submissionId] = useState(() => {
+    if (typeof crypto !== 'undefined' && 'randomUUID' in crypto) {
+      return crypto.randomUUID();
+    }
+    // Fallback: einfache UUID-ähnliche Zeichenkette
+    return `${Date.now()}-${Math.random().toString(36).slice(2)}`;
+  });
   const [submitStatus, setSubmitStatus] = useState('');
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
@@ -43,6 +51,9 @@ export default function AutoankaufPopup({ isOpen, onClose }: AutoankaufPopupProp
       Object.entries(formData).forEach(([key, value]) => {
         formDataToSend.append(key, value);
       });
+      // Idempotency + simple timing token
+      formDataToSend.append('submissionId', submissionId);
+      formDataToSend.append('formStartedAt', String(formStartedAt));
 
       const response = await fetch('/api/autoankauf', {
         method: 'POST',
@@ -69,6 +80,8 @@ export default function AutoankaufPopup({ isOpen, onClose }: AutoankaufPopupProp
           onClose();
           setSubmitStatus('');
         }, 2000);
+      } else if (response.status === 429) {
+        setSubmitStatus('rate_limited');
       } else {
         setSubmitStatus('error');
       }
@@ -331,6 +344,15 @@ export default function AutoankaufPopup({ isOpen, onClose }: AutoankaufPopupProp
               <div className="flex items-center">
                 <i className="ri-error-warning-line text-red-600 mr-2"></i>
                 <span className="text-red-800">Es gab einen Fehler beim Senden Ihrer Anfrage. Bitte versuchen Sie es erneut.</span>
+              </div>
+            </div>
+          )}
+
+          {submitStatus === 'rate_limited' && (
+            <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+              <div className="flex items-center">
+                <i className="ri-timer-line text-yellow-600 mr-2"></i>
+                <span className="text-yellow-800">Sie haben kürzlich bereits eine Anfrage gesendet. Bitte warten Sie kurz und versuchen Sie es später erneut.</span>
               </div>
             </div>
           )}

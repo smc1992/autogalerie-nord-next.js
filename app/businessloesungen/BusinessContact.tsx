@@ -16,6 +16,12 @@ export default function BusinessContact() {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState('');
+  const [formStartedAt] = useState(() => Date.now());
+  const [submissionId] = useState(() =>
+    typeof crypto !== 'undefined' && 'randomUUID' in crypto
+      ? crypto.randomUUID()
+      : Math.random().toString(36).slice(2)
+  );
 
   const services = [
     'Persönliche Beratung',
@@ -51,6 +57,8 @@ export default function BusinessContact() {
       Object.entries(formData).forEach(([key, value]) => {
         formBody.append(key, value.toString());
       });
+      formBody.append('submissionId', submissionId);
+      formBody.append('formStartedAt', String(formStartedAt));
 
       const response = await fetch('/api/business-contact', {
         method: 'POST',
@@ -60,7 +68,9 @@ export default function BusinessContact() {
         body: formBody
       });
 
-      if (response.ok) {
+      if (response.status === 429) {
+        setSubmitStatus('Zu viele Anfragen. Bitte versuchen Sie es später erneut.');
+      } else if (response.ok) {
         setSubmitStatus('Vielen Dank! Ihre Anfrage wurde erfolgreich gesendet. Wir melden uns in Kürze bei Ihnen.');
         setFormData({
           company: '',

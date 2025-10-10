@@ -1,6 +1,10 @@
 // Use the correct API endpoint without the v1 path
 const API_BASE_URL = 'https://api.pixel-base.de/marketplace/v3-11365';
 const SERVER_API_KEY = '0536fa11-99df-43f8-bf26-42af233f5478';
+import dns from 'dns';
+
+// Prefer IPv4 results to avoid IPv6 issues in some environments
+dns.setDefaultResultOrder('ipv4first');
 
 export async function fetchFromApi(path: string, clientParams: URLSearchParams) {
   // Build query string manually
@@ -15,9 +19,10 @@ export async function fetchFromApi(path: string, clientParams: URLSearchParams) 
     });
   }
   
-  // Ensure path doesn't start with a slash if we're appending it
+  // Ensure proper URL construction without double slashes
   const cleanPath = path.startsWith('/') ? path.substring(1) : path;
-  const targetUrl = `${API_BASE_URL}/${cleanPath}${queryString}`;
+  const baseUrl = API_BASE_URL.endsWith('/') ? API_BASE_URL.slice(0, -1) : API_BASE_URL;
+  const targetUrl = `${baseUrl}/${cleanPath}${queryString}`;
 
   try {
     console.log(`[API CLIENT] Fetching: ${targetUrl}`);
@@ -25,7 +30,7 @@ export async function fetchFromApi(path: string, clientParams: URLSearchParams) 
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
-      }
+      },
     });
 
     if (!response.ok) {

@@ -2,15 +2,19 @@
 
 import Link from 'next/link';
 import QuickSearchWidget from '../components/QuickSearchWidget';
+import dynamic from 'next/dynamic';
+const QuickSearchClient = dynamic(() => import('../components/QuickSearch'), { ssr: false });
 import VehicleHighlights from '../components/VehicleHighlights';
 import GoogleReviews from '../components/GoogleReviews';
 import { useState, useEffect } from 'react';
+import KontaktPopup from '../components/KontaktPopup';
 
 export default function HomeClient() {
   const [isVisible, setIsVisible] = useState(false);
   const [heroLoaded, setHeroLoaded] = useState(false);
   const [isClient, setIsClient] = useState(false);
   const [currentHeadline, setCurrentHeadline] = useState(0);
+  const [isKontaktOpen, setIsKontaktOpen] = useState(false);
 
   // SEO-optimierte Headlines für den Slider
   const headlines = [
@@ -65,7 +69,7 @@ export default function HomeClient() {
     <>
       {/* Hero Section */}
       <section 
-        className="relative h-screen bg-cover bg-center bg-no-repeat overflow-hidden"
+        className="relative min-h-[80vh] lg:min-h-[70vh] xl:min-h-[65vh] 2xl:min-h-[60vh] bg-cover bg-center bg-no-repeat overflow-hidden"
         style={{
           backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('/images/hero-premium.webp')`
         }}
@@ -102,10 +106,11 @@ export default function HomeClient() {
           </div>
         )}
 
-        <div className="relative z-10 flex items-center h-full px-6 3xl:px-12 4xl:px-16">
-          <div className="w-full max-w-4xl 3xl:max-w-6xl 4xl:max-w-7xl">
+        <div className="relative z-10 h-full px-4 sm:px-6 pt-36 sm:pt-40 md:pt-32 lg:pt-36 xl:pt-40 2xl:pt-44 pb-8 sm:pb-12 3xl:px-12 4xl:px-16">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 items-center">
+            <div className="lg:col-span-7 w-full max-w-3xl lg:max-w-4xl 3xl:max-w-6xl 4xl:max-w-7xl text-center lg:text-left">
             {/* SEO-optimierte dynamische H1 Überschrift */}
-            <div className="relative h-32 sm:h-36 md:h-40 lg:h-48 3xl:h-56 4xl:h-64 mb-4 sm:mb-6 3xl:mb-8 4xl:mb-10">
+            <div className="relative mb-3 sm:mb-4 lg:mb-5">
               <h1 
                 className="text-4xl sm:text-5xl md:text-5xl lg:text-6xl 3xl:text-7xl 4xl:text-8xl font-bold text-white leading-tight"
                 style={{ 
@@ -122,7 +127,7 @@ export default function HomeClient() {
             </div>
 
             {/* Dynamischer Untertitel */}
-            <div className="relative h-12 sm:h-16 mb-3 sm:mb-4">
+            <div className="relative mb-2 sm:mb-3">
               <p 
                 className="text-lg sm:text-xl text-gray-100"
                 style={{ 
@@ -138,12 +143,12 @@ export default function HomeClient() {
             >
               BMW • Mercedes • Audi • VW • Porsche
             </p>
-            <p className="text-lg sm:text-lg text-red-100 mb-6 sm:mb-8"
+            <p className="text-lg sm:text-lg text-red-100 mb-4 sm:mb-6"
             style={{ textShadow: '1px 1px 2px rgba(0,0,0,0.6)' }}
             >
               ✓ Faire Preise  ✓ Sofortige Finanzierung
             </p>
-            <div className="flex flex-col gap-4 sm:flex-row sm:gap-4">
+            <div className="flex flex-col gap-4 sm:flex-row sm:gap-4 justify-center lg:justify-start">
               <Link href="/fahrzeuge" className="group bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white px-8 py-4 sm:px-10 sm:py-5 rounded-lg sm:rounded-xl font-bold text-base sm:text-lg transition-all duration-300 cursor-pointer text-center transform hover:scale-105 hover:shadow-2xl w-full sm:w-auto">
                 <span className="flex items-center justify-center">
                   <i className="ri-car-line mr-2 sm:mr-3 text-lg sm:text-xl"></i>
@@ -180,21 +185,23 @@ export default function HomeClient() {
                 />
               ))}
             </div>
+            </div>
+            {/* Rechte Spalte: QuickSearch Card und Promo-CTA */}
+            <div className="lg:col-span-5 xl:col-span-6 lg:col-start-8 xl:col-start-8 justify-self-end self-center w-full max-w-md sm:max-w-lg lg:max-w-xl xl:max-w-2xl mt-6 sm:mt-8 lg:mt-0 mx-4 sm:mx-0">
+              <div className="backdrop-blur-sm bg-white/95 rounded-2xl shadow-xl sm:shadow-2xl p-6 sm:p-9 border border-white/40" suppressHydrationWarning>
+                <QuickSearchClient />
+              </div>
+            </div>
           </div>
         </div>
 
-        {/* Scroll indicator */}
-        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
-          <div className="w-6 h-10 border-2 border-white/50 rounded-full flex justify-center">
-            <div className="w-1 h-3 bg-white/70 rounded-full mt-2 animate-pulse"></div>
-          </div>
-        </div>
+        {/* Kontaktformular Modal */}
+        <KontaktPopup isOpen={isKontaktOpen} onClose={() => setIsKontaktOpen(false)} />
+
+        {/* Scroll indicator (deaktiviert für kompaktere Darstellung) */}
       </section>
 
-      {/* Quicksearch Section */}
-      <div className="transform transition-all duration-700 hover:scale-[1.02]">
-        <QuickSearchWidget />
-      </div>
+      {/* Quicksearch Section (in Hero integriert) */}
 
       {/* Vehicle Highlights Section */}
       <VehicleHighlights />
@@ -203,7 +210,7 @@ export default function HomeClient() {
       <GoogleReviews />
 
       {/* Services Section mit dezenter Akzentfarbe */}
-      <section className="py-20 section-accent relative overflow-hidden">
+      <section className="py-12 lg:py-16 section-accent relative overflow-hidden">
         {/* Fixed background decoration - only render on client */}
         {isClient && (
           <>
@@ -260,7 +267,7 @@ export default function HomeClient() {
         )}
 
         <div className="px-6 max-w-6xl mx-auto relative z-10">
-          <div className="text-center mb-16 animate-fadeInUp">
+          <div className="text-center mb-10 lg:mb-12 animate-fadeInUp">
             <h2 className="text-4xl font-bold text-neutral-900 mb-4">
               Über <span className="text-primary animate-countUp">120</span> sofort verfügbare Fahrzeuge
             </h2>
@@ -308,7 +315,7 @@ export default function HomeClient() {
       </section>
 
       {/* About Section */}
-      <section className="py-20 bg-gray-50 relative overflow-hidden">
+      <section className="py-12 lg:py-16 bg-gray-50 relative overflow-hidden">
         {/* Fixed animated background pattern - only render on client */}
         {isClient && (
           <div className="absolute inset-0 opacity-5">
@@ -365,7 +372,7 @@ export default function HomeClient() {
       </section>
 
       {/* Why Autogalerie Nord Section */}
-      <section className="py-20 bg-white relative overflow-hidden">
+      <section className="py-12 lg:py-16 bg-white relative overflow-hidden">
         {/* Fixed parallax background elements - only render on client */}
         {isClient && (
           <>

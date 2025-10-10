@@ -3,19 +3,51 @@
 
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
+import { usePathname } from 'next/navigation';
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isLeistungenOpen, setIsLeistungenOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
+  const [whiteLogoOk, setWhiteLogoOk] = useState(true);
+  const pathname = usePathname();
 
   useEffect(() => {
+    setMounted(true);
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 10);
     };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  // Close mobile menu on route change
+  useEffect(() => {
+    if (isMenuOpen) setIsMenuOpen(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pathname]);
+
+  // Lock body scroll when menu is open
+  useEffect(() => {
+    if (isMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isMenuOpen]);
+
+  // Close on Escape key
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setIsMenuOpen(false);
+    };
+    if (isMenuOpen) window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [isMenuOpen]);
 
   const leistungenSubMenu = [
     { href: '/leistungen/finanzierung', label: 'Finanzierung', icon: 'ri-bank-card-line' },
@@ -27,102 +59,115 @@ export default function Header() {
 
   return (
     <>
-      {/* Top Contact Bar */}
-      <div className="bg-red-600 text-white py-2 transform transition-all duration-300 hover:bg-red-700">
-        <div className="px-4 md:px-6">
-          <div className="flex justify-center md:justify-end items-center">
-            {/* Desktop Contact Links */}
-            <div className="hidden md:flex items-center space-x-6">
-              <a 
-                href="https://wa.me/4941717889111" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="group flex items-center hover:text-red-200 transition-all duration-300 cursor-pointer transform hover:scale-105"
-                aria-label="WhatsApp-Chat mit Autogalerie Nord starten"
-              >
-                <div className="w-4 h-4 flex items-center justify-center mr-2 transform group-hover:rotate-12 transition-transform duration-300">
-                  <i className="ri-whatsapp-line text-sm"></i>
-                </div>
-                <span className="text-sm whitespace-nowrap">WhatsApp</span>
-              </a>
-              <a 
-                href="tel:+4904174596970" 
-                className="group flex items-center hover:text-red-200 transition-all duration-300 cursor-pointer transform hover:scale-105"
-                aria-label="Autogalerie Nord anrufen: +49 41 745 969 70"
-              >
-                <div className="w-4 h-4 flex items-center justify-center mr-2 transform group-hover:rotate-12 transition-transform duration-300">
-                  <i className="ri-phone-line text-sm"></i>
-                </div>
-                <span className="text-sm whitespace-nowrap">+49 41 745 969 70</span>
-              </a>
-              <a 
-                href="mailto:info@autogalerie-nord.de" 
-                className="group flex items-center hover:text-red-200 transition-all duration-300 cursor-pointer transform hover:scale-105"
-                aria-label="E-Mail an Autogalerie Nord senden: info@autogalerie-nord.de"
-              >
-                <div className="w-4 h-4 flex items-center justify-center mr-2 transform group-hover:rotate-12 transition-transform duration-300">
-                  <i className="ri-mail-line text-sm"></i>
-                </div>
-                <span className="text-sm whitespace-nowrap">info@autogalerie-nord.de</span>
-              </a>
-            </div>
+      {/* Main Header - enthält Top-Bar und Navigation, als fester Overlay */}
+      <header className={`fixed top-0 left-0 right-0 z-50 transition-colors`}>
+        {/* Top Contact Bar - oben transparent, bei Scroll solid */}
+        <div className={`${mounted && isScrolled ? 'bg-red-600' : 'bg-transparent'} text-white py-2`}> 
+          <div className="px-4 md:px-6">
+            <div className="flex justify-center md:justify-end items-center">
+              {/* Desktop Contact Links */}
+              <div className="hidden md:flex items-center space-x-6">
+                <a 
+                  href="https://wa.me/4941717889111" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="group flex items-center hover:text-red-200 transition-all duration-300 cursor-pointer transform hover:scale-105"
+                  aria-label="WhatsApp-Chat mit Autogalerie Nord starten"
+                >
+                  <div className="w-4 h-4 flex items-center justify-center mr-2 transform group-hover:rotate-12 transition-transform duration-300">
+                    <i className="ri-whatsapp-line text-sm"></i>
+                  </div>
+                  <span className="text-sm whitespace-nowrap">WhatsApp</span>
+                </a>
+                <a 
+                  href="tel:+4904174596970" 
+                  className="group flex items-center hover:text-red-200 transition-all duration-300 cursor-pointer transform hover:scale-105"
+                  aria-label="Autogalerie Nord anrufen: +49 41 745 969 70"
+                >
+                  <div className="w-4 h-4 flex items-center justify-center mr-2 transform group-hover:rotate-12 transition-transform duration-300">
+                    <i className="ri-phone-line text-sm"></i>
+                  </div>
+                  <span className="text-sm whitespace-nowrap">+49 41 745 969 70</span>
+                </a>
+                <a 
+                  href="mailto:info@autogalerie-nord.de" 
+                  className="group flex items-center hover:text-red-200 transition-all duration-300 cursor-pointer transform hover:scale-105"
+                  aria-label="E-Mail an Autogalerie Nord senden: info@autogalerie-nord.de"
+                >
+                  <div className="w-4 h-4 flex items-center justify-center mr-2 transform group-hover:rotate-12 transition-transform duration-300">
+                    <i className="ri-mail-line text-sm"></i>
+                  </div>
+                  <span className="text-sm whitespace-nowrap">info@autogalerie-nord.de</span>
+                </a>
+              </div>
 
-            {/* Mobile Contact Links */}
-            <div className="flex md:hidden items-center space-x-2">
-              <a 
-                href="https://wa.me/4941717889111" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="w-12 h-12 flex items-center justify-center hover:text-red-200 transition-all duration-300 cursor-pointer transform hover:scale-110 hover:rotate-12 rounded-lg"
-                aria-label="WhatsApp-Chat mit Autogalerie Nord starten"
-              >
-                <i className="ri-whatsapp-fill text-xl"></i>
-              </a>
-              <a 
-                href="tel:+4904174596970" 
-                className="w-12 h-12 flex items-center justify-center hover:text-red-200 transition-all duration-300 cursor-pointer transform hover:scale-110 hover:rotate-12 rounded-lg"
-                aria-label="Autogalerie Nord anrufen"
-              >
-                <i className="ri-phone-fill text-xl"></i>
-              </a>
-              <a 
-                href="mailto:info@autogalerie-nord.de" 
-                className="w-12 h-12 flex items-center justify-center hover:text-red-200 transition-all duration-300 cursor-pointer transform hover:scale-110 hover:rotate-12 rounded-lg"
-                aria-label="E-Mail an Autogalerie Nord senden"
-              >
-                <i className="ri-mail-fill text-xl"></i>
-              </a>
+              {/* Mobile Contact Links */}
+              <div className="flex md:hidden items-center space-x-2">
+                <a 
+                  href="https://wa.me/4941717889111" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="w-10 h-10 flex items-center justify-center hover:text-red-200 transition-all duration-300 cursor-pointer transform hover:scale-110 hover:rotate-12 rounded-lg"
+                  aria-label="WhatsApp-Chat mit Autogalerie Nord starten"
+                >
+                  <i className="ri-whatsapp-fill text-lg"></i>
+                </a>
+                <a 
+                  href="tel:+4904174596970" 
+                  className="w-10 h-10 flex items-center justify-center hover:text-red-200 transition-all duration-300 cursor-pointer transform hover:scale-110 hover:rotate-12 rounded-lg"
+                  aria-label="Autogalerie Nord anrufen"
+                >
+                  <i className="ri-phone-fill text-lg"></i>
+                </a>
+                <a 
+                  href="mailto:info@autogalerie-nord.de" 
+                  className="w-10 h-10 flex items-center justify-center hover:text-red-200 transition-all duration-300 cursor-pointer transform hover:scale-110 hover:rotate-12 rounded-lg"
+                  aria-label="E-Mail an Autogalerie Nord senden"
+                >
+                  <i className="ri-mail-fill text-lg"></i>
+                </a>
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-      {/* Main Header */}
-      <header className={`bg-white shadow-lg relative z-50 ${isScrolled ? 'shadow-xl' : 'shadow-md'}`}>
-        <div className="pl-2 pr-4 md:px-6">
-          <nav className="flex items-center justify-between h-16">
+        {/* Navigationsbereich - oben transparent, beim Scroll weiß */}
+        <div className={`${mounted && isScrolled ? 'bg-white/95 backdrop-blur-md shadow-md' : 'bg-transparent'}`}>
+          <div className="pl-2 pr-4 md:px-6">
+          <nav className={`flex items-center justify-between ${mounted && isScrolled ? 'h-16 md:h-20 lg:h-20 py-2 md:py-2' : 'h-16 md:h-20 lg:h-20 py-2 md:py-2'}`}>
             {/* Logo */}
             <Link 
               href="/" 
-              className="flex items-center cursor-pointer -ml-4 md:ml-0"
+              className="flex items-center h-full cursor-pointer ml-0"
               aria-label="Zur Startseite von Autogalerie Nord"
             >
-              <img 
-                src="/images/logo.png" 
-                alt="Autogalerie Nord Logo" 
-                className="h-32 md:h-36 lg:h-40 w-auto"
-              />
+              <div className="relative h-full w-[220px] md:w-[260px]">
+                {/* Weißes Logo (sichtbar wenn nicht gescrollt; Fallback bei Fehler) */}
+                <img
+                  src="/images/1x/Autogalerie%20Nord%20Logo%20White.webp"
+                  alt="Autogalerie Nord Logo"
+                  onError={() => setWhiteLogoOk(false)}
+                  className={`absolute left-0 top-1/2 -translate-y-1/2 h-[30px] md:h-[34px] w-auto object-contain transition-opacity duration-500 ease-in-out ${mounted && isScrolled ? 'opacity-0' : (whiteLogoOk ? 'opacity-100' : 'opacity-0')} filter drop-shadow-md`}
+                />
+                {/* Dunkles Logo (sichtbar beim Scrollen) */}
+                <img
+                  src="/images/1x/Autogalerie%20Nord%20Logo%20Dark.webp"
+                  alt="Autogalerie Nord Logo dunkel"
+                  aria-hidden={mounted && isScrolled ? undefined : true}
+                  className={`absolute left-0 top-1/2 -translate-y-1/2 h-[30px] md:h-[34px] w-auto object-contain transition-opacity duration-500 ease-in-out filter drop-shadow-md ${(mounted && isScrolled) || !whiteLogoOk ? 'opacity-100' : 'opacity-0'}`}
+                />
+              </div>
             </Link>
 
             {/* Desktop Navigation */}
             <div className="hidden lg:flex items-center space-x-8">
-              <Link href="/" className="text-gray-700 cursor-pointer">
+              <Link href="/" className={`${mounted && isScrolled ? 'text-gray-700' : 'text-white'} cursor-pointer`}>
                 Home
               </Link>
-              <Link href="/fahrzeuge" className="text-gray-700 cursor-pointer">
+              <Link href="/fahrzeuge" className={`${mounted && isScrolled ? 'text-gray-700' : 'text-white'} cursor-pointer`}>
                 Fahrzeuge
               </Link>
-              <a href="https://autogalerie-nord.de/fahrzeuge#!/tradein" target="_blank" rel="noopener noreferrer" className="text-gray-700 cursor-pointer">
+              <a href="https://autogalerie-nord.de/fahrzeuge#!/tradein" target="_blank" rel="noopener noreferrer" className={`${mounted && isScrolled ? 'text-gray-700' : 'text-white'} cursor-pointer`}>
                 Autoankauf
               </a>
               <div 
@@ -130,7 +175,7 @@ export default function Header() {
                 onMouseEnter={() => setIsLeistungenOpen(true)}
                 onMouseLeave={() => setIsLeistungenOpen(false)}
               >
-                <Link href="/leistungen" className="text-gray-700 cursor-pointer flex items-center">
+                <Link href="/leistungen" className={`${mounted && isScrolled ? 'text-gray-700' : 'text-white'} cursor-pointer flex items-center`}>
                   Leistungen
                   <i className="ri-arrow-down-s-line ml-1"></i>
                 </Link>
@@ -146,19 +191,19 @@ export default function Header() {
                 )}
               </div>
 
-              <Link href="/businessloesungen" className="text-gray-700 cursor-pointer">
+              <Link href="/businessloesungen" className={`${mounted && isScrolled ? 'text-gray-700' : 'text-white'} cursor-pointer`}>
                 Business
               </Link>
 
-              <Link href="/service" className="text-gray-700 cursor-pointer">
+              <Link href="/service" className={`${mounted && isScrolled ? 'text-gray-700' : 'text-white'} cursor-pointer`}>
                 Service
               </Link>
 
-              <Link href="/ueber-uns" className="text-gray-700 cursor-pointer">
+              <Link href="/ueber-uns" className={`${mounted && isScrolled ? 'text-gray-700' : 'text-white'} cursor-pointer`}>
                 Über Uns
               </Link>
 
-              <Link href="/kontakt" className="text-gray-700 cursor-pointer">
+              <Link href="/kontakt" className={`${mounted && isScrolled ? 'text-gray-700' : 'text-white'} cursor-pointer`}>
                 Kontakt
               </Link>
             </div>
@@ -166,7 +211,7 @@ export default function Header() {
             {/* Mobile menu button */}
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="lg:hidden p-3 rounded-xl text-gray-700 z-50 relative"
+              className={`lg:hidden p-3 rounded-xl ${mounted && isScrolled ? 'text-gray-700' : 'text-white'} z-50 relative`}
               aria-label={isMenuOpen ? "Menü schließen" : "Menü öffnen"}
               aria-expanded={isMenuOpen}
             >
@@ -186,16 +231,15 @@ export default function Header() {
           </nav>
 
           {/* Mobile Navigation Overlay */}
-          <div className={`fixed inset-0 z-40 lg:hidden ${
+          <div className={`fixed inset-0 z-40 lg:hidden transition-opacity duration-300 ${
             isMenuOpen ? 'opacity-100 visible' : 'opacity-0 invisible'
           }`}>
             <div 
-              className="absolute inset-0 bg-black"
-              style={{ opacity: isMenuOpen ? 0.6 : 0 }}
+              className="absolute inset-0 bg-black/60 backdrop-blur-sm"
               onClick={() => setIsMenuOpen(false)}
             ></div>
             
-            <div className={`absolute top-0 right-0 h-full w-80 max-w-full bg-white shadow-2xl ${
+            <div className={`absolute top-0 right-0 h-full w-[85vw] max-w-sm sm:max-w-md bg-white shadow-2xl transition-transform duration-300 ${
               isMenuOpen ? 'translate-x-0' : 'translate-x-full'
             }`}>
               <div className="flex flex-col h-full">
@@ -212,12 +256,28 @@ export default function Header() {
                   </div>
                 </div>
 
+                {/* Quick Actions */}
+                <div className="px-4 pt-4 grid grid-cols-3 gap-3">
+                  <a href="tel:+4904174596970" className="flex flex-col items-center justify-center p-3 rounded-xl bg-gray-50 hover:bg-red-50 border border-gray-100 text-gray-700 hover:text-red-700 transition-colors">
+                    <i className="ri-phone-line text-xl mb-1"></i>
+                    <span className="text-xs">Anrufen</span>
+                  </a>
+                  <a href="https://wa.me/4941717889111" target="_blank" rel="noopener noreferrer" className="flex flex-col items-center justify-center p-3 rounded-xl bg-gray-50 hover:bg-green-50 border border-gray-100 text-gray-700 hover:text-green-700 transition-colors">
+                    <i className="ri-whatsapp-line text-xl mb-1"></i>
+                    <span className="text-xs">WhatsApp</span>
+                  </a>
+                  <Link href="/kontakt" className="flex flex-col items-center justify-center p-3 rounded-xl bg-gray-50 hover:bg-blue-50 border border-gray-100 text-gray-700 hover:text-blue-700 transition-colors" onClick={() => setIsMenuOpen(false)}>
+                    <i className="ri-mail-line text-xl mb-1"></i>
+                    <span className="text-xs">E-Mail</span>
+                  </Link>
+                </div>
+
                   {/* Mobile Menu Items */}
                   <div className="flex-1 overflow-y-auto py-6">
                     <div className="space-y-3 px-4">
                       <Link 
                         href="/" 
-                        className="flex items-center px-4 py-4 text-gray-700 rounded-xl cursor-pointer"
+                        className="flex items-center px-4 py-5 text-gray-700 rounded-xl cursor-pointer"
                         onClick={() => setIsMenuOpen(false)}
                       >
                         <div className="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center mr-4">
@@ -229,7 +289,7 @@ export default function Header() {
                       
                       <Link 
                         href="/fahrzeuge" 
-                        className="flex items-center px-4 py-4 text-gray-700 rounded-xl cursor-pointer"
+                        className="flex items-center px-4 py-5 text-gray-700 rounded-xl cursor-pointer"
                         onClick={() => setIsMenuOpen(false)}
                       >
                         <div className="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center mr-4">
@@ -367,6 +427,7 @@ export default function Header() {
                 </div>
               </div>
             </div>
+        </div>
         </div>
       </header>
     </>

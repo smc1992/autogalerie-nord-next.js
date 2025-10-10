@@ -42,7 +42,7 @@ const nextConfig = {
         headers: [
           {
             key: 'Content-Security-Policy',
-            value: "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.dein.auto https://api.pixel-base.de https://code.jquery.com; object-src 'none';"
+            value: "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.dein.auto https://api.pixel-base.de https://code.jquery.com https://app.chatbot-smc.de https://www.googletagmanager.com https://connect.facebook.net https://sdk.dfktv2.com; object-src 'none';"
           },
           {
             key: 'Referrer-Policy',

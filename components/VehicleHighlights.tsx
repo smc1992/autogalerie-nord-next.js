@@ -90,13 +90,16 @@ export default function VehicleHighlights({ className = '' }: VehicleHighlightsP
           take: '50'  // Fetch more vehicles to have enough for all categories
         });
         
-        const response = await fetchFromApi('vehicles', params);
+        const response = await fetch(`/api/vehicles?${params.toString()}`)
+          .then(res => res.json())
+          .catch(err => ({ error: String(err) }));
         
         console.log('🚗 API Response:', response);
         
         if (response.error) {
-          setError(response.error);
           console.error('API Error:', response.error, response.details);
+          setError('API temporär nicht verfügbar');
+          setLoading(false);
           return;
         }
         
@@ -164,7 +167,7 @@ export default function VehicleHighlights({ className = '' }: VehicleHighlightsP
         
       } catch (err) {
         console.error('Error fetching vehicles:', err);
-        setError('Fehler beim Laden der Fahrzeuge');
+        setError('Netzwerkfehler');
       } finally {
         setLoading(false);
       }
@@ -241,7 +244,9 @@ export default function VehicleHighlights({ className = '' }: VehicleHighlightsP
         take: '50' // Get more vehicles to have enough for filtering
       });
       
-      const response = await fetchFromApi('vehicles', params);
+      const response = await fetch(`/api/vehicles?${params.toString()}`)
+        .then(res => res.json())
+        .catch(err => ({ error: String(err) }));
       
       if (response.error) {
         console.error('API Error for category:', category, response.error);
@@ -372,6 +377,11 @@ export default function VehicleHighlights({ className = '' }: VehicleHighlightsP
         </div>
       </section>
     );
+  }
+
+  // Wenn keine Fahrzeuge vorhanden sind, die Sektion dezent ausblenden
+  if (!loading && !error && vehicles.length === 0) {
+    return null;
   }
 
   return (

@@ -2,7 +2,11 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-import CookieBanner from '../components/CookieBanner';
+import Script from 'next/script';
+import dynamic from 'next/dynamic';
+
+// CookieBanner nur clientseitig rendern, um SSR-Mismatches zu vermeiden
+const CookieBanner = dynamic(() => import('../components/CookieBanner'), { ssr: false });
 
 export const metadata: Metadata = {
   title: "Autogalerie Nord GmbH - Premium Autohändler in Stelle, bei Hamburg",
@@ -68,14 +72,7 @@ export default function RootLayout({
           rel="stylesheet"
         />
         
-        {/* jQuery direkt einbinden */}
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-        
-        {/* QuickSearch direkt einbinden */}
-        <script src="/quicksearch-norequire_1.4.2.min.js"></script>
-        
-        {/* Chat-Widget */}
-        <script async defer src="https://app.chatbot-smc.de/js/widget/knvkqmx3rs1hs1eh/float.js"></script>
+        {/* Externe Skripte werden nicht global geladen, um Hydration-Konflikte zu vermeiden.*/}
         
         {/* Schema Markup für Website und Sitelinks */}
         <script type="application/ld+json" dangerouslySetInnerHTML={{
@@ -209,7 +206,7 @@ export default function RootLayout({
         
 
       </head>
-      <body className="font-klavika antialiased">
+      <body className="font-klavika antialiased" suppressHydrationWarning>
         <Header />
         <main>{children}</main>
         <Footer />

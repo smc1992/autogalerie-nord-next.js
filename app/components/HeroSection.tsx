@@ -84,7 +84,7 @@ export default function HeroSection() {
         </div>
       )}
 
-      <div className="relative z-10 flex items-center h-full px-6 pt-20 md:pt-28 lg:pt-36 3xl:px-12 4xl:px-16">
+      <div className="relative z-10 flex items-start h-full px-8 sm:px-10 md:px-12 lg:px-16 3xl:px-20 4xl:px-24 pt-48 md:pt-56 lg:pt-64 3xl:pt-72 4xl:pt-80 pb-14 md:pb-18 lg:pb-22">
         <div className={`w-full max-w-4xl 3xl:max-w-6xl 4xl:max-w-7xl transform transition-all duration-1000 ${
           heroLoaded ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'
         }`}>

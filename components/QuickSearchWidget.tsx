@@ -15,6 +15,7 @@ export default function QuickSearchWidget({ className = '' }: QuickSearchWidgetP
   const widgetRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
   const initializationRef = useRef(false);
+  const updateTimerRef = useRef<number | null>(null);
 
   const API_KEY = '0536fa11-99df-43f8-bf26-42af233f5478';
 
@@ -34,7 +35,7 @@ export default function QuickSearchWidget({ className = '' }: QuickSearchWidgetP
         newWindow: false,
         debug: false,
         api: {
-          url: 'https://api.pixel-base.de/marketplace/v3-11365/',
+          url: 'https://api.pixel-base.de/marketplace/v3-11365',
           key: API_KEY
         }
       };
@@ -53,7 +54,7 @@ export default function QuickSearchWidget({ className = '' }: QuickSearchWidgetP
       newWindow: false,
       debug: false,
       api: {
-        url: 'https://api.pixel-base.de/marketplace/v3-11365/',
+        url: 'https://api.pixel-base.de/marketplace/v3-11365',
         key: API_KEY
       }
     };
@@ -200,8 +201,16 @@ export default function QuickSearchWidget({ className = '' }: QuickSearchWidgetP
       // Nur direkte API-Abfrage verwenden wenn explizit angefordert
       if (forceDirectAPI) {
         console.log('Verwende direkte API-Abfrage');
-        
-        const response = await fetch(`https://api.pixel-base.de/marketplace/v3-11365/vehicles/count/?apikey=${API_KEY}`);
+        // Ausgewählte Filter aus der UI lesen (Hersteller/Modell)
+        const man = (document.getElementById('hersteller') as HTMLSelectElement | null)?.value || '';
+        const mod = (document.getElementById('modell') as HTMLSelectElement | null)?.value || '';
+
+        const params = new URLSearchParams();
+        params.append('apikey', API_KEY);
+        if (man) params.append('manufacturers', man);
+        if (mod) params.append('models', mod);
+
+        const response = await fetch(`https://api.pixel-base.de/marketplace/v3-11365/vehicles/count/?${params.toString()}`);
         
         if (!response.ok) {
           throw new Error(`API-Fehler: ${response.status} ${response.statusText}`);
@@ -260,6 +269,32 @@ export default function QuickSearchWidget({ className = '' }: QuickSearchWidgetP
          // Kein Fallback - QuickSearch verwaltet die Anzahl selbst
        }
   };
+
+  // Debounced Listener für Filteränderungen (Hersteller/Modell)
+  useEffect(() => {
+    const debouncedUpdate = () => {
+      if (updateTimerRef.current) {
+        clearTimeout(updateTimerRef.current);
+      }
+      updateTimerRef.current = window.setTimeout(() => {
+        updateVehicleCount(true);
+      }, 300);
+    };
+
+    const hersteller = document.getElementById('hersteller');
+    const modell = document.getElementById('modell');
+
+    hersteller?.addEventListener('change', debouncedUpdate);
+    modell?.addEventListener('change', debouncedUpdate);
+
+    return () => {
+      hersteller?.removeEventListener('change', debouncedUpdate);
+      modell?.removeEventListener('change', debouncedUpdate);
+      if (updateTimerRef.current) {
+        clearTimeout(updateTimerRef.current);
+      }
+    };
+  }, [pathname, isInitialized]);
 
   // Bei Routenwechsel prüfen und neu initialisieren
   useEffect(() => {
@@ -540,7 +575,7 @@ export default function QuickSearchWidget({ className = '' }: QuickSearchWidgetP
                     </label>
                     <select 
                       id="fahrzeugart" 
-                      className="w-full p-4 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all duration-300 hover:border-red-300 bg-white shadow-sm"
+                      className="w-full p-4 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all duration-300 hover:border-red-300 bg-white text-gray-900 shadow-sm"
                     >
                       <option value="">Alle Fahrzeugarten</option>
                     </select>
@@ -553,7 +588,7 @@ export default function QuickSearchWidget({ className = '' }: QuickSearchWidgetP
                     </label>
                     <select 
                       id="hersteller" 
-                      className="w-full p-4 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all duration-300 hover:border-red-300 bg-white shadow-sm"
+                      className="w-full p-4 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all duration-300 hover:border-red-300 bg-white text-gray-900 shadow-sm"
                     >
                       <option value="">Alle Hersteller</option>
                     </select>
@@ -566,7 +601,7 @@ export default function QuickSearchWidget({ className = '' }: QuickSearchWidgetP
                     </label>
                     <select 
                       id="modell" 
-                      className="w-full p-4 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all duration-300 hover:border-red-300 bg-white shadow-sm"
+                      className="w-full p-4 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all duration-300 hover:border-red-300 bg-white text-gray-900 shadow-sm"
                     >
                       <option value="">Alle Modelle</option>
                     </select>
@@ -579,7 +614,7 @@ export default function QuickSearchWidget({ className = '' }: QuickSearchWidgetP
                     </label>
                     <select 
                       id="preismax" 
-                      className="w-full p-4 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all duration-300 hover:border-red-300 bg-white shadow-sm"
+                      className="w-full p-4 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all duration-300 hover:border-red-300 bg-white text-gray-900 shadow-sm"
                     >
                       <option value="">Alle Preise</option>
                       <option value="5000">5.000 €</option>
@@ -602,7 +637,7 @@ export default function QuickSearchWidget({ className = '' }: QuickSearchWidgetP
                     </label>
                     <select 
                       id="kilometerbis" 
-                      className="w-full p-4 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all duration-300 hover:border-red-300 bg-white shadow-sm"
+                      className="w-full p-4 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all duration-300 hover:border-red-300 bg-white text-gray-900 shadow-sm"
                     >
                       <option value="">Alle Kilometer</option>
                       <option value="10000">10.000 km</option>
@@ -622,7 +657,7 @@ export default function QuickSearchWidget({ className = '' }: QuickSearchWidgetP
                     </label>
                     <select 
                       id="zulassungvon" 
-                      className="w-full p-4 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all duration-300 hover:border-red-300 bg-white shadow-sm"
+                      className="w-full p-4 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all duration-300 hover:border-red-300 bg-white text-gray-900 shadow-sm"
                     >
                       <option value="">Alle Jahre</option>
                     </select>
@@ -635,7 +670,7 @@ export default function QuickSearchWidget({ className = '' }: QuickSearchWidgetP
                     </label>
                     <select 
                       id="kraftstoff" 
-                      className="w-full p-4 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all duration-300 hover:border-red-300 bg-white shadow-sm"
+                      className="w-full p-4 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all duration-300 hover:border-red-300 bg-white text-gray-900 shadow-sm"
                     >
                       <option value="">Alle Kraftstoffe</option>
                     </select>

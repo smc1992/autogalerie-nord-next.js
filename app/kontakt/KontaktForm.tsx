@@ -16,6 +16,12 @@ export default function KontaktForm() {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState('');
+  const [formStartedAt] = useState(() => Date.now());
+  const [submissionId] = useState(() =>
+    typeof crypto !== 'undefined' && 'randomUUID' in crypto
+      ? crypto.randomUUID()
+      : Math.random().toString(36).slice(2)
+  );
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value, type } = e.target;
@@ -46,6 +52,9 @@ export default function KontaktForm() {
       Object.entries(formData).forEach(([key, value]) => {
         formBody.append(key, value.toString());
       });
+      // Idempotency token and basic timing for server-side checks
+      formBody.append('submissionId', submissionId);
+      formBody.append('formStartedAt', String(formStartedAt));
 
       const response = await fetch('/api/kontakt', {
         method: 'POST',
@@ -55,7 +64,9 @@ export default function KontaktForm() {
         body: formBody
       });
 
-      if (response.ok) {
+      if (response.status === 429) {
+        setSubmitStatus('Zu viele Anfragen. Bitte versuchen Sie es später erneut.');
+      } else if (response.ok) {
         setSubmitStatus('Vielen Dank! Ihre Nachricht wurde erfolgreich gesendet. Wir melden uns in Kürze bei Ihnen.');
         setFormData({
           vorname: '',

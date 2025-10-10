@@ -1,6 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
 import nodemailer from 'nodemailer';
 import { emailConfig } from '../../../lib/email-config';
+import {
+  getClientKeyFromHeaders,
+  isRateLimited,
+  recordAttempt,
+  isDuplicateSubmission,
+  markSubmission,
+} from '../../../lib/submit-guard';
 
 // HTML Template für Autoankauf-Anfrage
 function createAutoankaufEmailTemplate(data: any) {
@@ -114,6 +121,22 @@ function createAutoankaufEmailTemplate(data: any) {
 export async function POST(request: NextRequest) {
   try {
     const formData = await request.formData();
+    const submissionId = (formData.get('submissionId') as string) || '';
+    const formStartedAtStr = (formData.get('formStartedAt') as string) || '';
+    const clientKey = getClientKeyFromHeaders(request.headers);
+
+    // Rate limit check
+    if (isRateLimited(clientKey)) {
+      return NextResponse.json({ error: 'rate_limited' }, { status: 429 });
+    }
+
+    // Idempotency check
+    if (!submissionId) {
+      return NextResponse.json({ error: 'missing_submission_id' }, { status: 400 });
+    }
+    if (isDuplicateSubmission(submissionId)) {
+      return NextResponse.json({ success: true, duplicate: true, message: 'Duplicate submission ignored.' });
+    }
     
     const data = {
       vorname: formData.get('vorname') as string,
@@ -156,6 +179,16 @@ export async function POST(request: NextRequest) {
         return NextResponse.json({ error: 'Preisvorstellung muss eine gültige Zahl sein.' }, { status: 400 });
       }
     }
+
+    // Optional: Minimal sanity check für Formularzeit
+    const formStartedAt = Number(formStartedAtStr);
+    if (isFinite(formStartedAt) && Date.now() - formStartedAt < 1000) {
+      // Wenn das Formular extrem schnell abgeschickt wurde, zählen wir trotzdem und senden weiter
+    }
+
+    // Record attempt & mark submission vor dem Senden, um Doppelversand bei Retries zu verhindern
+    recordAttempt(clientKey);
+    markSubmission(submissionId);
 
     // E-Mail-Transporter erstellen
     const transporter = nodemailer.createTransport({
