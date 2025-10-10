@@ -566,7 +566,7 @@ export default function QuickSearchWidget({ className = '' }: QuickSearchWidgetP
               </div>
               
               {/* QuickSearch Widget HTML */}
-              <div className="bg-white rounded-2xl shadow-2xl p-8 backdrop-blur-sm bg-white/95">
+              <div className="bg-white rounded-2xl shadow-2xl p-8 backdrop-blur-sm bg-white/95 mx-auto max-w-md sm:max-w-lg md:max-w-2xl lg:max-w-3xl">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                   {/* Fahrzeugart */}
                   <div className="group">
