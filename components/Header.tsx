@@ -28,14 +28,33 @@ export default function Header() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname]);
 
-  // Lock body scroll when menu is open
+  // Lock scroll robustly when mobile menu is open (handles iOS/Safari)
   useEffect(() => {
+    const root = document.documentElement;
     if (isMenuOpen) {
-      document.body.style.overflow = 'hidden';
+      const scrollY = window.scrollY;
+      // Prevent background scroll while keeping current scroll position
+      document.body.style.position = 'fixed';
+      (document.body.style as any).top = `-${scrollY}px`;
+      root.style.overflow = 'hidden';
     } else {
-      document.body.style.overflow = '';
+      // Restore scroll position and styles
+      const top = (document.body.style as any).top || '';
+      if (top) {
+        const scrollY = -parseInt(top, 10) || 0;
+        document.body.style.position = '';
+        (document.body.style as any).top = '';
+        root.style.overflow = '';
+        window.scrollTo(0, scrollY);
+      } else {
+        root.style.overflow = '';
+        document.body.style.overflow = '';
+      }
     }
     return () => {
+      root.style.overflow = '';
+      document.body.style.position = '';
+      (document.body.style as any).top = '';
       document.body.style.overflow = '';
     };
   }, [isMenuOpen]);
@@ -230,8 +249,8 @@ export default function Header() {
             </button>
           </nav>
 
-          {/* Mobile Navigation Overlay */}
-          <div className={`fixed inset-0 z-40 lg:hidden transition-opacity duration-300 ${
+          {/* Mobile Navigation Overlay - ensure it sits above the header */}
+          <div className={`fixed inset-0 z-[60] lg:hidden transition-opacity duration-300 ${
             isMenuOpen ? 'opacity-100 visible' : 'opacity-0 invisible'
           }`}>
             <div 
@@ -244,7 +263,7 @@ export default function Header() {
             }`}>
               <div className="flex flex-col h-full">
                 {/* Mobile Header */}
-                <div className="flex items-center justify-center p-6 border-b border-gray-100 bg-gradient-to-r from-red-50 to-white">
+                <div className="flex items-center justify-between p-6 border-b border-gray-100 bg-gradient-to-r from-red-50 to-white">
                   <div className="flex items-center space-x-3">
                     <div className="w-10 h-10 bg-red-600 rounded-xl flex items-center justify-center shadow-lg">
                       <i className="ri-navigation-line text-white text-lg"></i>
@@ -254,6 +273,15 @@ export default function Header() {
                       <p className="text-xs text-gray-500">Autogalerie Nord</p>
                     </div>
                   </div>
+                  {/* Close button inside mobile panel */}
+                  <button
+                    type="button"
+                    onClick={() => setIsMenuOpen(false)}
+                    aria-label="Menü schließen"
+                    className="p-2 rounded-lg text-gray-500 hover:text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-red-500"
+                  >
+                    <i className="ri-close-line text-2xl"></i>
+                  </button>
                 </div>
 
                 {/* Quick Actions */}
