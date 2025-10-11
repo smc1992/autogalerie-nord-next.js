@@ -106,11 +106,11 @@ export default function HomeClient() {
           </div>
         )}
 
-        <div className="relative z-10 h-full px-4 sm:px-6 pt-36 sm:pt-40 md:pt-32 lg:pt-36 xl:pt-40 2xl:pt-44 pb-8 sm:pb-12 3xl:px-12 4xl:px-16">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 items-center">
-            <div className="lg:col-span-7 w-full max-w-3xl lg:max-w-4xl 3xl:max-w-6xl 4xl:max-w-7xl text-center lg:text-left">
+        <div className="relative z-10 px-4 sm:px-6 py-24 md:py-24 lg:py-0 3xl:px-12 4xl:px-16 flex items-center min-h-[95vh] lg:min-h-[calc(100vh-6rem)] xl:min-h-[calc(100vh-6rem)] 2xl:min-h-[calc(100vh-6rem)]">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 items-center w-full">
+            <div className="lg:col-span-7 w-full max-w-3xl lg:max-w-4xl 3xl:max-w-6xl 4xl:max-w-7xl text-center lg:text-left self-center">
             {/* SEO-optimierte dynamische H1 Überschrift */}
-            <div className="relative mb-3 sm:mb-4 lg:mb-5">
+            <div className="relative mt-8 sm:mt-10 md:mt-0 mb-3 sm:mb-4 lg:mb-5">
               <h1 
                 className="text-4xl sm:text-5xl md:text-5xl lg:text-6xl 3xl:text-7xl 4xl:text-8xl font-bold text-white leading-tight"
                 style={{ 
@@ -187,7 +187,7 @@ export default function HomeClient() {
             </div>
             </div>
             {/* Rechte Spalte: QuickSearch Card und Promo-CTA */}
-            <div className="lg:col-span-5 xl:col-span-6 lg:col-start-8 xl:col-start-8 justify-self-end self-center w-full max-w-md sm:max-w-lg lg:max-w-xl xl:max-w-2xl mt-6 sm:mt-8 lg:mt-0 mx-4 sm:mx-0">
+            <div className="lg:col-span-5 xl:col-span-6 lg:col-start-8 xl:col-start-8 justify-self-center lg:justify-self-end self-center w-full max-w-md sm:max-w-lg lg:max-w-xl xl:max-w-2xl mt-6 sm:mt-8 lg:mt-0 mx-auto lg:mx-0">
               <div className="backdrop-blur-sm bg-white/95 rounded-2xl shadow-xl sm:shadow-2xl p-6 sm:p-9 border border-white/40" suppressHydrationWarning>
                 <QuickSearchClient />
               </div>

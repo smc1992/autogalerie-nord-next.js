@@ -59,15 +59,27 @@ export default function VehicleHighlights({ className = '' }: VehicleHighlightsP
   // Alle möglichen Filter-Optionen
   const defaultOption: FilterOption = { id: 'alle', label: 'Alle Fahrzeuge', icon: 'ri-car-line', description: 'Alle verfügbaren Fahrzeuge' };
 
+  // Deutsche Beschriftungen für API-Kategorien (Inhalt bleibt unverändert)
+  const CATEGORY_LABELS_DE: Record<string, string> = {
+    compact: 'Kleinwagen',
+    coupe: 'Sportwagen/Coupé',
+    offroad: 'SUV/Geländewagen',
+    sedan: 'Limousine',
+    roadster: 'Cabrio/Roadster',
+    station: 'Kombi',
+    van: 'Van',
+    other: 'Sonstige'
+  };
+
   // Dynamische Filter basierend auf verfügbaren Fahrzeugen
   const filterOptions = useMemo(() => {
     if (vehicles.length === 0) return [defaultOption];
     const cats = availableCategories;
     const dynamicOptions: FilterOption[] = cats.map(cat => ({
       id: cat,
-      label: cat,
+      label: CATEGORY_LABELS_DE[cat] ?? cat,
       icon: 'ri-car-line',
-      description: `Fahrzeuge: ${cat}`
+      description: `Fahrzeuge: ${CATEGORY_LABELS_DE[cat] ?? cat}`
     }));
     return [defaultOption, ...dynamicOptions];
   }, [vehicles, availableCategories]);
