@@ -190,81 +190,79 @@ export default function QuickSearch() {
 
   if (isLoading) {
     return (
-      <div className="bg-white rounded-2xl shadow-2xl p-8 sm:p-10 border border-gray-200/60">
-        <div className="animate-pulse">
-          <div className="h-4 bg-gray-200 rounded w-1/4 mb-4"></div>
-          <div className="space-y-3">
-            <div className="h-10 bg-gray-200 rounded"></div>
-            <div className="h-10 bg-gray-200 rounded"></div>
-            <div className="h-10 bg-gray-200 rounded"></div>
-          </div>
+      <div className="animate-pulse">
+        <div className="h-4 bg-gray-200 rounded w-1/3 mb-4"></div>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <div className="h-11 bg-gray-200 rounded"></div>
+          <div className="h-11 bg-gray-200 rounded"></div>
+          <div className="h-11 bg-gray-200 rounded"></div>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="bg-white rounded-2xl shadow-2xl p-8 sm:p-10 border border-gray-200/60">
-        <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">
-          Fahrzeugsuche
-        </h2>
-        
-        <form ref={formRef} className="space-y-4" onSubmit={(e) => { e.preventDefault(); handleSearch(); }}>
-          {/* Filter Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {/* Manufacturer Filter */}
-            <div>
-              <label htmlFor="manufacturer-select" className="block text-sm font-semibold text-gray-700 mb-2">
-              Hersteller
-              </label>
-              <select
-                id="manufacturer-select"
-                value={selectedFilters.manufacturer}
-                onChange={(e) => handleFilterChange('manufacturer', e.target.value)}
-                className="w-full p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-red-500 bg-white text-gray-900"
-              >
-                <option value="">Alle Hersteller</option>
-                {manufacturers.map((manufacturer) => (
-                  <option key={manufacturer.id} value={manufacturer.id}>
-                    {manufacturer.name}
-                  </option>
-                ))}
-              </select>
-            </div>
+    <div>
+      {/* kompakter Header innerhalb der Karte */}
+      <div className="flex items-center gap-3 mb-4">
+        <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-red-100 text-red-600">
+          <i className="ri-search-line text-xl"></i>
+        </div>
+        <h3 className="text-lg sm:text-xl font-semibold text-gray-900">Fahrzeuge suchen</h3>
+      </div>
 
-            {/* Model Filter */}
-            <div>
-              <label htmlFor="model-select" className="block text-sm font-semibold text-gray-700 mb-2">
-              Modell
-              </label>
-              <select
-                id="model-select"
-                value={selectedFilters.model}
-                onChange={(e) => handleFilterChange('model', e.target.value)}
-                className="w-full p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-red-500 bg-white text-gray-900"
-                disabled={!selectedFilters.manufacturer}
-              >
-                <option value="">Alle Modelle</option>
-                {models.map((model) => (
-                  <option key={model.id} value={model.id}>
-                    {model.name}
-                  </option>
-                ))}
-              </select>
-            </div>
+      <form ref={formRef} className="space-y-3 sm:space-y-0" onSubmit={(e) => { e.preventDefault(); handleSearch(); }}>
+        {/* Grid: zwei Filter + Button rechts (ab sm) */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 items-end">
+          {/* Hersteller */}
+          <div>
+            <label htmlFor="manufacturer-select" className="block text-xs font-semibold text-gray-600 mb-1">Hersteller</label>
+            <select
+              id="manufacturer-select"
+              value={selectedFilters.manufacturer}
+              onChange={(e) => handleFilterChange('manufacturer', e.target.value)}
+              className="w-full h-11 px-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 bg-white text-gray-900"
+            >
+              <option value="">Alle Hersteller</option>
+              {manufacturers.map((manufacturer) => (
+                <option key={manufacturer.id} value={manufacturer.id}>
+                  {manufacturer.name}
+                </option>
+              ))}
+            </select>
           </div>
 
-          {/* Search Button */}
-          <div className="pt-4">
+          {/* Modell */}
+          <div>
+            <label htmlFor="model-select" className="block text-xs font-semibold text-gray-600 mb-1">Modell</label>
+            <select
+              id="model-select"
+              value={selectedFilters.model}
+              onChange={(e) => handleFilterChange('model', e.target.value)}
+              className="w-full h-11 px-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 bg-white text-gray-900"
+              disabled={!selectedFilters.manufacturer}
+            >
+              <option value="">Alle Modelle</option>
+              {models.map((model) => (
+                <option key={model.id} value={model.id}>
+                  {model.name}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* Button */}
+          <div className="sm:col-span-1">
             <button
               type="submit"
-              className="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-6 rounded-xl transition-colors duration-200 flex items-center justify-center shadow-md hover:shadow-lg"
+              className="w-full h-11 bg-red-600 hover:bg-red-700 text-white font-semibold px-4 rounded-lg transition-colors duration-200 flex items-center justify-center shadow-md hover:shadow-lg"
             >
               <i className="ri-search-line mr-2"></i>
-              {vehicleCount} Fahrzeuge durchsuchen
+              {vehicleCount} Fahrzeuge
             </button>
           </div>
-        </form>
-       </div>
+        </div>
+      </form>
+    </div>
    );
   }

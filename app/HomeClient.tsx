@@ -69,7 +69,7 @@ export default function HomeClient() {
     <>
       {/* Hero Section */}
       <section 
-        className="relative min-h-[80vh] lg:min-h-[70vh] xl:min-h-[65vh] 2xl:min-h-[60vh] bg-cover bg-center bg-no-repeat overflow-hidden"
+        className="relative min-h-[95vh] lg:min-h-[90vh] xl:min-h-[85vh] 2xl:min-h-[80vh] bg-cover bg-center bg-no-repeat overflow-hidden"
         style={{
           backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('/images/hero-premium.webp')`
         }}
@@ -118,7 +118,7 @@ export default function HomeClient() {
                 }}
               >
                 {headlines[currentHeadline].part1}<br />
-                <span className="text-red-400 font-extrabold" style={{
+                <span className="text-white font-extrabold" style={{
                   textShadow: '2px 2px 4px rgba(0,0,0,0.9), 0 0 12px rgba(220,38,38,0.4)'
                 }}>
                   {headlines[currentHeadline].part2}

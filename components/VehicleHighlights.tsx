@@ -4,7 +4,7 @@ import { useState, useEffect, useMemo } from 'react';
 import Link from 'next/link';
 import { fetchFromApi } from '../app/lib/apiClient';
 
-type FilterCategory = 'alle' | 'coupe' | 'offroad' | 'sedan' | 'roadster' | 'station' | 'compact';
+type FilterCategory = string; // Dynamische Kategorien direkt aus API (plus 'alle')
 
 interface FilterOption {
   id: FilterCategory;
@@ -48,56 +48,89 @@ export default function VehicleHighlights({ className = '' }: VehicleHighlightsP
 
   const [activeFilter, setActiveFilter] = useState<FilterCategory>('alle');
   const [loadingCategories, setLoadingCategories] = useState<Record<FilterCategory, boolean>>({} as Record<FilterCategory, boolean>);
+  const [availableCategories, setAvailableCategories] = useState<string[]>([]);
+
+  // Prüffunktion: passt Fahrzeug zu gegebener Kategorie (direkt aus API-BodyGroups)
+  const matchesCategory = (vehicle: Vehicle, category: string) => {
+    const groups = vehicle.bodyGroups || [];
+    return groups.includes(category);
+  };
 
   // Alle möglichen Filter-Optionen
-  const allFilterOptions: FilterOption[] = [
-    { id: 'alle', label: 'Alle Fahrzeuge', icon: 'ri-car-line', description: 'Alle verfügbaren Fahrzeuge' },
-    { id: 'coupe', label: 'Sportwagen/Coupé', icon: 'ri-rocket-line', description: 'Hochleistungs-Sportwagen', apiValue: 'coupe' },
-    { id: 'offroad', label: 'SUV/Geländewagen', icon: 'ri-truck-line', description: 'Geländewagen und SUVs', apiValue: 'offroad' },
-    { id: 'sedan', label: 'Limousine', icon: 'ri-taxi-line', description: 'Elegante Limousinen', apiValue: 'sedan' },
-    { id: 'roadster', label: 'Cabrio/Roadster', icon: 'ri-sun-line', description: 'Offene Fahrzeuge', apiValue: 'roadster' },
-    { id: 'station', label: 'Kombi', icon: 'ri-car-line', description: 'Praktische Kombis', apiValue: 'station' },
-    { id: 'compact', label: 'Kleinwagen', icon: 'ri-car-line', description: 'Kompakte Stadtfahrzeuge', apiValue: 'compact' }
-  ];
+  const defaultOption: FilterOption = { id: 'alle', label: 'Alle Fahrzeuge', icon: 'ri-car-line', description: 'Alle verfügbaren Fahrzeuge' };
 
   // Dynamische Filter basierend auf verfügbaren Fahrzeugen
   const filterOptions = useMemo(() => {
-    if (vehicles.length === 0) {
-      return [allFilterOptions[0]]; // Nur "Alle Fahrzeuge" wenn keine Daten
-    }
+    if (vehicles.length === 0) return [defaultOption];
+    const cats = availableCategories;
+    const dynamicOptions: FilterOption[] = cats.map(cat => ({
+      id: cat,
+      label: cat,
+      icon: 'ri-car-line',
+      description: `Fahrzeuge: ${cat}`
+    }));
+    return [defaultOption, ...dynamicOptions];
+  }, [vehicles, availableCategories]);
 
-    // Sammle alle verfügbaren bodyGroups aus den Fahrzeugdaten
-    const availableBodyGroups = new Set<string>();
-    vehicles.forEach(vehicle => {
-      vehicle.bodyGroups?.forEach(group => availableBodyGroups.add(group));
-    });
-
-    // Filtere nur die Optionen, die tatsächlich Fahrzeuge haben
-    return allFilterOptions.filter(option => {
-      if (option.id === 'alle') return true; // "Alle Fahrzeuge" immer anzeigen
-      return option.apiValue && availableBodyGroups.has(option.apiValue);
-    });
-  }, [vehicles]);
-
-  useEffect(() => {
-    const fetchLatestVehicles = async () => {
+  // Fahrzeuge laden (inkl. Kategorien ableiten)
+  const fetchLatestVehicles = async () => {
       try {
         setLoading(true);
         setError(null);
         
-        // Fetch vehicles using the basic endpoint with take parameter
-        const params = new URLSearchParams({
-          take: '50'  // Fetch more vehicles to have enough for all categories
-        });
+        // 1) Gesamtanzahl der Fahrzeuge abrufen
+        let countResponse: any;
+        try {
+          const countRes = await fetch('/api/vehicles/count');
+          if (countRes.ok) {
+            countResponse = await countRes.json();
+          } else {
+            console.warn('Vehicle count request failed:', countRes.status, countRes.statusText);
+            countResponse = { error: `HTTP ${countRes.status}` };
+          }
+        } catch (err: any) {
+          console.warn('Vehicle count fetch error:', err?.message || err);
+          countResponse = { error: String(err) };
+        }
         
-        const response = await fetch(`/api/vehicles?${params.toString()}`)
-          .then(res => res.json())
-          .catch(err => ({ error: String(err) }));
+        if (countResponse && countResponse.error) {
+          console.error('API Count Error:', countResponse.error, countResponse.details);
+          setError('API temporär nicht verfügbar');
+          setLoading(false);
+          return;
+        }
         
-        console.log('🚗 API Response:', response);
-        
+        const totalVehicles: number = Number(countResponse?.total ?? countResponse?.count ?? 0);
+        console.log('🚗 Total vehicles reported by API:', totalVehicles);
+
+        // 2) Alle Fahrzeuge mit Fallbacks abrufen (bei Count-Fehlern)
+        const takeCandidates: string[] = totalVehicles > 0 
+          ? [String(totalVehicles)] 
+          : ['120', '100', '82', '80', '60', '50'];
+
+        let response: any = { error: 'no-attempt' };
+        for (const takeParam of takeCandidates) {
+          try {
+            const res = await fetch(`/api/vehicles?take=${takeParam}`);
+            if (!res.ok) {
+              console.warn(`Vehicles request failed for take=${takeParam}:`, res.status, res.statusText);
+              continue;
+            }
+            const json = await res.json();
+            if (json && !json.error) {
+              response = json;
+              console.log(`🚗 Vehicles fetched successfully with take=${takeParam}`);
+              break;
+            }
+            console.warn(`Vehicles JSON contained error for take=${takeParam}:`, json?.error);
+          } catch (err: any) {
+            console.warn(`Vehicles fetch error for take=${takeParam}:`, err?.message || err);
+            continue;
+          }
+        }
+
         if (response.error) {
-          console.error('API Error:', response.error, response.details);
+          console.error('API Error (vehicles):', response.error, response.details);
           setError('API temporär nicht verfügbar');
           setLoading(false);
           return;
@@ -146,25 +179,32 @@ export default function VehicleHighlights({ className = '' }: VehicleHighlightsP
         setVehicles(transformedVehicles);
         setFilteredVehicles(transformedVehicles); // Show all vehicles initially
         updateDisplayedVehicles(transformedVehicles, 1); // Zeige initial nur erste Seite
-        
-        // Pre-populate category counts for better UX
-        const categoryCounts: Record<FilterCategory, Vehicle[]> = {} as Record<FilterCategory, Vehicle[]>;
-        filterOptions.forEach(option => {
-          if (option.id !== 'alle' && option.apiValue) {
-            const categoryVehicles = transformedVehicles.filter(vehicle => 
-              vehicle.bodyGroups?.includes(option.apiValue!)
-            );
-            if (categoryVehicles.length > 0) {
-              categoryCounts[option.id] = categoryVehicles; // Show all vehicles, no limit
+
+        // Kategorien dynamisch aus bodyGroups ableiten (typensicher)
+        const catSet = new Set<string>();
+        transformedVehicles.forEach((v) => {
+          const groups: string[] = Array.isArray(v.bodyGroups) ? v.bodyGroups : [];
+          for (const g of groups) {
+            if (typeof g === 'string' && g.length > 0) {
+              catSet.add(g);
             }
           }
         });
+        const cats = Array.from(catSet).sort((a, b) => a.localeCompare(b, 'de'));
+        setAvailableCategories(cats);
         
-        if (Object.keys(categoryCounts).length > 0) {
-          setCategoryVehicles(categoryCounts);
-          console.log('🚗 Pre-populated categories:', Object.entries(categoryCounts).map(([cat, vehs]) => `${cat}: ${vehs.length} vehicles`));
+        // Vorabberechnung: Fahrzeuge je Kategorie
+        const categoryVehicleMap: Record<string, Vehicle[]> = {};
+        cats.forEach(cat => {
+          const list = transformedVehicles.filter(v => matchesCategory(v, cat));
+          if (list.length > 0) categoryVehicleMap[cat] = list;
+        });
+
+        if (Object.keys(categoryVehicleMap).length > 0) {
+          setCategoryVehicles(categoryVehicleMap);
+          console.log('🚗 Pre-populated categories (api-derived):', Object.entries(categoryVehicleMap).map(([cat, vehs]) => `${cat}: ${vehs.length} vehicles`));
         }
-        
+
       } catch (err) {
         console.error('Error fetching vehicles:', err);
         setError('Netzwerkfehler');
@@ -173,7 +213,12 @@ export default function VehicleHighlights({ className = '' }: VehicleHighlightsP
       }
     };
 
+  useEffect(() => {
     fetchLatestVehicles();
+    const interval = setInterval(() => {
+      fetchLatestVehicles();
+    }, 60000); // 60s Polling für Echtzeitsynchronisation
+    return () => clearInterval(interval);
   }, []);
 
   const formatPrice = (price: number): string => {
@@ -217,95 +262,32 @@ export default function VehicleHighlights({ className = '' }: VehicleHighlightsP
     return `/fahrzeuge?vehicle=${vehicle.id}#!/vehicles/${vehicle.id}/${vehicleName}`;
   };
 
-  // No longer needed - using real API filters
-
+  // Clientseitiges Filtern mit bereits geladenen Fahrzeugen
   const fetchVehiclesByCategory = async (category: FilterCategory) => {
     if (category === 'alle') {
       setFilteredVehicles(vehicles);
-      updateDisplayedVehicles(vehicles, 1); // Reset zu erster Seite
-      return;
-    }
-
-    // Check if we already have vehicles for this category
-    if (categoryVehicles[category] && categoryVehicles[category].length > 0) {
-      setFilteredVehicles(categoryVehicles[category]);
-      updateDisplayedVehicles(categoryVehicles[category], 1); // Reset zu erster Seite
+      updateDisplayedVehicles(vehicles, 1);
       return;
     }
 
     setLoadingCategories(prev => ({ ...prev, [category]: true }));
 
     try {
-      // Get the filter option for this category
-      const filterOption = filterOptions.find(opt => opt.id === category);
-      
-      // Build API parameters - fetch more vehicles to filter clientside
-      const params = new URLSearchParams({
-        take: '50' // Get more vehicles to have enough for filtering
-      });
-      
-      const response = await fetch(`/api/vehicles?${params.toString()}`)
-        .then(res => res.json())
-        .catch(err => ({ error: String(err) }));
-      
-      if (response.error) {
-        console.error('API Error for category:', category, response.error);
-        return;
+      const cached = categoryVehicles[category];
+      const list = cached && cached.length > 0
+        ? cached
+        : vehicles.filter(v => matchesCategory(v, category));
+
+      if (!cached || cached.length === 0) {
+        setCategoryVehicles(prev => ({ ...prev, [category]: list }));
       }
-      
-      const vehicleData = response.items || response.vehicles || response.data || response;
-      const transformedVehicles = Array.isArray(vehicleData) ? vehicleData.map((vehicle: any) => {
-        const year = vehicle.dateOfFirstRegistration?.date ? 
-          new Date(vehicle.dateOfFirstRegistration.date).getFullYear() : 
-          vehicle.year || 2020;
-        
-        const images = vehicle.mediaItems && vehicle.mediaItems.length > 0 ? 
-          vehicle.mediaItems.filter((item: any) => item.type === 'Image').map((item: any) => ({
-            url: item.downloadUrl,
-            alt: `${vehicle.manufacturer?.name} ${vehicle.model?.name}`
-          })) : [];
-        
-        return {
-          id: vehicle.id?.toString() || 'unknown',
-          make: vehicle.manufacturer?.name || 'Unbekannt',
-          model: vehicle.model?.name || 'Unbekannt',
-          variant: vehicle.modelExtension || '',
-          price: vehicle.consumerPrice?.totalPrice || 0,
-          mileage: vehicle.mileage || 0,
-          year: year,
-          fuel: vehicle.fuel?.name || 'Unbekannt',
-          transmission: vehicle.gearbox?.name || 'Unbekannt',
-          images: images,
-          description: vehicle.description || '',
-          bodyGroups: vehicle.body?.groups || []
-        };
-      }) : [];
-        
-        // Filter vehicles by body groups
-        let filteredByCategory = transformedVehicles;
-        if (filterOption?.apiValue) {
-          filteredByCategory = transformedVehicles.filter(vehicle => 
-            vehicle.bodyGroups?.includes(filterOption.apiValue)
-          );
-        }
-        
-        // Show all filtered vehicles (no limit)
-        const finalVehicles = filteredByCategory;
-        
-        // Update category vehicles cache
-        setCategoryVehicles(prev => ({
-          ...prev,
-          [category]: finalVehicles
-        }));
-        
-        setFilteredVehicles(finalVehicles);
-        updateDisplayedVehicles(finalVehicles, 1); // Reset zu erster Seite bei Filter-Änderung
-        
-        console.log(`🚗 Category ${category}: Found ${filteredByCategory.length} vehicles, showing ${finalVehicles.length}`);
-        console.log('🚗 Filtered vehicles:', finalVehicles.map(v => `${v.make} ${v.model} (${v.bodyGroups?.join(', ')})`));
-      
+
+      setFilteredVehicles(list);
+      updateDisplayedVehicles(list, 1);
+
+      console.log(`🚗 Category ${category}: Showing ${list.length} vehicles (api-derived)`);
     } catch (err) {
-      console.error('Error fetching vehicles for category:', category, err);
+      console.error('Error filtering vehicles for category:', category, err);
     } finally {
       setLoadingCategories(prev => ({ ...prev, [category]: false }));
     }
@@ -403,20 +385,10 @@ export default function VehicleHighlights({ className = '' }: VehicleHighlightsP
                 const isLoading = loadingCategories[option.id];
                 const cachedVehicles = categoryVehicles[option.id] || [];
                 
-                // Calculate vehicle count
-                let vehicleCount = 0;
-                if (option.id === 'alle') {
-                  vehicleCount = vehicles.length;
-                } else {
-                  if (cachedVehicles.length > 0) {
-                    vehicleCount = cachedVehicles.length;
-                  } else if (!isLoading && vehicles.length > 0) {
-                    const estimatedCount = vehicles.filter(vehicle => 
-                      vehicle.bodyGroups?.includes(option.apiValue || '')
-                    ).length;
-                    vehicleCount = estimatedCount;
-                  }
-                }
+                // Zähler basieren auf vorab berechneten Kategorie-Listen (Alias-Matching)
+                const vehicleCount = option.id === 'alle' 
+                  ? vehicles.length 
+                  : (cachedVehicles.length || 0);
                 
                 return (
                   <button
