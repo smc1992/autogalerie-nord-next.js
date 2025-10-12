@@ -675,3 +675,47 @@
     }
   }
 }
+
+/* Brand Logo Marquee */
+@layer components {
+  .logo-marquee {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .logo-track {
+    display: flex;
+    gap: 2.5rem; /* ~gap-10 */
+    align-items: center;
+    width: max-content;
+    animation: logo-marquee 30s linear infinite;
+  }
+
+  .logo-track:hover {
+    animation-play-state: paused;
+  }
+
+  @keyframes logo-marquee {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  .logo-fade-left,
+  .logo-fade-right {
+    pointer-events: none;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 64px;
+  }
+
+  .logo-fade-left {
+    left: 0;
+    background: linear-gradient(to right, rgba(255,255,255,1), rgba(255,255,255,0));
+  }
+
+  .logo-fade-right {
+    right: 0;
+    background: linear-gradient(to left, rgba(255,255,255,1), rgba(255,255,255,0));
+  }
+}

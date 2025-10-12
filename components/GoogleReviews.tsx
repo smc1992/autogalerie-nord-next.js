@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Section from './Section';
 
 export default function GoogleReviews() {
   const [currentReview, setCurrentReview] = useState(0);
@@ -46,13 +47,13 @@ export default function GoogleReviews() {
   }, [reviews.length]);
 
   return (
-    <section className="py-20 bg-gradient-to-br from-gray-50 via-white to-red-50 relative overflow-hidden">
+    <Section background="muted" className="relative overflow-hidden">
       {/* Animated background elements */}
       <div className="absolute top-0 left-0 w-64 h-64 bg-gradient-to-br from-yellow-200/20 to-transparent rounded-full animate-pulse"></div>
       <div className="absolute bottom-0 right-0 w-48 h-48 bg-gradient-to-tl from-red-200/20 to-transparent rounded-full animate-pulse animation-delay-1000"></div>
       <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-gradient-radial from-gray-100/10 to-transparent rounded-full animate-pulse animation-delay-2000"></div>
 
-      <div className="max-w-6xl mx-auto px-6 relative z-10">
+      <div className="relative z-10">
         <div className={`text-center mb-16 transform transition-all duration-1000 ${
           isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'
         }`}>
@@ -228,6 +229,11 @@ export default function GoogleReviews() {
         .animation-delay-2000 { animation-delay: 2000ms; }
         .bg-gradient-radial { background: radial-gradient(circle, var(--tw-gradient-stops)); }
       `}</style>
-    </section>
+      <style jsx>{`
+        .animation-delay-1000 { animation-delay: 1000ms; }
+        .animation-delay-2000 { animation-delay: 2000ms; }
+        .bg-gradient-radial { background: radial-gradient(circle, var(--tw-gradient-stops)); }
+      `}</style>
+    </Section>
   );
 }

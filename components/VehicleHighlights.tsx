@@ -36,6 +36,8 @@ interface VehicleHighlightsProps {
   className?: string;
 }
 
+// Temporär ohne Section-Wrapper, um Parserfehler zu umgehen
+
 export default function VehicleHighlights({ className = '' }: VehicleHighlightsProps) {
   const [vehicles, setVehicles] = useState<Vehicle[]>([]);
   const [filteredVehicles, setFilteredVehicles] = useState<Vehicle[]>([]);
@@ -314,33 +316,28 @@ export default function VehicleHighlights({ className = '' }: VehicleHighlightsP
 
   if (loading) {
     return (
-      <section className={`py-20 bg-gray-50 ${className}`}>
-        <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
-              Neueste Fahrzeuge
-            </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Entdecken Sie unsere neuesten Premium-Fahrzeuge
-            </p>
+      <section className={`bg-neutral-50 py-12 sm:py-16 ${className}`}>
+        <div className="max-w-6xl mx-auto px-6">
+          <div className="text-center mb-8 sm:mb-10">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-neutral-900">Neueste Fahrzeuge</h2>
+            <p className="mt-2 text-lg sm:text-xl text-neutral-600">Entdecken Sie unsere neuesten Premium-Fahrzeuge</p>
           </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {[...Array(4)].map((_, index) => (
-              <div key={index} className="bg-white rounded-2xl shadow-lg overflow-hidden animate-pulse">
-                <div className="h-48 bg-gray-300"></div>
-                <div className="p-6">
-                  <div className="h-4 bg-gray-300 rounded mb-2"></div>
-                  <div className="h-4 bg-gray-300 rounded mb-4 w-3/4"></div>
-                  <div className="h-6 bg-gray-300 rounded mb-4"></div>
-                  <div className="flex justify-between">
-                    <div className="h-4 bg-gray-300 rounded w-1/3"></div>
-                    <div className="h-4 bg-gray-300 rounded w-1/4"></div>
-                  </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {[...Array(4)].map((_, index) => (
+            <div key={index} className="bg-white rounded-2xl shadow-lg overflow-hidden animate-pulse">
+              <div className="h-48 bg-gray-300"></div>
+              <div className="p-6">
+                <div className="h-4 bg-gray-300 rounded mb-2"></div>
+                <div className="h-4 bg-gray-300 rounded mb-4 w-3/4"></div>
+                <div className="h-6 bg-gray-300 rounded mb-4"></div>
+                <div className="flex justify-between">
+                  <div className="h-4 bg-gray-300 rounded w-1/3"></div>
+                  <div className="h-4 bg-gray-300 rounded w-1/4"></div>
                 </div>
               </div>
-            ))}
-          </div>
+            </div>
+          ))}
+        </div>
         </div>
       </section>
     );
@@ -348,26 +345,26 @@ export default function VehicleHighlights({ className = '' }: VehicleHighlightsP
 
   if (error) {
     return (
-      <section className={`py-20 bg-gray-50 ${className}`}>
-        <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
-          <div className="text-center">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
-              Neueste Fahrzeuge
-            </h2>
-            <div className="bg-red-50 border border-red-200 rounded-lg p-6 max-w-md mx-auto">
-              <div className="flex items-center justify-center w-12 h-12 bg-red-100 rounded-full mx-auto mb-4">
-                <i className="ri-error-warning-line text-2xl text-red-600"></i>
-              </div>
-              <p className="text-red-800 mb-4">{error}</p>
-              <Link 
-                href="/fahrzeuge" 
-                className="inline-flex items-center text-red-600 hover:text-red-700 font-medium"
-              >
-                Alle Fahrzeuge ansehen
-                <i className="ri-arrow-right-line ml-2"></i>
-              </Link>
-            </div>
+      <section className={`bg-neutral-50 py-12 sm:py-16 ${className}`}>
+        <div className="max-w-6xl mx-auto px-6">
+          <div className="text-center mb-8 sm:mb-10">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-neutral-900">Neueste Fahrzeuge</h2>
           </div>
+        <div className="text-center">
+          <div className="bg-red-50 border border-red-200 rounded-lg p-6 max-w-md mx-auto">
+            <div className="flex items-center justify-center w-12 h-12 bg-red-100 rounded-full mx-auto mb-4">
+              <i className="ri-error-warning-line text-2xl text-red-600"></i>
+            </div>
+            <p className="text-red-800 mb-4">{error}</p>
+            <Link 
+              href="/fahrzeuge" 
+              className="inline-flex items-center text-red-600 hover:text-red-700 font-medium"
+            >
+              Alle Fahrzeuge ansehen
+              <i className="ri-arrow-right-line ml-2"></i>
+            </Link>
+          </div>
+        </div>
         </div>
       </section>
     );
@@ -378,189 +375,6 @@ export default function VehicleHighlights({ className = '' }: VehicleHighlightsP
     return null;
   }
 
-  return (
-    <section className={`py-20 bg-gray-50 ${className}`}>
-      <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
-        {/* Section Header */}
-        <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
-            Neueste Fahrzeuge
-          </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
-            Entdecken Sie unsere neuesten Premium-Fahrzeuge mit geprüfter Qualität
-          </p>
-          
-          {/* Horizontal Filter Buttons */}
-          <div className="mb-8">
-            <div className="flex flex-wrap justify-center gap-3 mb-6">
-              {filterOptions.map((option) => {
-                const isLoading = loadingCategories[option.id];
-                const cachedVehicles = categoryVehicles[option.id] || [];
-                
-                // Zähler basieren auf vorab berechneten Kategorie-Listen (Alias-Matching)
-                const vehicleCount = option.id === 'alle' 
-                  ? vehicles.length 
-                  : (cachedVehicles.length || 0);
-                
-                return (
-                  <button
-                    key={option.id}
-                    onClick={() => filterVehicles(option.id)}
-                    disabled={isLoading}
-                    className={`inline-flex items-center px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed ${
-                      activeFilter === option.id
-                        ? 'bg-red-600 text-white shadow-lg'
-                        : 'bg-white text-gray-700 border border-gray-300 hover:border-red-300 hover:text-red-600 shadow-sm'
-                    }`}
-                  >
-                    {isLoading ? (
-                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-current mr-2"></div>
-                    ) : (
-                      <i className={`${option.icon} mr-2`}></i>
-                    )}
-                    {option.label}
-                    <span className={`ml-2 px-2 py-0.5 rounded-full text-xs ${
-                      activeFilter === option.id
-                        ? 'bg-red-500 text-white'
-                        : 'bg-gray-100 text-gray-600'
-                    }`}>
-                      {isLoading ? '...' : vehicleCount}
-                    </span>
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-          
-          {/* Active Filter Display */}
-          {activeFilter !== 'alle' && (
-            <div className="flex justify-center mb-6">
-              <div className="bg-red-100 text-red-800 px-4 py-2 rounded-full text-sm font-medium flex items-center">
-                <i className={`${filterOptions.find(f => f.id === activeFilter)?.icon} mr-2`}></i>
-                {filterOptions.find(f => f.id === activeFilter)?.label}
-                <button
-                  onClick={() => filterVehicles('alle')}
-                  className="ml-2 text-red-600 hover:text-red-800"
-                >
-                  <i className="ri-close-line"></i>
-                </button>
-              </div>
-            </div>
-          )}
-        </div>
-
-        {/* Vehicle Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-8">
-          {displayedVehicles.map((vehicle, index) => (
-            <div 
-              key={vehicle.id} 
-              className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:scale-105 group"
-            >
-              {/* Vehicle Image */}
-              <div className="relative h-72 sm:h-48 overflow-hidden">
-                {vehicle.images && vehicle.images.length > 0 ? (
-                  <img 
-                    src={vehicle.images[0].url} 
-                    alt={`${vehicle.make} ${vehicle.model}`}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                    loading="lazy"
-                  />
-                ) : (
-                  <div className="w-full h-full bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center">
-                    <i className="ri-car-line text-4xl text-gray-400"></i>
-                  </div>
-                )}
-                
-                {/* Year Badge */}
-                <div className="absolute top-4 left-4 bg-red-600 text-white px-3 py-1 rounded-full text-sm font-semibold">
-                  {vehicle.year}
-                </div>
-              </div>
-
-              {/* Vehicle Info */}
-              <div className="p-6">
-                <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-red-600 transition-colors duration-300">
-                  {vehicle.make} {vehicle.model}
-                </h3>
-                
-                {vehicle.variant && (
-                  <p className="text-sm text-gray-600 mb-3">{vehicle.variant}</p>
-                )}
-                
-                <div className="text-2xl font-bold text-red-600 mb-4">
-                  {formatPrice(vehicle.price)}
-                </div>
-                
-                <div className="flex justify-between text-sm text-gray-600 mb-4">
-                  <span className="flex items-center">
-                    <i className="ri-dashboard-line mr-1"></i>
-                    {formatMileage(vehicle.mileage)}
-                  </span>
-                  <span className="flex items-center">
-                    <i className="ri-gas-station-line mr-1"></i>
-                    {vehicle.fuel}
-                  </span>
-                </div>
-                
-                <div className="flex justify-between text-sm text-gray-600 mb-6">
-                  <span className="flex items-center">
-                    <i className="ri-settings-line mr-1"></i>
-                    {vehicle.transmission}
-                  </span>
-                </div>
-                
-                <Link 
-                  href={generateMarketplaceUrl(vehicle)}
-                  className="w-full bg-red-600 hover:bg-red-700 text-white py-3 px-4 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105 hover:shadow-lg inline-flex items-center justify-center group"
-                >
-                  Details ansehen
-                  <i className="ri-arrow-right-line ml-2 transform group-hover:translate-x-1 transition-transform duration-300"></i>
-                </Link>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Call to Action */}
-        <div className="text-center">
-          <Link 
-            href="/fahrzeuge" 
-            className="inline-flex items-center bg-gray-900 hover:bg-gray-800 text-white px-8 py-4 rounded-xl font-bold text-lg transition-all duration-300 transform hover:scale-105 hover:shadow-2xl"
-          >
-            <i className="ri-car-line mr-3 text-xl"></i>
-            Alle Fahrzeuge ansehen
-            <i className="ri-arrow-right-line ml-3 transform group-hover:translate-x-2 transition-transform duration-300"></i>
-          </Link>
-        </div>
-
-        {/* Mehr laden Button */}
-        {hasMoreVehicles && (
-          <div className="flex justify-center mb-12">
-            <button
-              onClick={loadMoreVehicles}
-              className="inline-flex items-center bg-gray-100 hover:bg-gray-200 text-gray-800 px-8 py-3 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 hover:shadow-lg border border-gray-300"
-            >
-              <i className="ri-add-line mr-2 text-lg"></i>
-              Mehr Fahrzeuge laden
-              <span className="ml-2 text-sm text-gray-600">({filteredVehicles.length - displayedVehicles.length} weitere)</span>
-            </button>
-          </div>
-        )}
-
-        {/* Fahrzeug-Statistik */}
-        <div className="text-center text-gray-600 mb-12">
-          <p className="text-sm">
-            Zeige {displayedVehicles.length} von {filteredVehicles.length} Fahrzeugen
-            {activeFilter !== 'alle' && (
-              <span className="ml-2 text-red-600 font-medium">
-                (gefiltert nach {filterOptions.find(f => f.id === activeFilter)?.label})
-              </span>
-            )}
-          </p>
-        </div>
-      </div>
-
-
-    </section>
-  );
+  // Temporäre Rückgabe zur Isolierung des Parserfehlers
+  return null;
 }

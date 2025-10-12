@@ -5,6 +5,8 @@ import QuickSearchWidget from '../components/QuickSearchWidget';
 import dynamic from 'next/dynamic';
 const QuickSearchClient = dynamic(() => import('../components/QuickSearch'), { ssr: false });
 import VehicleHighlights from '../components/VehicleHighlights';
+import BrandLogoGrid from '../components/BrandLogoGrid';
+import TrustQualitySection from '../components/TrustQualitySection';
 import GoogleReviews from '../components/GoogleReviews';
 import { useState, useEffect } from 'react';
 import KontaktPopup from '../components/KontaktPopup';
@@ -200,6 +202,12 @@ export default function HomeClient() {
 
         {/* Scroll indicator (deaktiviert für kompaktere Darstellung) */}
       </section>
+
+      {/* Markenlogos Grid */}
+      <BrandLogoGrid />
+
+      {/* Vertrauen / Erfahrung / Qualität */}
+      <TrustQualitySection />
 
       {/* Quicksearch Section (in Hero integriert) */}
 
