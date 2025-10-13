@@ -15,9 +15,9 @@ export default function ImportExportHero() {
       </div>
 
       {/* Content Container */}
-      <div className="relative z-10 w-full">
+      <div className="relative z-10 w-full pt-28 sm:pt-32">
         <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
-          <div className="max-w-3xl">
+          <div className="text-center md:text-left max-w-3xl">
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight">
               Import & Export
             </h1>
@@ -26,7 +26,7 @@ export default function ImportExportHero() {
             </p>
             
             {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row gap-4">
+            <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
               <a 
                 href="tel:+4904174596970"
                 className="bg-red-600 hover:bg-red-700 text-white px-8 py-4 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105 hover:shadow-xl whitespace-nowrap cursor-pointer inline-flex items-center justify-center"

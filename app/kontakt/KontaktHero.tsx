@@ -10,7 +10,7 @@ export default function KontaktHero() {
     >
       <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/40 to-red-900/40"></div>
       
-      <div className="relative z-10 flex items-center h-full px-6">
+      <div className="relative z-10 flex items-center h-full pt-28 sm:pt-32 px-6">
         <div className="max-w-4xl mx-auto text-center">
           <h1 className="text-4xl md:text-6xl font-bold text-white mb-6 animate-fadeInUp">
             Kontakt

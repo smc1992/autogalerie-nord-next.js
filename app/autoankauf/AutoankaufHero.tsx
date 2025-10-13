@@ -9,7 +9,7 @@ export default function AutoankaufHero() {
         backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.4)), url('/images/Hero-Autoankauf.webp')`
       }}
     >
-      <div className="relative w-full px-4 md:px-6 lg:px-8">
+      <div className="relative w-full pt-28 sm:pt-32 px-4 md:px-6 lg:px-8">
         <div className="w-full max-w-6xl mx-auto">
           <div className="text-center lg:text-left max-w-4xl">
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight">

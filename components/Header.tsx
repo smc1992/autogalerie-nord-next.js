@@ -10,6 +10,9 @@ export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isLeistungenOpen, setIsLeistungenOpen] = useState(false);
   const [isKontaktOpen, setIsKontaktOpen] = useState(false);
+  // Mobile Submenu States
+  const [isLeistungenMobileOpen, setIsLeistungenMobileOpen] = useState(false);
+  const [isKontaktMobileOpen, setIsKontaktMobileOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [whiteLogoOk, setWhiteLogoOk] = useState(true);
   const pathname = usePathname();
@@ -26,6 +29,9 @@ export default function Header() {
   // Close mobile menu on route change
   useEffect(() => {
     if (isMenuOpen) setIsMenuOpen(false);
+    // Reset mobile submenus on navigation
+    setIsLeistungenMobileOpen(false);
+    setIsKontaktMobileOpen(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname]);
 
@@ -346,35 +352,49 @@ export default function Header() {
                         <i className="ri-arrow-right-s-line ml-auto text-gray-400"></i>
                       </a>
                       
-                      <Link 
-                        href="/leistungen" 
-                        className="group flex items-center px-4 py-4 text-gray-700 hover:bg-gradient-to-r hover:from-red-50 hover:to-red-100 hover:text-red-600 rounded-xl transition-all duration-300 cursor-pointer transform hover:scale-105 hover:shadow-md"
-                        onClick={() => setIsMenuOpen(false)}
+                      <button 
+                        type="button"
+                        className="group w-full flex items-center px-4 py-4 text-gray-700 hover:bg-gradient-to-r hover:from-red-50 hover:to-red-100 hover:text-red-600 rounded-xl transition-all duration-300 cursor-pointer transform hover:scale-105 hover:shadow-md"
+                        onClick={() => setIsLeistungenMobileOpen(prev => !prev)}
+                        aria-expanded={isLeistungenMobileOpen}
+                        aria-controls="mobile-leistungen-submenu"
                       >
                         <div className="w-10 h-10 bg-gray-100 group-hover:bg-red-600 rounded-lg flex items-center justify-center mr-4 transition-all duration-300">
                           <i className="ri-service-line text-lg group-hover:text-white transition-colors duration-300"></i>
                         </div>
                         <span className="font-medium">Services</span>
-                        <i className="ri-arrow-right-s-line ml-auto text-gray-400 group-hover:text-red-600 transform group-hover:translate-x-1 transition-all duration-300"></i>
-                      </Link>
+                        <i className={`ri-arrow-down-s-line ml-auto text-gray-400 transition-transform duration-300 ${isLeistungenMobileOpen ? 'rotate-180 text-red-600' : ''}`}></i>
+                      </button>
 
                       {/* Leistungen Submenu */}
-                      <div className="ml-6 space-y-2 bg-gray-50 rounded-xl p-3">
-                        <div className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Unsere Services</div>
-                        {leistungenSubMenu.map((item, index) => (
+                      {isLeistungenMobileOpen && (
+                        <div id="mobile-leistungen-submenu" className="ml-6 space-y-2 bg-gray-50 rounded-xl p-3">
+                          <div className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Unsere Services</div>
                           <Link 
-                            key={index}
-                            href={item.href} 
-                            className="group flex items-center px-3 py-2 text-sm text-gray-600 hover:bg-white hover:text-red-600 rounded-lg transition-all duration-300 cursor-pointer hover:shadow-sm"
+                            href="/leistungen"
+                            className="group flex items-center px-3 py-2 text-sm text-gray-700 hover:bg-white hover:text-red-600 rounded-lg transition-all duration-300 cursor-pointer hover:shadow-sm"
                             onClick={() => setIsMenuOpen(false)}
                           >
                             <div className="w-6 h-6 bg-gray-200 group-hover:bg-red-100 rounded-md flex items-center justify-center mr-3 transition-all duration-300">
-                              <i className={`${item.icon} text-xs group-hover:text-red-600 transition-colors duration-300`}></i>
+                              <i className="ri-list-unordered text-xs group-hover:text-red-600 transition-colors duration-300"></i>
                             </div>
-                            <span className="text-sm">{item.label}</span>
+                            <span className="text-sm">Alle Services</span>
                           </Link>
-                        ))}
-                      </div>
+                          {leistungenSubMenu.map((item, index) => (
+                            <Link 
+                              key={index}
+                              href={item.href} 
+                              className="group flex items-center px-3 py-2 text-sm text-gray-600 hover:bg-white hover:text-red-600 rounded-lg transition-all duration-300 cursor-pointer hover:shadow-sm"
+                              onClick={() => setIsMenuOpen(false)}
+                            >
+                              <div className="w-6 h-6 bg-gray-200 group-hover:bg-red-100 rounded-md flex items-center justify-center mr-3 transition-all duration-300">
+                                <i className={`${item.icon} text-xs group-hover:text-red-600 transition-colors duration-300`}></i>
+                              </div>
+                              <span className="text-sm">{item.label}</span>
+                            </Link>
+                          ))}
+                        </div>
+                      )}
 
                       <Link 
                         href="/businessloesungen" 
@@ -388,30 +408,46 @@ export default function Header() {
                         <i className="ri-arrow-right-s-line ml-auto text-gray-400 group-hover:text-red-600 transform group-hover:translate-x-1 transition-all duration-300"></i>
                       </Link>
                       
-                      {/* Kontakt Submenu (mobil) */}
-                      <div className="ml-6 space-y-2 bg-gray-50 rounded-xl p-3">
-                        <div className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Kontakt</div>
-                        <Link 
-                          href="/kontakt" 
-                          className="group flex items-center px-3 py-2 text-sm text-gray-600 hover:bg-white hover:text-red-600 rounded-lg transition-all duration-300 cursor-pointer hover:shadow-sm"
-                          onClick={() => setIsMenuOpen(false)}
-                        >
-                          <div className="w-6 h-6 bg-gray-200 group-hover:bg-red-100 rounded-md flex items-center justify-center mr-3 transition-all duration-300">
-                            <i className="ri-mail-line text-xs group-hover:text-red-600 transition-colors duration-300"></i>
-                          </div>
-                          <span className="text-sm">Kontakt</span>
-                        </Link>
-                        <Link 
-                          href="/ueber-uns" 
-                          className="group flex items-center px-3 py-2 text-sm text-gray-600 hover:bg-white hover:text-red-600 rounded-lg transition-all duration-300 cursor-pointer hover:shadow-sm"
-                          onClick={() => setIsMenuOpen(false)}
-                        >
-                          <div className="w-6 h-6 bg-gray-200 group-hover:bg-red-100 rounded-md flex items-center justify-center mr-3 transition-all duration-300">
-                            <i className="ri-team-line text-xs group-hover:text-red-600 transition-colors duration-300"></i>
-                          </div>
-                          <span className="text-sm">Über Uns</span>
-                        </Link>
-                      </div>
+                      {/* Kontakt (mobil): Toggle für Submenu */}
+                      <button 
+                        type="button"
+                        className="group w-full flex items-center px-4 py-4 text-gray-700 hover:bg-gradient-to-r hover:from-red-50 hover:to-red-100 hover:text-red-600 rounded-xl transition-all duration-300 cursor-pointer transform hover:scale-105 hover:shadow-md"
+                        onClick={() => setIsKontaktMobileOpen(prev => !prev)}
+                        aria-expanded={isKontaktMobileOpen}
+                        aria-controls="mobile-kontakt-submenu"
+                      >
+                        <div className="w-10 h-10 bg-gray-100 group-hover:bg-red-600 rounded-lg flex items-center justify-center mr-4 transition-all duration-300">
+                          <i className="ri-contacts-line text-lg group-hover:text-white transition-colors duration-300"></i>
+                        </div>
+                        <span className="font-medium">Kontakt & Über Uns</span>
+                        <i className={`ri-arrow-down-s-line ml-auto text-gray-400 transition-transform duration-300 ${isKontaktMobileOpen ? 'rotate-180 text-red-600' : ''}`}></i>
+                      </button>
+
+                      {isKontaktMobileOpen && (
+                        <div id="mobile-kontakt-submenu" className="ml-6 space-y-2 bg-gray-50 rounded-xl p-3">
+                          <div className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Kontakt</div>
+                          <Link 
+                            href="/kontakt" 
+                            className="group flex items-center px-3 py-2 text-sm text-gray-600 hover:bg-white hover:text-red-600 rounded-lg transition-all duration-300 cursor-pointer hover:shadow-sm"
+                            onClick={() => setIsMenuOpen(false)}
+                          >
+                            <div className="w-6 h-6 bg-gray-200 group-hover:bg-red-100 rounded-md flex items-center justify-center mr-3 transition-all duration-300">
+                              <i className="ri-mail-line text-xs group-hover:text-red-600 transition-colors duration-300"></i>
+                            </div>
+                            <span className="text-sm">Kontakt</span>
+                          </Link>
+                          <Link 
+                            href="/ueber-uns" 
+                            className="group flex items-center px-3 py-2 text-sm text-gray-600 hover:bg-white hover:text-red-600 rounded-lg transition-all duration-300 cursor-pointer hover:shadow-sm"
+                            onClick={() => setIsMenuOpen(false)}
+                          >
+                            <div className="w-6 h-6 bg-gray-200 group-hover:bg-red-100 rounded-md flex items-center justify-center mr-3 transition-all duration-300">
+                              <i className="ri-team-line text-xs group-hover:text-red-600 transition-colors duration-300"></i>
+                            </div>
+                            <span className="text-sm">Über Uns</span>
+                          </Link>
+                        </div>
+                      )}
                       
                       {/* Über Uns als Top-Level entfernt, jetzt unter Kontakt */}
                       

@@ -7,8 +7,8 @@ export default function BusinessHero() {
         backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.3)), url('/images/Hero-Business.webp')`
       }}
     >
-      <div className="container mx-auto px-6 py-20 relative z-10">
-        <div className="max-w-4xl">
+      <div className="container mx-auto px-6 pt-28 sm:pt-32 pb-20 relative z-10">
+        <div className="text-center md:text-left max-w-4xl">
           <div className="mb-8">
             <span className="inline-block px-4 py-2 bg-red-600 text-white text-sm font-medium rounded-full mb-6 transform hover:scale-105 transition-all duration-300">
               Business Solutions
@@ -21,7 +21,7 @@ export default function BusinessHero() {
             </p>
           </div>
           
-          <div className="flex flex-col sm:flex-row gap-4">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
             <button className="group bg-red-600 hover:bg-red-700 text-white px-8 py-4 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105 hover:shadow-xl cursor-pointer whitespace-nowrap">
               <span className="flex items-center">
                 Beratung vereinbaren

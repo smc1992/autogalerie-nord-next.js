@@ -12,12 +12,12 @@ export default function LeistungenHero() {
         <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/60 to-black/40"></div>
       </div>
 
-      <div className="relative w-full px-4 md:px-6 lg:px-8">
+      <div className="relative w-full pt-28 sm:pt-32 px-4 md:px-6 lg:px-8">
         <div className="w-full max-w-6xl mx-auto">
           <div className="text-center lg:text-left max-w-3xl">
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6">
               Unsere 
-              <span className="text-red-500 ml-3 animate-pulse">Leistungen</span>
+              <span className="text-red-500 block lg:inline lg:ml-3 animate-pulse">Leistungen</span>
             </h1>
             <p className="text-xl md:text-2xl text-gray-200 mb-8 leading-relaxed">
               Von der Finanzierung bis zum Export - wir bieten Ihnen umfassende Services rund um Ihr Fahrzeug

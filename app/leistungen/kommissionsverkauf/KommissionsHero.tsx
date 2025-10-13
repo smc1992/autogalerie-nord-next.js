@@ -10,7 +10,7 @@ export default function KommissionsHero() {
     >
       <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/60 to-black/30"></div>
       
-      <div className="relative w-full px-4 md:px-6 lg:px-8">
+      <div className="relative w-full pt-28 sm:pt-32 px-4 md:px-6 lg:px-8">
         <div className="w-full max-w-6xl mx-auto">
           <div className="text-center lg:text-left max-w-3xl">
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6">
