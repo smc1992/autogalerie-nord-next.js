@@ -211,7 +211,7 @@ export default function HomePage() {
       {/* Hero Section */}
       <section className="bg-gray-100 py-16">
         <div className="container mx-auto px-4">
-          <h1 className="text-4xl font-bold mb-6">Willkommen bei Autogalerie Nord</h1>
+          <h1 className="text-4xl font-bold mb-6 uppercase">Willkommen bei Autogalerie Nord</h1>
           <p className="text-xl mb-8">Finden Sie Ihr Traumauto in unserem umfangreichen Fahrzeugangebot.</p>
         </div>
       </section>

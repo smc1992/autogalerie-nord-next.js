@@ -99,7 +99,7 @@ export default function HomeClient() {
               {headlines.map((headline, index) => (
                 <h1 
                   key={index}
-                  className={`absolute inset-0 text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight transition-all duration-1800 ease-in-out transform ${
+                  className={`absolute inset-0 text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight transition-all duration-1800 ease-in-out transform uppercase ${
                     index === currentHeadline 
                       ? 'translate-y-0 opacity-100 scale-100' 
                       : index < currentHeadline 

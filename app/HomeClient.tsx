@@ -114,7 +114,7 @@ export default function HomeClient() {
             {/* Statische H1 gemäß Vorgabe */}
             <div className="relative mt-8 sm:mt-10 md:mt-0 mb-3 sm:mb-4 lg:mb-5">
               <h1 
-                className="text-4xl sm:text-5xl md:text-5xl lg:text-5xl xl:text-6xl 3xl:text-6xl 4xl:text-7xl font-bold text-white leading-tight"
+                className="text-4xl sm:text-5xl md:text-5xl lg:text-5xl xl:text-6xl 3xl:text-6xl 4xl:text-7xl font-bold text-white leading-tight uppercase"
                 style={{ 
                   textShadow: '2px 2px 4px rgba(0,0,0,0.8), 0 0 8px rgba(0,0,0,0.6)'
                 }}
