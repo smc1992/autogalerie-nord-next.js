@@ -322,10 +322,10 @@ export default function VehicleHighlights({ className = '' }: VehicleHighlightsP
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-neutral-900">Neueste Fahrzeuge</h2>
             <p className="mt-2 text-lg sm:text-xl text-neutral-600">Entdecken Sie unsere neuesten Premium-Fahrzeuge</p>
           </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-6">
           {[...Array(4)].map((_, index) => (
             <div key={index} className="bg-white rounded-2xl shadow-lg overflow-hidden animate-pulse">
-              <div className="h-48 bg-gray-300"></div>
+              <div className="h-64 sm:h-72 lg:h-80 bg-gray-300"></div>
               <div className="p-6">
                 <div className="h-4 bg-gray-300 rounded mb-2"></div>
                 <div className="h-4 bg-gray-300 rounded mb-4 w-3/4"></div>
@@ -375,6 +375,87 @@ export default function VehicleHighlights({ className = '' }: VehicleHighlightsP
     return null;
   }
 
-  // Temporäre Rückgabe zur Isolierung des Parserfehlers
-  return null;
+  // Haupt-Rendering der Sektion „Neueste Fahrzeuge“
+  return (
+    <section className={`bg-neutral-50 py-12 sm:py-16 ${className}`}>
+      <div className="max-w-6xl mx-auto px-6">
+        <div className="text-center mb-8 sm:mb-10">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-neutral-900">Neueste Fahrzeuge</h2>
+          <p className="mt-2 text-lg sm:text-xl text-neutral-600">Entdecken Sie unsere neuesten Premium-Fahrzeuge</p>
+        </div>
+
+        {/* Filter-Pills aus dynamischen Kategorien */}
+        {filterOptions.length > 1 && (
+          <div className="flex flex-wrap justify-center gap-2 mb-8">
+            {filterOptions.map((opt) => (
+              <button
+                key={opt.id}
+                onClick={() => filterVehicles(opt.id)}
+                disabled={Boolean(loadingCategories[opt.id])}
+                className={`px-3 py-1 rounded-full border text-sm transition-colors ${
+                  activeFilter === opt.id
+                    ? 'bg-red-600 text-white border-red-600'
+                    : 'bg-white text-gray-800 border-gray-300 hover:border-red-400'
+                }`}
+              >
+                {opt.label}
+              </button>
+            ))}
+          </div>
+        )}
+
+        {/* Fahrzeugkarten */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-6">
+          {displayedVehicles.map((vehicle) => (
+            <Link
+              key={vehicle.id}
+              href={generateMarketplaceUrl(vehicle)}
+              className="block bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow"
+            >
+              <div className="relative h-64 sm:h-72 lg:h-80 bg-gray-100">
+                {vehicle.images && vehicle.images[0] ? (
+                  <img
+                    src={vehicle.images[0].url}
+                    alt={vehicle.images[0].alt ?? `${vehicle.make} ${vehicle.model}`}
+                    className="w-full h-full object-cover object-center"
+                  />
+                ) : (
+                  <div className="w-full h-full bg-gray-200" />
+                )}
+              </div>
+              <div className="p-6">
+                <div className="font-semibold text-lg text-gray-900">
+                  {vehicle.make} {vehicle.model}{vehicle.variant ? ` ${vehicle.variant}` : ''}
+                </div>
+                <div className="mt-1 text-red-600 font-bold">{formatPrice(vehicle.price)}</div>
+                <div className="mt-2 text-gray-600 text-sm">
+                  {formatMileage(vehicle.mileage)} • {vehicle.year} • {vehicle.fuel} • {vehicle.transmission}
+                </div>
+              </div>
+            </Link>
+          ))}
+        </div>
+
+        {/* Mehr laden */}
+        {hasMoreVehicles && (
+          <div className="text-center mt-8">
+            <button
+              onClick={loadMoreVehicles}
+              className="px-6 py-3 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-lg transition-colors"
+            >
+              Mehr Fahrzeuge laden
+            </button>
+          </div>
+        )}
+
+        {/* Link zu allen Fahrzeugen */}
+        <div className="text-center mt-10">
+          <Link href="/fahrzeuge" className="inline-flex items-center text-red-600 hover:text-red-700 font-medium">
+            Alle Fahrzeuge ansehen
+            <i className="ri-arrow-right-line ml-2"></i>
+          </Link>
+        </div>
+      </div>
+    </section>
+  );
 }

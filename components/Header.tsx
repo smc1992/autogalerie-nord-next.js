@@ -9,6 +9,7 @@ export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isLeistungenOpen, setIsLeistungenOpen] = useState(false);
+  const [isKontaktOpen, setIsKontaktOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [whiteLogoOk, setWhiteLogoOk] = useState(true);
   const pathname = usePathname();
@@ -73,6 +74,7 @@ export default function Header() {
     { href: '/leistungen/zulassungsservice', label: 'Zulassungsservice', icon: 'ri-file-text-line' },
     { href: '/leistungen/import-export', label: 'Import & Export', icon: 'ri-ship-line' },
     { href: '/leistungen/kommissionsverkauf', label: 'Kommissionsverkauf', icon: 'ri-exchange-dollar-line' },
+    { href: '/service', label: 'Service', icon: 'ri-tools-line' },
     { href: '/autoankauf', label: 'Fahrzeug verkaufen', icon: 'ri-money-dollar-circle-line' }
   ];
 
@@ -153,7 +155,7 @@ export default function Header() {
         {/* Navigationsbereich - oben transparent, beim Scroll weiß */}
         <div className={`${mounted && isScrolled ? 'bg-white/95 backdrop-blur-md shadow-md' : 'bg-transparent'}`}>
           <div className="pl-2 pr-4 md:px-6">
-          <nav className={`flex items-center justify-between ${mounted && isScrolled ? 'h-16 md:h-20 lg:h-20 py-2 md:py-2' : 'h-16 md:h-20 lg:h-20 py-2 md:py-2'}`}>
+          <nav className={`flex items-center justify-between lg:grid lg:grid-cols-3 lg:items-center ${mounted && isScrolled ? 'h-16 md:h-20 lg:h-20 py-2 md:py-2' : 'h-16 md:h-20 lg:h-20 py-2 md:py-2'}`}>
             {/* Logo */}
             <Link 
               href="/" 
@@ -178,15 +180,12 @@ export default function Header() {
               </div>
             </Link>
 
-            {/* Desktop Navigation */}
-            <div className="hidden lg:flex items-center space-x-8">
-              <Link href="/" className={`${mounted && isScrolled ? 'text-gray-700' : 'text-white'} cursor-pointer`}>
-                Home
-              </Link>
-              <Link href="/fahrzeuge" className={`${mounted && isScrolled ? 'text-gray-700' : 'text-white'} cursor-pointer`}>
+            {/* Desktop Navigation (zentriert) */}
+            <div className="hidden lg:flex items-center space-x-8 justify-center">
+              <Link href="/fahrzeuge" className={`${mounted && isScrolled ? 'text-gray-700' : 'text-white'} cursor-pointer lg:uppercase`}>
                 Fahrzeuge
               </Link>
-              <a href="https://autogalerie-nord.de/fahrzeuge#!/tradein" target="_blank" rel="noopener noreferrer" className={`${mounted && isScrolled ? 'text-gray-700' : 'text-white'} cursor-pointer`}>
+              <a href="https://autogalerie-nord.de/fahrzeuge#!/tradein" target="_blank" rel="noopener noreferrer" className={`${mounted && isScrolled ? 'text-gray-700' : 'text-white'} cursor-pointer lg:uppercase`}>
                 Autoankauf
               </a>
               <div 
@@ -194,8 +193,8 @@ export default function Header() {
                 onMouseEnter={() => setIsLeistungenOpen(true)}
                 onMouseLeave={() => setIsLeistungenOpen(false)}
               >
-                <Link href="/leistungen" className={`${mounted && isScrolled ? 'text-gray-700' : 'text-white'} cursor-pointer flex items-center`}>
-                  Leistungen
+                <Link href="/leistungen" className={`${mounted && isScrolled ? 'text-gray-700' : 'text-white'} cursor-pointer flex items-center lg:uppercase`}>
+                  Services
                   <i className="ri-arrow-down-s-line ml-1"></i>
                 </Link>
                 {isLeistungenOpen && (
@@ -210,22 +209,38 @@ export default function Header() {
                 )}
               </div>
 
-              <Link href="/businessloesungen" className={`${mounted && isScrolled ? 'text-gray-700' : 'text-white'} cursor-pointer`}>
+              <Link href="/businessloesungen" className={`${mounted && isScrolled ? 'text-gray-700' : 'text-white'} cursor-pointer lg:uppercase`}>
                 Business
               </Link>
 
-              <Link href="/service" className={`${mounted && isScrolled ? 'text-gray-700' : 'text-white'} cursor-pointer`}>
-                Service
-              </Link>
+              {/* Kontakt mit Submenu */}
+              <div 
+                className="relative"
+                onMouseEnter={() => setIsKontaktOpen(true)}
+                onMouseLeave={() => setIsKontaktOpen(false)}
+              >
+                <Link href="/kontakt" className={`${mounted && isScrolled ? 'text-gray-700' : 'text-white'} cursor-pointer flex items-center lg:uppercase`}>
+                  Kontakt
+                  <i className="ri-arrow-down-s-line ml-1"></i>
+                </Link>
+                {isKontaktOpen && (
+                  <div className="absolute top-full left-0 mt-0 w-56 bg-white rounded-lg shadow-xl border border-gray-100 py-2 z-50">
+                    <Link href="/kontakt" className="flex items-center px-4 py-3 text-gray-700 cursor-pointer">
+                      <i className="ri-mail-line w-5 h-5 mr-3"></i>
+                      Kontakt
+                    </Link>
+                    <Link href="/ueber-uns" className="flex items-center px-4 py-3 text-gray-700 cursor-pointer">
+                      <i className="ri-team-line w-5 h-5 mr-3"></i>
+                      Über Uns
+                    </Link>
+                  </div>
+                )}
+              </div>
 
-              <Link href="/ueber-uns" className={`${mounted && isScrolled ? 'text-gray-700' : 'text-white'} cursor-pointer`}>
-                Über Uns
-              </Link>
-
-              <Link href="/kontakt" className={`${mounted && isScrolled ? 'text-gray-700' : 'text-white'} cursor-pointer`}>
-                Kontakt
-              </Link>
             </div>
+
+            {/* Rechte Spalte als Platzhalter für Zentrierung */}
+            <div className="hidden lg:block"></div>
 
             {/* Mobile menu button */}
             <button
@@ -303,17 +318,7 @@ export default function Header() {
                   {/* Mobile Menu Items */}
                   <div className="flex-1 overflow-y-auto py-6">
                     <div className="space-y-3 px-4">
-                      <Link 
-                        href="/" 
-                        className="flex items-center px-4 py-5 text-gray-700 rounded-xl cursor-pointer"
-                        onClick={() => setIsMenuOpen(false)}
-                      >
-                        <div className="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center mr-4">
-                          <i className="ri-home-line text-lg"></i>
-                        </div>
-                        <span className="font-medium">Home</span>
-                        <i className="ri-arrow-right-s-line ml-auto text-gray-400"></i>
-                      </Link>
+                      {/* Home entfernt */}
                       
                       <Link 
                         href="/fahrzeuge" 
@@ -349,7 +354,7 @@ export default function Header() {
                         <div className="w-10 h-10 bg-gray-100 group-hover:bg-red-600 rounded-lg flex items-center justify-center mr-4 transition-all duration-300">
                           <i className="ri-service-line text-lg group-hover:text-white transition-colors duration-300"></i>
                         </div>
-                        <span className="font-medium">Leistungen</span>
+                        <span className="font-medium">Services</span>
                         <i className="ri-arrow-right-s-line ml-auto text-gray-400 group-hover:text-red-600 transform group-hover:translate-x-1 transition-all duration-300"></i>
                       </Link>
 
@@ -383,29 +388,32 @@ export default function Header() {
                         <i className="ri-arrow-right-s-line ml-auto text-gray-400 group-hover:text-red-600 transform group-hover:translate-x-1 transition-all duration-300"></i>
                       </Link>
                       
-                      <Link 
-                        href="/service" 
-                        className="group flex items-center px-4 py-4 text-gray-700 hover:bg-gradient-to-r hover:from-red-50 hover:to-red-100 hover:text-red-600 rounded-xl transition-all duration-300 cursor-pointer transform hover:scale-105 hover:shadow-md"
-                        onClick={() => setIsMenuOpen(false)}
-                      >
-                        <div className="w-10 h-10 bg-gray-100 group-hover:bg-red-600 rounded-lg flex items-center justify-center mr-4 transition-all duration-300">
-                          <i className="ri-tools-line text-lg group-hover:text-white transition-colors duration-300"></i>
-                        </div>
-                        <span className="font-medium">Service</span>
-                        <i className="ri-arrow-right-s-line ml-auto text-gray-400 group-hover:text-red-600 transform group-hover:translate-x-1 transition-all duration-300"></i>
-                      </Link>
+                      {/* Kontakt Submenu (mobil) */}
+                      <div className="ml-6 space-y-2 bg-gray-50 rounded-xl p-3">
+                        <div className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Kontakt</div>
+                        <Link 
+                          href="/kontakt" 
+                          className="group flex items-center px-3 py-2 text-sm text-gray-600 hover:bg-white hover:text-red-600 rounded-lg transition-all duration-300 cursor-pointer hover:shadow-sm"
+                          onClick={() => setIsMenuOpen(false)}
+                        >
+                          <div className="w-6 h-6 bg-gray-200 group-hover:bg-red-100 rounded-md flex items-center justify-center mr-3 transition-all duration-300">
+                            <i className="ri-mail-line text-xs group-hover:text-red-600 transition-colors duration-300"></i>
+                          </div>
+                          <span className="text-sm">Kontakt</span>
+                        </Link>
+                        <Link 
+                          href="/ueber-uns" 
+                          className="group flex items-center px-3 py-2 text-sm text-gray-600 hover:bg-white hover:text-red-600 rounded-lg transition-all duration-300 cursor-pointer hover:shadow-sm"
+                          onClick={() => setIsMenuOpen(false)}
+                        >
+                          <div className="w-6 h-6 bg-gray-200 group-hover:bg-red-100 rounded-md flex items-center justify-center mr-3 transition-all duration-300">
+                            <i className="ri-team-line text-xs group-hover:text-red-600 transition-colors duration-300"></i>
+                          </div>
+                          <span className="text-sm">Über Uns</span>
+                        </Link>
+                      </div>
                       
-                      <Link 
-                        href="/ueber-uns" 
-                        className="group flex items-center px-4 py-4 text-gray-700 hover:bg-gradient-to-r hover:from-red-50 hover:to-red-100 hover:text-red-600 rounded-xl transition-all duration-300 cursor-pointer transform hover:scale-105 hover:shadow-md"
-                        onClick={() => setIsMenuOpen(false)}
-                      >
-                        <div className="w-10 h-10 bg-gray-100 group-hover:bg-red-600 rounded-lg flex items-center justify-center mr-4 transition-all duration-300">
-                          <i className="ri-team-line text-lg group-hover:text-white transition-colors duration-300"></i>
-                        </div>
-                        <span className="font-medium">Über Uns</span>
-                        <i className="ri-arrow-right-s-line ml-auto text-gray-400 group-hover:text-red-600 transform group-hover:translate-x-1 transition-all duration-300"></i>
-                      </Link>
+                      {/* Über Uns als Top-Level entfernt, jetzt unter Kontakt */}
                       
                       <Link 
                         href="/kontakt" 

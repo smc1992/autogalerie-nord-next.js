@@ -21,9 +21,9 @@ export default function HomeClient() {
   // SEO-optimierte Headlines für den Slider
   const headlines = [
     {
-      part1: "Ihr Autohaus",
-      part2: "für starke Marken", 
-      subtitle: "Faire Preise, ehrliche Beratung und geprüfte Qualität"
+      part1: "Fahrzeuge mit Charakter.",
+      part2: "Qualität mit Vertrauen.",
+      subtitle: "Entdecken Sie exklusive Automobile führender Marken – geprüft, gepflegt und mit Garantie."
     },
     {
       part1: "Hochwertige Fahrzeuge",
@@ -110,51 +110,41 @@ export default function HomeClient() {
 
         <div className="relative z-10 px-4 sm:px-6 py-24 md:py-24 lg:py-0 3xl:px-12 4xl:px-16 flex items-center min-h-[95vh] lg:min-h-[calc(100vh-6rem)] xl:min-h-[calc(100vh-6rem)] 2xl:min-h-[calc(100vh-6rem)]">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 items-center w-full">
-            <div className="lg:col-span-7 w-full max-w-3xl lg:max-w-4xl 3xl:max-w-6xl 4xl:max-w-7xl text-center lg:text-left self-center">
-            {/* SEO-optimierte dynamische H1 Überschrift */}
+            <div className="lg:col-span-12 xl:col-span-12 w-full max-w-none text-center lg:text-left self-center">
+            {/* Statische H1 gemäß Vorgabe */}
             <div className="relative mt-8 sm:mt-10 md:mt-0 mb-3 sm:mb-4 lg:mb-5">
               <h1 
-                className="text-4xl sm:text-5xl md:text-5xl lg:text-6xl 3xl:text-7xl 4xl:text-8xl font-bold text-white leading-tight"
+                className="text-4xl sm:text-5xl md:text-5xl lg:text-5xl xl:text-6xl 3xl:text-6xl 4xl:text-7xl font-bold text-white leading-tight"
                 style={{ 
                   textShadow: '2px 2px 4px rgba(0,0,0,0.8), 0 0 8px rgba(0,0,0,0.6)'
                 }}
               >
-                {headlines[currentHeadline].part1}<br />
+                Fahrzeuge mit Charakter.<br />
                 <span className="text-white font-extrabold" style={{
                   textShadow: '2px 2px 4px rgba(0,0,0,0.9), 0 0 12px rgba(220,38,38,0.4)'
                 }}>
-                  {headlines[currentHeadline].part2}
+                  Qualität mit Vertrauen.
                 </span>
               </h1>
             </div>
 
-            {/* Dynamischer Untertitel */}
+            {/* Untertitel gemäß Vorgabe */}
             <div className="relative mb-2 sm:mb-3">
               <p 
-                className="text-lg sm:text-xl text-gray-100"
+                className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-100"
                 style={{ 
                   textShadow: '1px 1px 3px rgba(0,0,0,0.7)'
                 }}
               >
-                {headlines[currentHeadline].subtitle}
+                Entdecken Sie exklusive Automobile führender Marken – geprüft, gepflegt und mit Garantie.
               </p>
             </div>
-
-            <p className="text-xl sm:text-2xl font-semibold text-red-400 mb-3 sm:mb-4"
-            style={{ textShadow: '1px 1px 3px rgba(0,0,0,0.7)' }}
-            >
-              BMW • Mercedes • Audi • VW • Porsche
-            </p>
-            <p className="text-lg sm:text-lg text-red-100 mb-4 sm:mb-6"
-            style={{ textShadow: '1px 1px 2px rgba(0,0,0,0.6)' }}
-            >
-              ✓ Faire Preise  ✓ Sofortige Finanzierung
-            </p>
+            {/* Überflüssige Zusatzzeilen entfernt für klare Hero-Darstellung */}
             <div className="flex flex-col gap-4 sm:flex-row sm:gap-4 justify-center lg:justify-start">
               <Link href="/fahrzeuge" className="group bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white px-8 py-4 sm:px-10 sm:py-5 rounded-lg sm:rounded-xl font-bold text-base sm:text-lg transition-all duration-300 cursor-pointer text-center transform hover:scale-105 hover:shadow-2xl w-full sm:w-auto">
                 <span className="flex items-center justify-center">
                   <i className="ri-car-line mr-2 sm:mr-3 text-lg sm:text-xl"></i>
-                  Alle Fahrzeuge ansehen
+                  Jetzt Fahrzeuge entdecken
                   <i className="ri-arrow-right-line ml-2 sm:ml-3 transform group-hover:translate-x-2 transition-transform duration-300"></i>
                 </span>
               </Link>
@@ -188,12 +178,9 @@ export default function HomeClient() {
               ))}
             </div>
             </div>
-            {/* Rechte Spalte: QuickSearch Card und Promo-CTA */}
-            <div className="lg:col-span-5 xl:col-span-6 lg:col-start-8 xl:col-start-8 justify-self-center lg:justify-self-end self-center w-full max-w-md sm:max-w-lg lg:max-w-xl xl:max-w-2xl mt-6 sm:mt-8 lg:mt-0 mx-auto lg:mx-0">
-              <div className="backdrop-blur-sm bg-white/95 rounded-2xl shadow-xl sm:shadow-2xl p-6 sm:p-9 border border-white/40" suppressHydrationWarning>
-                <QuickSearchClient />
-              </div>
-            </div>
+            {/* Rechte Spalte: (QuickSearch aus Hero entfernt, um sie unterhalb der Markenlogos zu platzieren) */}
+            {/* Platzhalter für Layout-Konsistenz (optional leer gelassen) */}
+            <div className="hidden"></div>
           </div>
         </div>
 
@@ -206,6 +193,15 @@ export default function HomeClient() {
       {/* Markenlogos Grid */}
       <BrandLogoGrid />
 
+      {/* QuickSearch unterhalb der Markenlogos (unverändert, nur verschoben) */}
+      <div className="py-8">
+        <div className="w-full max-w-md sm:max-w-lg lg:max-w-xl xl:max-w-2xl mx-auto">
+          <div className="backdrop-blur-sm bg-white/95 rounded-2xl shadow-xl sm:shadow-2xl p-6 sm:p-9 border border-white/40" suppressHydrationWarning>
+            <QuickSearchClient />
+          </div>
+        </div>
+      </div>
+
       {/* Vertrauen / Erfahrung / Qualität */}
       <TrustQualitySection />
 
@@ -217,45 +213,32 @@ export default function HomeClient() {
       {/* Google Reviews Section */}
       <GoogleReviews />
 
-      {/* Services Section mit dezenter Akzentfarbe */}
-      <section className="py-12 lg:py-16 section-accent relative overflow-hidden">
-        {/* Fixed background decoration - only render on client */}
-        {isClient && (
-          <>
-            <div className="absolute top-0 right-0 w-96 h-96 bg-primary-100 rounded-full -translate-y-48 translate-x-48 opacity-20"></div>
-            <div className="absolute bottom-0 left-0 w-72 h-72 bg-accent-200 rounded-full translate-y-36 -translate-x-36 opacity-20"></div>
-          </>
-        )}
-
-        <div className="px-6 max-w-6xl mx-auto relative z-10">
-          <div className={`text-center mb-16 transform transition-all duration-700 ${
+      {/* Services Section – angepasst an TrustQuality-Style */}
+      <section className="py-12 lg:py-16 bg-white">
+        <div className="px-6 max-w-6xl mx-auto">
+          <div className={`text-center mb-12 sm:mb-16 transform transition-all duration-700 ${
             isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'
           }`}>
-            <h2 className="text-4xl font-bold text-neutral-900 mb-6">
-              Unsere <span className="text-primary-600 relative bg-accent-950 bg-opacity-10 px-4 py-2 rounded-lg">
-                Services
-                <div className="absolute -bottom-2 left-0 w-full h-1 bg-primary-600 rounded-full transform scale-x-0 animate-scaleX"></div>
-              </span>
+            <h2 className="text-3xl md:text-4xl font-bold text-neutral-900">
+              Unsere Services
             </h2>
           </div>
 
-          <div className="grid-modern lg:grid-cols-4">
-            {[ 
-              { icon: 'ri-car-line', title: 'Fahrzeugankauf', desc: 'Faire Preise und schnelle Abwicklung beim Ankauf Ihres Gebrauchtwagens.', delay: 0 },
-              { icon: 'ri-tools-line', title: 'Werkstattservice', desc: 'Professionelle Wartung und Reparatur für alle Marken.', delay: 100 },
-              { icon: 'ri-shield-check-line', title: 'Garantie', desc: 'Sorgenfrei fahren mit unseren umfassenden Garantiepaketen.', delay: 200 },
-              { icon: 'ri-bank-card-line', title: 'Finanzierung', desc: 'Flexible und individuelle Finanzierungslösungen für Ihr Traumauto.', delay: 300 }
-            ].map((service, index) => (
-              <div
-                key={index}
-                className={`service-card hover-lift animate-fadeInUp`}
-                style={{ animationDelay: `${service.delay}ms` }}
-              >
-                <div className="w-16 h-16 flex items-center justify-center bg-primary-100 rounded-full mx-auto mb-6 group-hover:bg-primary-600 transition-all duration-300 transform group-hover:rotate-12">
-                  <i className={`${service.icon} text-2xl text-primary-600 group-hover:text-white transition-colors duration-300`}></i>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-10">
+            {[
+              { icon: 'ri-car-line', title: 'Fahrzeugankauf', desc: 'Faire Preise und schnelle Abwicklung beim Ankauf Ihres Gebrauchtwagens.' },
+              { icon: 'ri-tools-line', title: 'Werkstattservice', desc: 'Professionelle Wartung und Reparatur für alle Marken.' },
+              { icon: 'ri-shield-check-line', title: 'Garantie', desc: 'Sorgenfrei fahren mit unseren umfassenden Garantiepaketen.' },
+              { icon: 'ri-bank-card-line', title: 'Finanzierung', desc: 'Flexible und individuelle Finanzierungslösungen für Ihr Traumauto.' }
+            ].map((service) => (
+              <div key={service.title} className="group bg-white rounded-xl p-6 sm:p-8 border border-neutral-200 shadow-sm hover:shadow-lg transition-all duration-300">
+                <div className="w-14 h-14 sm:w-16 sm:h-16 flex items-center justify-center bg-neutral-100 rounded-lg mb-5 group-hover:bg-red-600 transition-colors duration-300">
+                  <i className={`${service.icon} text-2xl sm:text-3xl text-red-600 group-hover:text-white transition-colors duration-300`}></i>
                 </div>
-                <h3 className="text-xl font-semibold text-neutral-900 mb-4 group-hover:text-primary-600 transition-colors duration-300">{service.title}</h3>
-                <p className="text-muted text-sm leading-relaxed group-hover:text-neutral-700 transition-colors duration-300">
+                <h3 className="text-lg sm:text-xl font-semibold text-neutral-900 mb-3 group-hover:text-red-600 transition-colors duration-300">
+                  {service.title}
+                </h3>
+                <p className="text-muted leading-relaxed">
                   {service.desc}
                 </p>
               </div>

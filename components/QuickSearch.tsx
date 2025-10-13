@@ -55,7 +55,26 @@ export default function QuickSearch() {
               }))
               .filter((m: FilterItem) => m.id && m.name)
           : [];
-        setManufacturers(normalizedManufacturers);
+
+        // Hersteller nur anzeigen, wenn Fahrzeuge vorhanden sind
+        const counts = await Promise.all(
+          normalizedManufacturers.map(async (man) => {
+            try {
+              const r = await fetch(`/api/vehicles/count?manufacturers=${encodeURIComponent(String(man.id))}`);
+              if (!r.ok) return 0;
+              const d = await r.json();
+              const c = typeof d === 'number'
+                ? d
+                : (typeof d.total === 'number' ? d.total : (typeof d.count === 'number' ? d.count : 0));
+              return typeof c === 'number' && !Number.isNaN(c) ? c : 0;
+            } catch (e) {
+              console.error('Error checking manufacturer stock count', e);
+              return 0;
+            }
+          })
+        );
+        const filteredManufacturers = normalizedManufacturers.filter((_, idx) => counts[idx] > 0);
+        setManufacturers(filteredManufacturers.length ? filteredManufacturers : normalizedManufacturers);
         
         // Set the vehicle count (supports number or { total|count })
         let initialCount: number | undefined;

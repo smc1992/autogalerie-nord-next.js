@@ -20,64 +20,60 @@ export async function GET(
 
     if (data && data.error) {
       console.error(`[API ROUTE] Error in handler [${path}]:`, data.error, data.details);
-      // Offline-Fallbacks für zentrale Endpunkte
-      const isOffline = String(data.error).includes('Failed to connect');
-      if (isOffline) {
-        // Hersteller-Fallback
-        if (path === 'criteria/manufacturers') {
-          const manufacturersFallback = [
-            { id: 'audi', name: 'Audi' },
-            { id: 'bmw', name: 'BMW' },
-            { id: 'mercedes', name: 'Mercedes-Benz' },
-            { id: 'vw', name: 'Volkswagen' },
-            { id: 'porsche', name: 'Porsche' },
-          ];
-          return NextResponse.json(manufacturersFallback);
-        }
+      // Fallbacks für zentrale Endpunkte, unabhängig von Fehlerursache
+      // Hersteller-Fallback
+      if (path === 'criteria/manufacturers') {
+        const manufacturersFallback = [
+          { id: 'audi', name: 'Audi' },
+          { id: 'bmw', name: 'BMW' },
+          { id: 'mercedes', name: 'Mercedes-Benz' },
+          { id: 'vw', name: 'Volkswagen' },
+          { id: 'porsche', name: 'Porsche' },
+        ];
+        return NextResponse.json(manufacturersFallback);
+      }
 
-        // Modelle-Fallback, abhängig vom Hersteller
-        if (path === 'criteria/models') {
-          const man = clientParams.get('manufacturers') || '';
-          const modelsMap: Record<string, { id: string; name: string }[]> = {
-            audi: [
-              { id: 'a4', name: 'A4' },
-              { id: 'a6', name: 'A6' },
-              { id: 'q5', name: 'Q5' },
-            ],
-            bmw: [
-              { id: '3er', name: '3er' },
-              { id: '5er', name: '5er' },
-              { id: 'x5', name: 'X5' },
-            ],
-            mercedes: [
-              { id: 'c-klasse', name: 'C-Klasse' },
-              { id: 'e-klasse', name: 'E-Klasse' },
-              { id: 'gle', name: 'GLE' },
-            ],
-            vw: [
-              { id: 'golf', name: 'Golf' },
-              { id: 'passat', name: 'Passat' },
-              { id: 'tiguan', name: 'Tiguan' },
-            ],
-            porsche: [
-              { id: '911', name: '911' },
-              { id: 'taycan', name: 'Taycan' },
-              { id: 'macan', name: 'Macan' },
-            ],
-          };
-          return NextResponse.json(modelsMap[man] || []);
-        }
+      // Modelle-Fallback, abhängig vom Hersteller
+      if (path === 'criteria/models') {
+        const man = clientParams.get('manufacturers') || '';
+        const modelsMap: Record<string, { id: string; name: string }[]> = {
+          audi: [
+            { id: 'a4', name: 'A4' },
+            { id: 'a6', name: 'A6' },
+            { id: 'q5', name: 'Q5' },
+          ],
+          bmw: [
+            { id: '3er', name: '3er' },
+            { id: '5er', name: '5er' },
+            { id: 'x5', name: 'X5' },
+          ],
+          mercedes: [
+            { id: 'c-klasse', name: 'C-Klasse' },
+            { id: 'e-klasse', name: 'E-Klasse' },
+            { id: 'gle', name: 'GLE' },
+          ],
+          vw: [
+            { id: 'golf', name: 'Golf' },
+            { id: 'passat', name: 'Passat' },
+            { id: 'tiguan', name: 'Tiguan' },
+          ],
+          porsche: [
+            { id: '911', name: '911' },
+            { id: 'taycan', name: 'Taycan' },
+            { id: 'macan', name: 'Macan' },
+          ],
+        };
+        return NextResponse.json(modelsMap[man] || []);
+      }
 
-        // Fahrzeuganzahl-Fallback
-        if (path === 'vehicles/count') {
-          return NextResponse.json({ total: 80 });
-        }
+      // Fahrzeuganzahl-Fallback
+      if (path === 'vehicles/count') {
+        return NextResponse.json({ total: 80 });
+      }
 
-        // Fahrzeuge-Fallback: leere Liste zurückgeben, um UI sauber zu halten
-        if (path === 'vehicles') {
-          return NextResponse.json({ items: [], total: 0 });
-        }
-
+      // Fahrzeuge-Fallback: leere Liste zurückgeben, um UI sauber zu halten
+      if (path === 'vehicles') {
+        return NextResponse.json({ items: [], total: 0 });
       }
       return NextResponse.json({ error: data.error, details: data.details }, { status: 500 });
     }
