@@ -13,7 +13,7 @@ export default function BrandLogoGrid() {
   ];
 
   return (
-    <Section title="Premium‑Marken. Premium‑Anspruch." align="center" background="white">
+    <Section title={<span className="block whitespace-nowrap w-fit mx-auto text-[22px] sm:text-[28px] md:text-[34px]">Premium‑Marken. Premium‑Anspruch.</span>} align="center" background="white">
       <div className="logo-marquee py-2">
         <div className="logo-fade-left" aria-hidden="true" />
         <div className="logo-fade-right" aria-hidden="true" />

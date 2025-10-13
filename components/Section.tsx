@@ -3,7 +3,7 @@
 import React from "react";
 
 type SectionProps = {
-  title?: string;
+  title?: React.ReactNode;
   subtitle?: string;
   align?: "center" | "left";
   background?: "white" | "muted" | "none";

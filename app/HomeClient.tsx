@@ -114,17 +114,10 @@ export default function HomeClient() {
             {/* Statische H1 gemäß Vorgabe */}
             <div className="relative mt-8 sm:mt-10 md:mt-0 mb-3 sm:mb-4 lg:mb-5">
               <h1 
-                className="text-4xl sm:text-5xl md:text-5xl lg:text-5xl xl:text-6xl 3xl:text-6xl 4xl:text-7xl font-bold text-white leading-tight uppercase"
-                style={{ 
-                  textShadow: '2px 2px 4px rgba(0,0,0,0.8), 0 0 8px rgba(0,0,0,0.6)'
-                }}
+                className="text-3xl sm:text-5xl md:text-5xl lg:text-5xl xl:text-6xl 3xl:text-6xl 4xl:text-7xl font-bold text-white leading-tight uppercase tracking-tight"
               >
-                Fahrzeuge mit Charakter.<br />
-                <span className="text-white font-extrabold" style={{
-                  textShadow: '2px 2px 4px rgba(0,0,0,0.9), 0 0 12px rgba(220,38,38,0.4)'
-                }}>
-                  Qualität mit Vertrauen.
-                </span>
+                FAHRZEUGE MIT CHARAKTER.<br />
+                <span className="text-white font-extrabold">QUALITÄT MIT VERTRAUEN.</span>
               </h1>
             </div>
 
@@ -140,7 +133,7 @@ export default function HomeClient() {
               </p>
             </div>
             {/* Überflüssige Zusatzzeilen entfernt für klare Hero-Darstellung */}
-            <div className="flex flex-col gap-4 sm:flex-row sm:gap-4 justify-center lg:justify-start mt-12 sm:mt-8">
+            <div className="flex flex-col gap-4 sm:flex-row sm:gap-4 justify-center lg:justify-start mt-20 sm:mt-8">
               <Link href="/fahrzeuge" className="group bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white px-8 py-4 sm:px-10 sm:py-5 rounded-lg sm:rounded-xl font-bold text-base sm:text-lg transition-all duration-300 cursor-pointer text-center transform hover:scale-105 hover:shadow-2xl w-full sm:w-auto">
                 <span className="flex items-center justify-center">
                   <i className="ri-car-line mr-2 sm:mr-3 text-lg sm:text-xl"></i>
@@ -193,8 +186,8 @@ export default function HomeClient() {
       {/* Markenlogos Grid */}
       <BrandLogoGrid />
 
-      {/* QuickSearch unterhalb der Markenlogos (unverändert, nur verschoben) */}
-      <div className="py-8">
+      {/* QuickSearch unterhalb der Markenlogos (Abstand leicht reduziert) */}
+      <div className="pt-4 pb-8">
         <div className="w-full max-w-md sm:max-w-lg lg:max-w-xl xl:max-w-2xl mx-auto">
           <div className="backdrop-blur-sm bg-white/95 rounded-2xl shadow-xl sm:shadow-2xl p-6 sm:p-9 border border-white/40" suppressHydrationWarning>
             <QuickSearchClient />
