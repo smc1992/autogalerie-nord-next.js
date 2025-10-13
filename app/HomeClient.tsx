@@ -140,7 +140,7 @@ export default function HomeClient() {
               </p>
             </div>
             {/* Überflüssige Zusatzzeilen entfernt für klare Hero-Darstellung */}
-            <div className="flex flex-col gap-4 sm:flex-row sm:gap-4 justify-center lg:justify-start">
+            <div className="flex flex-col gap-4 sm:flex-row sm:gap-4 justify-center lg:justify-start mt-12 sm:mt-8">
               <Link href="/fahrzeuge" className="group bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white px-8 py-4 sm:px-10 sm:py-5 rounded-lg sm:rounded-xl font-bold text-base sm:text-lg transition-all duration-300 cursor-pointer text-center transform hover:scale-105 hover:shadow-2xl w-full sm:w-auto">
                 <span className="flex items-center justify-center">
                   <i className="ri-car-line mr-2 sm:mr-3 text-lg sm:text-xl"></i>
