@@ -126,7 +126,7 @@ export default function HomeClient() {
         <div className="absolute inset-0 bg-gradient-to-r from-black/40 via-transparent to-black/20"></div>
         <div className="absolute inset-0 bg-gradient-to-r from-black/50 via-transparent to-red-900/30"></div>
         {/* Freundliches, warmes Overlay */}
-        <div className="absolute inset-0 pointer-events-none backdrop-blur-[2px] bg-gradient-to-b from-amber-50/20 via-white/10 to-transparent"></div>
+        <div className="absolute inset-0 pointer-events-none bg-gradient-to-b from-amber-50/20 via-white/10 to-transparent"></div>
         
         {/* Fixed floating particles - only render on client and desktop */}
         {isClient && (
