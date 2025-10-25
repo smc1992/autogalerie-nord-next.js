@@ -80,10 +80,23 @@ export default function HomeClient() {
         <img
           src="/images/hero-premium.webp"
           alt="Premium Fahrzeuge bei Autogalerie Nord - Hochwertige Gebrauchtwagen"
-          className="absolute inset-0 w-full h-full object-cover -z-10"
+          className="hidden"
           fetchPriority="high"
           loading="eager"
           decoding="sync"
+        />
+        
+        {/* Hintergrundvideo mit Autoplay */}
+        <video
+          className="absolute inset-0 w-full h-full object-cover z-0"
+          src="/images/Hero%20Imagevideo%20autogalerie%20Nord.mp4"
+          poster="/images/hero-premium.webp"
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="metadata"
+          aria-hidden="true"
         />
         
         {/* Gradient Overlays */}
