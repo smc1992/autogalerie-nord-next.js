@@ -8,7 +8,7 @@ import VehicleHighlights from '../components/VehicleHighlights';
 import BrandLogoGrid from '../components/BrandLogoGrid';
 import TrustQualitySection from '../components/TrustQualitySection';
 import GoogleReviews from '../components/GoogleReviews';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import KontaktPopup from '../components/KontaktPopup';
 
 export default function HomeClient() {
@@ -17,6 +17,7 @@ export default function HomeClient() {
   const [isClient, setIsClient] = useState(false);
   const [currentHeadline, setCurrentHeadline] = useState(0);
   const [isKontaktOpen, setIsKontaktOpen] = useState(false);
+  const videoRef = useRef<HTMLVideoElement | null>(null);
 
   // SEO-optimierte Headlines für den Slider
   const headlines = [
@@ -58,6 +59,29 @@ export default function HomeClient() {
     };
   }, []);
 
+  useEffect(() => {
+    const v = videoRef.current;
+    if (!v) return;
+    v.muted = true;
+    v.defaultMuted = true;
+    v.setAttribute('playsinline', 'true');
+    v.setAttribute('webkit-playsinline', 'true');
+    const tryPlay = async () => {
+      try {
+        if (v.paused) await v.play();
+      } catch (err) {
+        const onInteract = () => {
+          v.play().catch(() => {});
+          document.removeEventListener('touchend', onInteract);
+          document.removeEventListener('click', onInteract);
+        };
+        document.addEventListener('touchend', onInteract, { once: true });
+        document.addEventListener('click', onInteract, { once: true });
+      }
+    };
+    tryPlay();
+  }, []);
+
   const heroParticles = [
     { left: '15%', top: '20%', delay: '0s', duration: '4s' },
     { left: '85%', top: '15%', delay: '2s', duration: '5s' },
@@ -72,9 +96,7 @@ export default function HomeClient() {
       {/* Hero Section */}
       <section 
         className="relative min-h-[95vh] lg:min-h-[90vh] xl:min-h-[85vh] 2xl:min-h-[80vh] bg-cover bg-center bg-no-repeat overflow-hidden"
-        style={{
-          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('/images/hero-premium.webp')`
-        }}
+        
       >
         {/* LCP-optimiertes Hero-Bild */}
         <img
@@ -88,20 +110,23 @@ export default function HomeClient() {
         
         {/* Hintergrundvideo mit Autoplay */}
         <video
+          ref={videoRef}
           className="absolute inset-0 w-full h-full object-cover z-0"
           src="/images/Hero%20Imagevideo%20autogalerie%20Nord.mp4"
-          poster="/images/hero-premium.webp"
           autoPlay
           muted
           loop
           playsInline
-          preload="metadata"
+          preload="auto"
+          controls={false}
           aria-hidden="true"
         />
         
         {/* Gradient Overlays */}
         <div className="absolute inset-0 bg-gradient-to-r from-black/40 via-transparent to-black/20"></div>
         <div className="absolute inset-0 bg-gradient-to-r from-black/50 via-transparent to-red-900/30"></div>
+        {/* Freundliches, warmes Overlay */}
+        <div className="absolute inset-0 pointer-events-none backdrop-blur-[2px] bg-gradient-to-b from-amber-50/20 via-white/10 to-transparent"></div>
         
         {/* Fixed floating particles - only render on client and desktop */}
         {isClient && (
