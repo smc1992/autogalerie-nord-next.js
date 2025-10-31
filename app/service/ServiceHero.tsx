@@ -1,5 +1,9 @@
 
+'use client';
+import { useLanguage } from '../../context/LanguageContext';
+
 export default function ServiceHero() {
+  const { dict } = useLanguage();
   return (
     <section 
       className="relative min-h-[600px] flex items-center overflow-hidden"
@@ -16,11 +20,11 @@ export default function ServiceHero() {
         <div className="w-full max-w-6xl mx-auto">
           <div className="text-center lg:text-left max-w-4xl">
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6">
-              Service &
-              <span className="text-red-500 block lg:inline lg:ml-3">Werkstatt</span>
+              {dict.service.heroTitle1}
+              <span className="text-red-500 block lg:inline lg:ml-3">{dict.service.heroTitle2}</span>
             </h1>
             <p className="text-xl md:text-2xl text-gray-200 mb-8 leading-relaxed">
-              Professionelle Wartung und Reparatur für Ihr Fahrzeug. Vertrauen Sie auf unsere Expertise und modernste Ausrüstung.
+              {dict.service.heroSubtitle}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
               <a 

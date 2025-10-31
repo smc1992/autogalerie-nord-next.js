@@ -1,6 +1,8 @@
 'use client';
+import { useLanguage } from '../../context/LanguageContext';
 
 export default function KontaktHero() {
+  const { dict } = useLanguage();
   return (
     <section 
       className="relative h-96 bg-cover bg-center bg-no-repeat"
@@ -13,10 +15,10 @@ export default function KontaktHero() {
       <div className="relative z-10 flex items-center h-full pt-28 sm:pt-32 px-6">
         <div className="max-w-4xl mx-auto text-center">
           <h1 className="text-4xl md:text-6xl font-bold text-white mb-6 animate-fadeInUp">
-            Kontakt
+            {dict.kontakt.title}
           </h1>
           <p className="text-xl md:text-2xl text-gray-200 max-w-3xl mx-auto animate-fadeInUp animation-delay-300">
-            Nehmen Sie Kontakt mit uns auf - wir sind für Sie da
+            {dict.kontakt.subtitle}
           </p>
         </div>
       </div>

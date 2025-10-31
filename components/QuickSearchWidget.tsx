@@ -3,12 +3,16 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import Script from 'next/script';
+import { useLanguage } from '../context/LanguageContext';
+import type { DictionaryTop } from '../i18n/dictionaries';
 
 interface QuickSearchWidgetProps {
   className?: string;
 }
 
 export default function QuickSearchWidget({ className = '' }: QuickSearchWidgetProps) {
+  const { language, dict } = useLanguage();
+  const d = dict as DictionaryTop;
   const [isJQueryLoaded, setIsJQueryLoaded] = useState(false);
   const [isQuickSearchLoaded, setIsQuickSearchLoaded] = useState(false);
   const [isInitialized, setIsInitialized] = useState(false);
@@ -16,16 +20,24 @@ export default function QuickSearchWidget({ className = '' }: QuickSearchWidgetP
   const pathname = usePathname();
   const initializationRef = useRef(false);
   const updateTimerRef = useRef<number | null>(null);
+  const vehicleCountAbortRef = useRef<AbortController | null>(null);
 
   const API_KEY = '0536fa11-99df-43f8-bf26-42af233f5478';
 
   // QuickSearch-Konfiguration
   const getQuickSearchSettings = () => {
+    const cultureMap: Record<string, string> = {
+      de: 'de-DE',
+      en: 'en-GB',
+      es: 'es-ES',
+      fr: 'fr-FR'
+    };
+    const resolvedCulture = cultureMap[language] || 'de-DE';
     if (typeof window === 'undefined') {
       return {
         url: '/fahrzeuge/',
         renameManufacturers: true,
-        culture: 'de-DE',
+        culture: resolvedCulture,
         hideOtherManufactueres: false,
         modelsWithoutFinds: 'hide',
         modelsWithCounter: false,
@@ -44,7 +56,7 @@ export default function QuickSearchWidget({ className = '' }: QuickSearchWidgetP
     return {
       url: window.location.origin + '/fahrzeuge/',
       renameManufacturers: true,
-      culture: 'de-DE',
+      culture: resolvedCulture,
       hideOtherManufactueres: false,
       modelsWithoutFinds: 'hide',
       modelsWithCounter: false,
@@ -210,7 +222,14 @@ export default function QuickSearchWidget({ className = '' }: QuickSearchWidgetP
         if (man) params.append('manufacturers', man);
         if (mod) params.append('models', mod);
 
-        const response = await fetch(`https://api.pixel-base.de/marketplace/v3-11365/vehicles/count/?${params.toString()}`);
+        // Vorherige Anfrage abbrechen, um Race-Conditions und Abbruchwarnungen zu vermeiden
+        if (vehicleCountAbortRef.current) {
+          vehicleCountAbortRef.current.abort();
+        }
+        const controller = new AbortController();
+        vehicleCountAbortRef.current = controller;
+
+        const response = await fetch(`https://api.pixel-base.de/marketplace/v3-11365/vehicles/count/?${params.toString()}` , { signal: controller.signal });
         
         if (!response.ok) {
           throw new Error(`API-Fehler: ${response.status} ${response.statusText}`);
@@ -264,10 +283,15 @@ export default function QuickSearchWidget({ className = '' }: QuickSearchWidgetP
         }
       }
     } catch (error) {
-         console.error('Fehler beim Laden der Fahrzeuganzahl:', error);
-         console.log('Verwende QuickSearch-interne Logik für Fahrzeuganzahl-Verwaltung');
-         // Kein Fallback - QuickSearch verwaltet die Anzahl selbst
-       }
+        // Abgebrochene Anfragen leise ignorieren (z. B. bei Navigation oder schnellen Filterwechseln)
+        if (error instanceof DOMException && (error as DOMException).name === 'AbortError') {
+          console.log('Fahrzeuganzahl-Anfrage abgebrochen (Navigation/Update).');
+          return;
+        }
+        console.error('Fehler beim Laden der Fahrzeuganzahl:', error);
+        console.log('Verwende QuickSearch-interne Logik für Fahrzeuganzahl-Verwaltung');
+        // Kein Fallback - QuickSearch verwaltet die Anzahl selbst
+      }
   };
 
   // Debounced Listener für Filteränderungen (Hersteller/Modell)
@@ -304,6 +328,10 @@ export default function QuickSearchWidget({ className = '' }: QuickSearchWidgetP
       // Reset der Initialisierung bei Navigation
       initializationRef.current = false;
       setIsInitialized(false);
+      // Laufende Zähl-Anfrage abbrechen bei Navigation
+      if (vehicleCountAbortRef.current) {
+        vehicleCountAbortRef.current.abort();
+      }
       
       // Prüfe und lade Skripte falls nötig
       const ensureScriptsLoaded = () => {
@@ -486,15 +514,19 @@ export default function QuickSearchWidget({ className = '' }: QuickSearchWidgetP
     checkScriptAvailability();
   }, []);
  
-   // Cleanup bei Komponenten-Unmount
-   useEffect(() => {
-     return () => {
-       if (initializationRef.current) {
-         cleanupQuickSearchContainer();
-         initializationRef.current = false;
-       }
-     };
-   }, []);
+  // Cleanup bei Komponenten-Unmount
+  useEffect(() => {
+    return () => {
+      if (initializationRef.current) {
+        cleanupQuickSearchContainer();
+        initializationRef.current = false;
+      }
+      // Ausstehende Zähl-Anfrage sicher abbrechen
+      if (vehicleCountAbortRef.current) {
+        vehicleCountAbortRef.current.abort();
+      }
+    };
+  }, []);
 
   return (
     <>
@@ -555,13 +587,13 @@ export default function QuickSearchWidget({ className = '' }: QuickSearchWidgetP
             <div className="max-w-6xl mx-auto">
               <div className="text-center mb-12">
                 <h2 className="text-4xl font-bold text-gray-900 mb-4">
-                  Finden Sie Ihr <span className="text-red-600 relative">
-                    Traumauto
+                  <span className="text-red-600 relative">
+                    {dict.quicksearch.title}
                     <div className="absolute -bottom-2 left-0 w-full h-1 bg-red-600 rounded-full"></div>
                   </span>
                 </h2>
                 <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-                  Durchsuchen Sie unsere Premium-Fahrzeuge mit intelligenten Filtern
+                  {dict.quicksearch.subtitle}
                 </p>
               </div>
               
@@ -571,52 +603,52 @@ export default function QuickSearchWidget({ className = '' }: QuickSearchWidgetP
                   {/* Fahrzeugart */}
                   <div className="group">
                     <label htmlFor="fahrzeugart" className="block text-sm font-semibold text-gray-700 mb-3 group-hover:text-red-600 transition-colors">
-                      <i className="ri-car-line mr-2"></i>Fahrzeugart
+                      <i className="ri-car-line mr-2"></i>{dict.quicksearch.categoryLabel}
                     </label>
                     <select 
                       id="fahrzeugart" 
                       className="w-full p-4 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all duration-300 hover:border-red-300 bg-white text-gray-900 shadow-sm"
                     >
-                      <option value="">Alle Fahrzeugarten</option>
+                      <option value="">{dict.quicksearch.allCategories}</option>
                     </select>
                   </div>
 
                   {/* Hersteller */}
                   <div className="group">
                     <label htmlFor="hersteller" className="block text-sm font-semibold text-gray-700 mb-3 group-hover:text-red-600 transition-colors">
-                      <i className="ri-building-line mr-2"></i>Hersteller
+                      <i className="ri-building-line mr-2"></i>{dict.quicksearch.manufacturerLabel}
                     </label>
                     <select 
                       id="hersteller" 
                       className="w-full p-4 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all duration-300 hover:border-red-300 bg-white text-gray-900 shadow-sm"
                     >
-                      <option value="">Alle Hersteller</option>
+                      <option value="">{dict.quicksearch.allManufacturers}</option>
                     </select>
                   </div>
 
                   {/* Modell */}
                   <div className="group">
                     <label htmlFor="modell" className="block text-sm font-semibold text-gray-700 mb-3 group-hover:text-red-600 transition-colors">
-                      <i className="ri-car-2-line mr-2"></i>Modell
+                      <i className="ri-car-2-line mr-2"></i>{dict.quicksearch.modelLabel}
                     </label>
                     <select 
                       id="modell" 
                       className="w-full p-4 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all duration-300 hover:border-red-300 bg-white text-gray-900 shadow-sm"
                     >
-                      <option value="">Alle Modelle</option>
+                      <option value="">{dict.quicksearch.allModels}</option>
                     </select>
                   </div>
 
                   {/* Preis max */}
                   <div className="group">
                     <label htmlFor="preismax" className="block text-sm font-semibold text-gray-700 mb-3 group-hover:text-red-600 transition-colors">
-                      <i className="ri-money-euro-circle-line mr-2"></i>Preis bis
+                      <i className="ri-money-euro-circle-line mr-2"></i>{dict.quicksearch.priceMaxLabel}
                     </label>
                     <select 
                       id="preismax" 
                       className="w-full p-4 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all duration-300 hover:border-red-300 bg-white text-gray-900 shadow-sm"
                     >
-                      <option value="">Alle Preise</option>
+                      <option value="">{dict.quicksearch.allPrices}</option>
                       <option value="5000">5.000 €</option>
                       <option value="10000">10.000 €</option>
                       <option value="15000">15.000 €</option>
@@ -633,13 +665,13 @@ export default function QuickSearchWidget({ className = '' }: QuickSearchWidgetP
                   {/* Kilometer bis */}
                   <div className="group">
                     <label htmlFor="kilometerbis" className="block text-sm font-semibold text-gray-700 mb-3 group-hover:text-red-600 transition-colors">
-                      <i className="ri-speedometer-line mr-2"></i>Kilometer bis
+                      <i className="ri-speedometer-line mr-2"></i>{d.quicksearch.mileageMaxLabel}
                     </label>
                     <select 
                       id="kilometerbis" 
                       className="w-full p-4 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all duration-300 hover:border-red-300 bg-white text-gray-900 shadow-sm"
                     >
-                      <option value="">Alle Kilometer</option>
+                      <option value="">{d.quicksearch.allMileage}</option>
                       <option value="10000">10.000 km</option>
                       <option value="25000">25.000 km</option>
                       <option value="50000">50.000 km</option>
@@ -653,26 +685,26 @@ export default function QuickSearchWidget({ className = '' }: QuickSearchWidgetP
                   {/* Zulassung von */}
                   <div className="group">
                     <label htmlFor="zulassungvon" className="block text-sm font-semibold text-gray-700 mb-3 group-hover:text-red-600 transition-colors">
-                      <i className="ri-calendar-line mr-2"></i>Zulassung von
+                      <i className="ri-calendar-line mr-2"></i>{d.quicksearch.registerFromLabel}
                     </label>
                     <select 
                       id="zulassungvon" 
                       className="w-full p-4 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all duration-300 hover:border-red-300 bg-white text-gray-900 shadow-sm"
                     >
-                      <option value="">Alle Jahre</option>
+                      <option value="">{d.quicksearch.allYears}</option>
                     </select>
                   </div>
 
                   {/* Kraftstoff */}
                   <div className="group">
                     <label htmlFor="kraftstoff" className="block text-sm font-semibold text-gray-700 mb-3 group-hover:text-red-600 transition-colors">
-                      <i className="ri-gas-station-line mr-2"></i>Kraftstoff
+                      <i className="ri-gas-station-line mr-2"></i>{d.quicksearch.fuellingsLabel}
                     </label>
                     <select 
                       id="kraftstoff" 
                       className="w-full p-4 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all duration-300 hover:border-red-300 bg-white text-gray-900 shadow-sm"
                     >
-                      <option value="">Alle Kraftstoffe</option>
+                      <option value="">{d.quicksearch.allFuellings}</option>
                     </select>
                   </div>
                 </div>
@@ -686,7 +718,7 @@ export default function QuickSearchWidget({ className = '' }: QuickSearchWidgetP
                     className="bg-gradient-to-r from-red-600 to-red-700 text-white px-8 py-4 rounded-xl font-bold text-lg hover:from-red-700 hover:to-red-800 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl flex items-center justify-center group"
                   >
                     <i className="ri-search-line mr-3 text-xl group-hover:animate-pulse"></i>
-                    <span className="quicksearch-count">0</span> Fahrzeuge anzeigen
+                    <span className="quicksearch-count">0</span> {d.quicksearch.showVehicles}
                   </a>
 
                   {/* Detailsuche Button */}
@@ -696,7 +728,7 @@ export default function QuickSearchWidget({ className = '' }: QuickSearchWidgetP
                     className="border-2 border-red-600 text-red-600 hover:bg-red-600 hover:text-white px-8 py-4 rounded-xl font-bold text-lg transition-all duration-300 shadow-lg hover:shadow-xl flex items-center justify-center group"
                   >
                     <i className="ri-filter-3-line mr-3 text-xl group-hover:animate-pulse"></i>
-                    Erweiterte Suche
+                    {d.quicksearch.advancedSearch}
                   </a>
 
                   {/* Reset Button */}
@@ -714,7 +746,7 @@ export default function QuickSearchWidget({ className = '' }: QuickSearchWidgetP
                     className="bg-gray-100 text-gray-700 hover:bg-gray-200 px-6 py-4 rounded-xl font-semibold transition-all duration-300 shadow-lg hover:shadow-xl flex items-center justify-center group"
                   >
                     <i className="ri-refresh-line mr-2 text-lg group-hover:animate-spin"></i>
-                    Zurücksetzen
+                    {d.quicksearch.reset}
                   </button>
                 </div>
               </div>

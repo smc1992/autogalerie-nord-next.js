@@ -1,32 +1,34 @@
 'use client';
+import { useLanguage } from '../../../context/LanguageContext';
 
 export default function ProzessSchritte() {
+  const { dict } = useLanguage();
   const schritte = [
     {
       nummer: '1',
-      title: 'Kontaktaufnahme',
-      description: 'Wir kümmern uns um die professionelle Vermarktung, die Verhandlungen und den gesamten Papierkram. Sie erhalten am Ende den bestmöglichen Preis für Ihr Fahrzeug, ohne den üblichen Stress.',
+      title: dict.leistungen?.consignment?.process?.steps?.step1?.title || 'Kontaktaufnahme',
+      description: dict.leistungen?.consignment?.process?.steps?.step1?.description || 'Sie kontaktieren uns und teilen uns die wichtigsten Daten zu Ihrem Fahrzeug mit.',
       icon: 'ri-phone-line',
       image: '/images/Kontaktaufnahme-Kommisionsverkauf.webp'
     },
     {
       nummer: '2',
-      title: 'Vor-Ort Bewertung',
-      description: 'Wir erstellen hochwertige Fotos und eine detaillierte Beschreibung, um Ihr Fahrzeug im "besten Licht" zu präsentieren. Unsere Online-Präsenz auf allen großen Plattformen garantiert maximale Reichweite.',
+      title: dict.leistungen?.consignment?.process?.steps?.step2?.title || 'Vor-Ort Bewertung',
+      description: dict.leistungen?.consignment?.process?.steps?.step2?.description || 'Wir erstellen eine professionelle Bewertung und bereiten Ihr Fahrzeug für den Verkauf vor.',
       icon: 'ri-camera-line',
       image: '/images/vor ort Bewertung-Autogalerie Nord.webp'
     },
     {
       nummer: '3',
-      title: 'Vertragsabschluss',
-      description: 'Bei Einverständnis schließen wir einen transparenten Kommissionsvertrag ab und übernehmen den Verkauf.',
+      title: dict.leistungen?.consignment?.process?.steps?.step3?.title || 'Vertragsabschluss',
+      description: dict.leistungen?.consignment?.process?.steps?.step3?.description || 'Bei Einverständnis schließen wir einen Kommissionsvertrag ab und starten die Vermarktung.',
       icon: 'ri-file-text-line',
       image: '/images/Vertragsabschluss Kommisonsverkauf.webp'
     },
     {
       nummer: '4',
-      title: 'Auszahlung',
-      description: 'Nach erfolgreichem Verkauf erhalten Sie umgehend Ihren Erlös - abzüglich unserer fairen Provision.',
+      title: dict.leistungen?.consignment?.process?.steps?.step4?.title || 'Auszahlung',
+      description: dict.leistungen?.consignment?.process?.steps?.step4?.description || 'Nach erfolgreichem Verkauf erhalten Sie schnell und transparent Ihre Auszahlung.',
       icon: 'ri-money-euro-circle-line',
       image: '/images/Auszahlung Kommsionsverkauf.webp'
     }
@@ -38,10 +40,10 @@ export default function ProzessSchritte() {
         {/* Section Header */}
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
-            So funktioniert unser Kommissionsverkauf
+            {dict.leistungen?.consignment?.process?.sectionTitle || 'So funktioniert unser Kommissionsverkauf'}
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            In nur 4 einfachen Schritten zu Ihrem optimalen Verkaufspreis
+            {dict.leistungen?.consignment?.process?.sectionSubtitle || 'In nur 4 einfachen Schritten zu Ihrem optimalen Verkaufspreis'}
           </p>
         </div>
 

@@ -2,8 +2,10 @@
 'use client';
 
 import { useState } from 'react';
+import { useLanguage } from '../../context/LanguageContext';
 
 export default function KontaktForm() {
+  const { dict } = useLanguage();
   const [formData, setFormData] = useState({
     vorname: '',
     nachname: '',
@@ -16,6 +18,7 @@ export default function KontaktForm() {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState('');
+  const [submitSuccess, setSubmitSuccess] = useState<boolean | null>(null);
   const [formStartedAt] = useState(() => Date.now());
   const [submissionId] = useState(() =>
     typeof crypto !== 'undefined' && 'randomUUID' in crypto
@@ -35,17 +38,20 @@ export default function KontaktForm() {
     e.preventDefault();
     
     if (!formData.vorname || !formData.nachname || !formData.betreff || !formData.email || !formData.telefon || !formData.nachricht || !formData.datenschutz) {
-      setSubmitStatus('Bitte füllen Sie alle Pflichtfelder aus.');
+      setSubmitStatus(dict.kontakt.form.statusRequiredMissing);
+      setSubmitSuccess(false);
       return;
     }
 
     if (formData.nachricht.length > 500) {
-      setSubmitStatus('Die Nachricht darf maximal 500 Zeichen lang sein.');
+      setSubmitStatus(dict.kontakt.form.statusMessageTooLong);
+      setSubmitSuccess(false);
       return;
     }
 
     setIsSubmitting(true);
     setSubmitStatus('');
+    setSubmitSuccess(null);
 
     try {
       const formBody = new URLSearchParams();
@@ -65,9 +71,11 @@ export default function KontaktForm() {
       });
 
       if (response.status === 429) {
-        setSubmitStatus('Zu viele Anfragen. Bitte versuchen Sie es später erneut.');
+        setSubmitStatus(dict.kontakt.form.statusRateLimited);
+        setSubmitSuccess(false);
       } else if (response.ok) {
-        setSubmitStatus('Vielen Dank! Ihre Nachricht wurde erfolgreich gesendet. Wir melden uns in Kürze bei Ihnen.');
+        setSubmitStatus(dict.kontakt.form.statusSuccess);
+        setSubmitSuccess(true);
         setFormData({
           vorname: '',
           nachname: '',
@@ -78,10 +86,12 @@ export default function KontaktForm() {
           datenschutz: false
         });
       } else {
-        setSubmitStatus('Es gab einen Fehler beim Senden Ihrer Nachricht. Bitte versuchen Sie es erneut.');
+        setSubmitStatus(dict.kontakt.form.statusError);
+        setSubmitSuccess(false);
       }
     } catch (error) {
-      setSubmitStatus('Es gab einen Fehler beim Senden Ihrer Nachricht. Bitte versuchen Sie es erneut.');
+      setSubmitStatus(dict.kontakt.form.statusError);
+      setSubmitSuccess(false);
     } finally {
       setIsSubmitting(false);
     }
@@ -92,10 +102,10 @@ export default function KontaktForm() {
       <div className="max-w-4xl mx-auto px-6">
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
-            Nachricht senden
+            {dict.kontakt.form.sectionTitle}
           </h2>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            Haben Sie Fragen oder möchten Sie einen Termin vereinbaren? Schreiben Sie uns eine Nachricht.
+            {dict.kontakt.form.sectionSubtitle}
           </p>
         </div>
 
@@ -104,7 +114,7 @@ export default function KontaktForm() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
               <div>
                 <label className="block text-sm font-semibold text-gray-700 mb-2">
-                  Vorname *
+                  {dict.kontakt.form.firstNameLabel}
                 </label>
                 <input
                   type="text"
@@ -112,14 +122,14 @@ export default function KontaktForm() {
                   value={formData.vorname}
                   onChange={handleInputChange}
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all duration-300"
-                  placeholder="Ihr Vorname"
+                  placeholder={dict.kontakt.form.firstNamePlaceholder}
                   required
                 />
               </div>
 
               <div>
                 <label className="block text-sm font-semibold text-gray-700 mb-2">
-                  Nachname *
+                  {dict.kontakt.form.lastNameLabel}
                 </label>
                 <input
                   type="text"
@@ -127,7 +137,7 @@ export default function KontaktForm() {
                   value={formData.nachname}
                   onChange={handleInputChange}
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all duration-300"
-                  placeholder="Ihr Nachname"
+                  placeholder={dict.kontakt.form.lastNamePlaceholder}
                   required
                 />
               </div>
@@ -135,7 +145,7 @@ export default function KontaktForm() {
 
             <div className="mb-6">
               <label className="block text-sm font-semibold text-gray-700 mb-2">
-                Betreff *
+                {dict.kontakt.form.subjectLabel}
               </label>
               <input
                 type="text"
@@ -143,7 +153,7 @@ export default function KontaktForm() {
                 value={formData.betreff}
                 onChange={handleInputChange}
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all duration-300"
-                placeholder="Worum geht es?"
+                placeholder={dict.kontakt.form.subjectPlaceholder}
                 required
               />
             </div>
@@ -151,7 +161,7 @@ export default function KontaktForm() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
               <div>
                 <label className="block text-sm font-semibold text-gray-700 mb-2">
-                  E-Mail *
+                  {dict.kontakt.form.emailLabel}
                 </label>
                 <input
                   type="email"
@@ -159,14 +169,14 @@ export default function KontaktForm() {
                   value={formData.email}
                   onChange={handleInputChange}
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all duration-300"
-                  placeholder="ihre@email.de"
+                  placeholder={dict.kontakt.form.emailPlaceholder}
                   required
                 />
               </div>
 
               <div>
                 <label className="block text-sm font-semibold text-gray-700 mb-2">
-                  Telefon *
+                  {dict.kontakt.form.phoneLabel}
                 </label>
                 <input
                   type="tel"
@@ -174,7 +184,7 @@ export default function KontaktForm() {
                   value={formData.telefon}
                   onChange={handleInputChange}
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all duration-300"
-                  placeholder="+49 123 456789"
+                  placeholder={dict.kontakt.form.phonePlaceholder}
                   required
                 />
               </div>
@@ -182,7 +192,7 @@ export default function KontaktForm() {
 
             <div className="mb-6">
               <label className="block text-sm font-semibold text-gray-700 mb-2">
-                Nachricht *
+                {dict.kontakt.form.messageLabel}
               </label>
               <textarea
                 name="nachricht"
@@ -191,11 +201,11 @@ export default function KontaktForm() {
                 rows={6}
                 maxLength={500}
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all duration-300 resize-none"
-                placeholder="Ihre Nachricht an uns..."
+                placeholder={dict.kontakt.form.messagePlaceholder}
                 required
               ></textarea>
               <div className="text-sm text-gray-500 mt-1">
-                {formData.nachricht.length}/500 Zeichen
+                {formData.nachricht.length}/500 {dict.kontakt.form.counterSuffix}
               </div>
             </div>
 
@@ -210,15 +220,15 @@ export default function KontaktForm() {
                   required
                 />
                 <span className="text-sm text-gray-600">
-                  Ich stimme der <span className="text-red-600 hover:underline cursor-pointer">Datenschutzerklärung</span> zu *
+                  {dict.kontakt.form.privacyConsentPrefix} <span className="text-red-600 hover:underline cursor-pointer">{dict.kontakt.form.privacyPolicyText}</span> {dict.kontakt.form.privacyConsentSuffix}
                 </span>
               </label>
             </div>
 
             {submitStatus && (
               <div className={`mb-6 p-4 rounded-lg ${
-                submitStatus.includes('erfolgreich') 
-                  ? 'bg-green-100 text-green-700 border border-green-200' 
+                submitSuccess === true
+                  ? 'bg-green-100 text-green-700 border border-green-200'
                   : 'bg-red-100 text-red-700 border border-red-200'
               }`}>
                 {submitStatus}
@@ -235,11 +245,11 @@ export default function KontaktForm() {
                   {isSubmitting ? (
                     <>
                       <i className="ri-loader-4-line animate-spin mr-2"></i>
-                      Wird gesendet...
+                      {dict.kontakt.form.buttonSending}
                     </>
                   ) : (
                     <>
-                      Nachricht senden
+                      {dict.kontakt.form.buttonSubmit}
                       <i className="ri-send-plane-line ml-2 transform group-hover:translate-x-1 transition-transform duration-300"></i>
                     </>
                   )}

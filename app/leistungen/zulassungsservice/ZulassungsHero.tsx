@@ -1,6 +1,9 @@
 'use client';
 
+import { useLanguage } from '../../../context/LanguageContext';
+
 export default function ZulassungsHero() {
+  const { dict } = useLanguage();
   return (
     <section className="relative bg-gradient-to-br from-gray-900 via-gray-800 to-black min-h-[500px] flex items-center overflow-hidden">
       {/* Background Image */}
@@ -17,11 +20,10 @@ export default function ZulassungsHero() {
         <div className="w-full max-w-6xl mx-auto">
           <div className="text-center lg:text-left max-w-3xl">
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6">
-              Zulassungs
-              <span className="text-red-500 block lg:inline lg:ml-3 animate-pulse">service</span>
+              {dict.leistungen?.cards?.registration?.title || 'Zulassungsservice'}
             </h1>
             <p className="text-xl md:text-2xl text-gray-200 mb-8 leading-relaxed">
-              Wir kümmern uns gerne um die Zulassung Ihres Autos
+              {dict.leistungen?.cards?.registration?.description || 'Wir kümmern uns gerne um die Zulassung Ihres Autos'}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
               <a 
@@ -29,7 +31,7 @@ export default function ZulassungsHero() {
                 className="bg-red-600 hover:bg-red-700 text-white px-8 py-4 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105 hover:shadow-xl whitespace-nowrap cursor-pointer inline-flex items-center justify-center"
               >
                 <i className="ri-phone-line mr-2"></i>
-                Jetzt anrufen
+                {dict.leistungen?.ctaCall || 'Jetzt anrufen'}
               </a>
               <button 
                 onClick={() => {
@@ -40,7 +42,7 @@ export default function ZulassungsHero() {
                 }}
                 className="border-2 border-white text-white hover:bg-white hover:text-gray-900 px-8 py-4 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105 whitespace-nowrap cursor-pointer"
               >
-                Mehr erfahren
+                {dict.leistungen?.moreLinkLabel || 'Mehr erfahren'}
               </button>
             </div>
           </div>

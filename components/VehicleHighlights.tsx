@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useRef } from 'react';
 import Link from 'next/link';
 import { fetchFromApi } from '../app/lib/apiClient';
 
@@ -48,6 +48,9 @@ export default function VehicleHighlights({ className = '' }: VehicleHighlightsP
   const [vehiclesPerPage] = useState(12); // Anzahl Fahrzeuge pro Seite
   const [currentPage, setCurrentPage] = useState(1);
 
+  // Controller zum Abbrechen laufender Requests (vermeidet net::ERR_ABORTED Warnungen bei Navigations-/Pollingwechseln)
+  const fetchControllerRef = useRef<AbortController | null>(null);
+
   const [activeFilter, setActiveFilter] = useState<FilterCategory>('alle');
   const [loadingCategories, setLoadingCategories] = useState<Record<FilterCategory, boolean>>({} as Record<FilterCategory, boolean>);
   const [availableCategories, setAvailableCategories] = useState<string[]>([]);
@@ -88,6 +91,13 @@ export default function VehicleHighlights({ className = '' }: VehicleHighlightsP
 
   // Fahrzeuge laden (inkl. Kategorien ableiten)
   const fetchLatestVehicles = async () => {
+      // Vorherigen laufenden Request abbrechen, um Überschneidungen zu vermeiden
+      if (fetchControllerRef.current) {
+        try { fetchControllerRef.current.abort(); } catch {}
+      }
+      const controller = new AbortController();
+      fetchControllerRef.current = controller;
+      const { signal } = controller;
       try {
         setLoading(true);
         setError(null);
@@ -95,7 +105,7 @@ export default function VehicleHighlights({ className = '' }: VehicleHighlightsP
         // 1) Gesamtanzahl der Fahrzeuge abrufen
         let countResponse: any;
         try {
-          const countRes = await fetch('/api/vehicles/count');
+          const countRes = await fetch('/api/vehicles/count', { signal });
           if (countRes.ok) {
             countResponse = await countRes.json();
           } else {
@@ -103,6 +113,10 @@ export default function VehicleHighlights({ className = '' }: VehicleHighlightsP
             countResponse = { error: `HTTP ${countRes.status}` };
           }
         } catch (err: any) {
+          if (err?.name === 'AbortError') {
+            console.warn('Vehicle count fetch aborted');
+            return; // Sauber abbrechen ohne Fehlerzustand
+          }
           console.warn('Vehicle count fetch error:', err?.message || err);
           countResponse = { error: String(err) };
         }
@@ -125,7 +139,7 @@ export default function VehicleHighlights({ className = '' }: VehicleHighlightsP
         let response: any = { error: 'no-attempt' };
         for (const takeParam of takeCandidates) {
           try {
-            const res = await fetch(`/api/vehicles?take=${takeParam}`);
+            const res = await fetch(`/api/vehicles?take=${takeParam}`, { signal });
             if (!res.ok) {
               console.warn(`Vehicles request failed for take=${takeParam}:`, res.status, res.statusText);
               continue;
@@ -138,6 +152,10 @@ export default function VehicleHighlights({ className = '' }: VehicleHighlightsP
             }
             console.warn(`Vehicles JSON contained error for take=${takeParam}:`, json?.error);
           } catch (err: any) {
+            if (err?.name === 'AbortError') {
+              console.warn(`Vehicles fetch aborted for take=${takeParam}`);
+              return; // Sauber abbrechen ohne Fehlerzustand
+            }
             console.warn(`Vehicles fetch error for take=${takeParam}:`, err?.message || err);
             continue;
           }
@@ -219,7 +237,11 @@ export default function VehicleHighlights({ className = '' }: VehicleHighlightsP
           console.log('🚗 Pre-populated categories (api-derived):', Object.entries(categoryVehicleMap).map(([cat, vehs]) => `${cat}: ${vehs.length} vehicles`));
         }
 
-      } catch (err) {
+      } catch (err: any) {
+        if (err?.name === 'AbortError') {
+          console.warn('Vehicles fetch aborted');
+          return; // Keine Fehleranzeige bei bewusstem Abbruch
+        }
         console.error('Error fetching vehicles:', err);
         setError('Netzwerkfehler');
       } finally {
@@ -232,7 +254,11 @@ export default function VehicleHighlights({ className = '' }: VehicleHighlightsP
     const interval = setInterval(() => {
       fetchLatestVehicles();
     }, 60000); // 60s Polling für Echtzeitsynchronisation
-    return () => clearInterval(interval);
+    return () => {
+      clearInterval(interval);
+      // Laufende Requests beim Unmount abbrechen
+      try { fetchControllerRef.current?.abort(); } catch {}
+    };
   }, []);
 
   const formatPrice = (price: number): string => {

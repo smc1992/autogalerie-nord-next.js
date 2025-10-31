@@ -30,9 +30,9 @@ export default function Footer() {
                   { icon: 'ri-facebook-fill', href: 'https://www.facebook.com/profile.php?id=61565890614324', label: 'Facebook-Seite von Autogalerie Nord besuchen' },
                   { icon: 'ri-instagram-line', href: 'https://www.instagram.com/autogalerie.nord.gmbh/', label: 'Instagram-Profil von Autogalerie Nord besuchen' },
                   { icon: 'ri-youtube-line', href: 'https://www.youtube.com/channel/UCJgqiKOxC-9VRx53LF8aZKg', label: 'YouTube-Kanal von Autogalerie Nord besuchen' },
-                ].map((social, index) => (
+                ].map((social) => (
                   <a
-                    key={index}
+                    key={social.href}
                     href={social.href}
                     target="_blank"
                     rel="noopener noreferrer"
@@ -57,8 +57,8 @@ export default function Footer() {
                   { href: '/autoankauf', label: 'Autoankauf' },
                   { href: '/ueber-uns', label: 'Über Uns' },
                   { href: '/kontakt', label: 'Kontakt' },
-                ].map((link, index) => (
-                  <li key={index}>
+                ].map((link) => (
+                  <li key={link.href}>
                     <Link
                       href={link.href}
                       className="group/link text-gray-600 hover:text-red-600 cursor-pointer text-base sm:text-sm py-3 sm:py-2 md:py-1 transition-all duration-300 transform hover:translate-x-2 inline-block w-full"
@@ -147,8 +147,8 @@ export default function Footer() {
                   { platform: 'Scout24', count: 51 },
                   { platform: 'Google', count: 254 },
                   { platform: 'Facebook', count: 5 },
-                ].map((review, index) => (
-                  <div key={index} className="group/review flex flex-col sm:flex-row items-center justify-center sm:justify-start transform transition-all duration-300 hover:translate-x-1">
+                ].map((review) => (
+                  <div key={`${review.platform}-${review.count}`} className="group/review flex flex-col sm:flex-row items-center justify-center sm:justify-start transform transition-all duration-300 hover:translate-x-1">
                     <div className="flex mb-1 sm:mb-0 sm:mr-2">
                       {[1, 2, 3, 4, 5].map((star) => (
                         <div key={star} className="w-4 h-4 sm:w-3 sm:h-3 flex items-center justify-center">

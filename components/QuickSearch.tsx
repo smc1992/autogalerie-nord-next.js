@@ -1,6 +1,8 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
+import { useLanguage } from '../context/LanguageContext';
+import dictionaries, { type DictionaryTop } from '../i18n/dictionaries';
 
 // Define a generic type for our filter items
 interface FilterItem {
@@ -9,6 +11,9 @@ interface FilterItem {
 }
 
 export default function QuickSearch() {
+  const { dict } = useLanguage();
+  const d = dict as DictionaryTop;
+  const quicksearch = (d?.quicksearch ?? dictionaries.de.quicksearch ?? {}) as any;
   const [manufacturers, setManufacturers] = useState<FilterItem[]>([]);
   const [models, setModels] = useState<FilterItem[]>([]);
   const [vehicleCount, setVehicleCount] = useState(0);
@@ -195,15 +200,17 @@ export default function QuickSearch() {
   const handleSearch = () => {
     // Build search URL with selected filters
     const params = new URLSearchParams();
-    
-    Object.entries(selectedFilters).forEach(([key, value]) => {
-      if (value) {
-        params.append(key, value);
-      }
-    });
 
-    // Navigate to search results
-    const searchUrl = `/fahrzeuge?${params.toString()}`;
+    // Map lokale Filter auf Marketplace-Parameter
+    if (selectedFilters.manufacturer) {
+      params.append('manufacturers', selectedFilters.manufacturer);
+    }
+    if (selectedFilters.model) {
+      params.append('models', selectedFilters.model);
+    }
+
+    // Marketplace erwartet Hash-Format (#!/?) für initiale Filterübernahme
+    const searchUrl = `/fahrzeuge#!/?${params.toString()}`;
     window.location.href = searchUrl;
   };
 
@@ -227,7 +234,7 @@ export default function QuickSearch() {
         <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-red-100 text-red-600">
           <i className="ri-search-line text-xl"></i>
         </div>
-        <h3 className="text-lg sm:text-xl font-semibold text-gray-900">Fahrzeuge suchen</h3>
+        <h3 className="text-lg sm:text-xl font-semibold text-gray-900">{quicksearch.searchTitle}</h3>
       </div>
 
       <form ref={formRef} className="space-y-3 sm:space-y-0" onSubmit={(e) => { e.preventDefault(); handleSearch(); }}>
@@ -235,14 +242,14 @@ export default function QuickSearch() {
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 items-end">
           {/* Hersteller */}
           <div>
-            <label htmlFor="manufacturer-select" className="block text-xs font-semibold text-gray-600 mb-1">Hersteller</label>
+            <label htmlFor="manufacturer-select" className="block text-xs font-semibold text-gray-600 mb-1">{quicksearch.manufacturerLabel}</label>
             <select
               id="manufacturer-select"
               value={selectedFilters.manufacturer}
               onChange={(e) => handleFilterChange('manufacturer', e.target.value)}
               className="w-full h-11 px-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 bg-white text-gray-900"
             >
-              <option value="">Alle Hersteller</option>
+              <option value="">{quicksearch.allManufacturers}</option>
               {manufacturers.map((manufacturer) => (
                 <option key={manufacturer.id} value={manufacturer.id}>
                   {manufacturer.name}
@@ -253,7 +260,7 @@ export default function QuickSearch() {
 
           {/* Modell */}
           <div>
-            <label htmlFor="model-select" className="block text-xs font-semibold text-gray-600 mb-1">Modell</label>
+            <label htmlFor="model-select" className="block text-xs font-semibold text-gray-600 mb-1">{quicksearch.modelLabel}</label>
             <select
               id="model-select"
               value={selectedFilters.model}
@@ -261,7 +268,7 @@ export default function QuickSearch() {
               className="w-full h-11 px-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 bg-white text-gray-900"
               disabled={!selectedFilters.manufacturer}
             >
-              <option value="">Alle Modelle</option>
+              <option value="">{quicksearch.allModels}</option>
               {models.map((model) => (
                 <option key={model.id} value={model.id}>
                   {model.name}
@@ -277,7 +284,7 @@ export default function QuickSearch() {
               className="w-full h-11 bg-red-600 hover:bg-red-700 text-white font-semibold px-4 rounded-lg transition-colors duration-200 flex items-center justify-center shadow-md hover:shadow-lg"
             >
               <i className="ri-search-line mr-2"></i>
-              {vehicleCount} Fahrzeuge
+        {vehicleCount} {quicksearch.vehiclesSuffix}
             </button>
           </div>
         </div>

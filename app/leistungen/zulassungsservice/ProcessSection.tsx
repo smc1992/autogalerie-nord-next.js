@@ -1,22 +1,25 @@
 'use client';
+import { useLanguage } from '../../../context/LanguageContext';
 
 export default function ProcessSection() {
+  const { dict } = useLanguage();
+  const d = dict as any;
   const vorteile = [
     {
-      title: 'Komplette Abwicklung',
-      description: 'Autogalerie Nord GmbH kümmert sich für Sie um alles, damit Sie zügig mit Ihrem neuen gebrauchten Fahrzeug starten können.',
+      title: d.leistungen?.registration?.process?.items?.completeProcessing?.title || 'Komplette Abwicklung',
+      description: d.leistungen?.registration?.process?.items?.completeProcessing?.description || 'Wir übernehmen alle Formalitäten der Zulassung – Sie müssen sich um nichts kümmern.',
       icon: 'ri-checkbox-circle-line',
       image: '/images/Komplette Abwicklung-Autogalerie Nord.webp'
     },
     {
-      title: 'Minimaler Aufwand',
-      description: 'Sie stellen uns nur die notwendigen Unterlagen zur Verfügung - den gesamten Papierkram übernehmen wir für Sie.',
+      title: d.leistungen?.registration?.process?.items?.minimalEffort?.title || 'Minimaler Aufwand',
+      description: d.leistungen?.registration?.process?.items?.minimalEffort?.description || 'Sparen Sie Zeit und Nerven – wir kümmern uns um die gesamte Zulassung.',
       icon: 'ri-time-line',
       image: '/images/Minimaler Aufwand-Autogalerie Nord.webp'
     },
     {
-      title: 'Alle Kennzeichen-Arten',
-      description: 'Ob normale Zulassung, Kurzzeit- oder Ausfuhrkennzeichen - wir haben die passende Lösung für Ihre Bedürfnisse.',
+      title: d.leistungen?.registration?.process?.items?.allPlateTypes?.title || 'Alle Kennzeichen-Arten',
+      description: d.leistungen?.registration?.process?.items?.allPlateTypes?.description || 'Ob Kurzzeit-, Ausfuhr- oder normale Kennzeichen – wir organisieren alles für Sie.',
       icon: 'ri-car-line',
       image: '/images/alle Kennzeichenarten-Autogalerie Nord.webp'
     }
@@ -27,7 +30,7 @@ export default function ProcessSection() {
       <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
-            Zügig mit Ihrem neuen Gebrauchten starten
+            {d.leistungen?.registration?.process?.sectionTitle || 'Zügig mit Ihrem neuen Gebrauchten starten'}
           </h2>
         </div>
 

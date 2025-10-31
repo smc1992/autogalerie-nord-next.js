@@ -1,47 +1,27 @@
-'use client';
+"use client";
 
 import { useState, useEffect } from 'react';
 import Section from './Section';
+import { useLanguage } from '../context/LanguageContext';
+import dictionaries from '../i18n/dictionaries';
 
 export default function GoogleReviews() {
+  const { dict } = useLanguage();
+  const home = (dict?.home ?? dictionaries.de.home ?? {});
   const [currentReview, setCurrentReview] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
 
-  const reviews = [
-    {
-      name: "Alexander Kotula",
-      reviews: "3 Rezensionen",
-      time: "vor einem Monat",
-      text: "Einfach Top! Die Jungs sind echt super, von Beratung bis zum Verkauf alles prima gelaufen. Sonderwünsche, kein Problem, problemloser Ablauf, das ist für mich ein professioneller Autohändler! Ich empfehle das Autohaus auf jeden Fall weiter und von mir noch einmal vielen Dank!",
-      rating: 5
-    },
-    {
-      name: "S Ki",
-      reviews: "19 Rezensionen · 10 Fotos",
-      time: "vor 4 Monaten",
-      text: "Absolute Empfehlung! Habe gestern nur mein Auto verkauft, aber nach meinem Besuch würde ich ohne Zögern dort auch ein Auto kaufen. Eine Werkstatt gibt es auch.",
-      rating: 5
-    },
-    {
-      name: "Kunde",
-      reviews: "Verifizierter Kauf",
-      time: "vor 2 Wochen",
-      text: "💯 Ich habe bereits mein zweites Auto hier gekauft und bin erneut absolut begeistert! Alle mündlichen Vereinbarungen wurden nicht nur eingehalten, sondern sogar übertroffen!",
-      rating: 5
-    },
-    {
-      name: "Christian Siegert",
-      reviews: "5 Rezensionen",
-      time: "vor 4 Monaten",
-      text: "Nette Mitarbeiter, Chef immer erreichbar und ebenfalls freundlich. Versprechen werden eingehalten. Probleme (Zulassung eines lange abgemeldeten Oldtimer) wurden behoben.",
-      rating: 5
-    }
-  ];
+  // Verwende Reviews aus dem Wörterbuch, fallback auf DE wenn in aktueller Sprache nicht vorhanden
+  const reviews = Array.isArray((home as any).reviewsItems)
+    ? (home as any).reviewsItems
+    : (Array.isArray((dictionaries as any).de?.home?.reviewsItems)
+        ? (dictionaries as any).de.home.reviewsItems
+        : []);
 
   useEffect(() => {
     setIsVisible(true);
     const interval = setInterval(() => {
-      setCurrentReview((prev) => (prev + 1) % reviews.length);
+      setCurrentReview((prev) => (prev + 1) % (reviews.length || 1));
     }, 8000);
     return () => clearInterval(interval);
   }, [reviews.length]);
@@ -64,7 +44,7 @@ export default function GoogleReviews() {
               className="w-8 h-8 mr-3"
             />
             <h2 className="text-4xl font-bold text-gray-900">
-              Das sagen unsere <span className="text-gray-700">Kunden</span>
+              {home.reviewsTitle}
             </h2>
           </div>
           
@@ -81,7 +61,7 @@ export default function GoogleReviews() {
                       </div>
                     ))}
                   </div>
-                  <div className="text-gray-600 text-sm mt-1">Basierend auf Google Bewertungen</div>
+                  <div className="text-gray-600 text-sm mt-1">{home.reviewsSummary}</div>
                 </div>
               </div>
               
@@ -92,7 +72,7 @@ export default function GoogleReviews() {
                 className="group inline-flex items-center bg-gray-700 hover:bg-gray-800 text-white px-6 py-3 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105 whitespace-nowrap cursor-pointer"
               >
                 <i className="ri-external-link-line mr-2 transform group-hover:rotate-12 transition-transform duration-300"></i>
-                Alle Bewertungen ansehen
+                {home.reviewsSeeAll}
               </a>
             </div>
           </div>
@@ -105,8 +85,8 @@ export default function GoogleReviews() {
               className="flex transition-transform duration-700 ease-in-out"
               style={{ transform: `translateX(-${currentReview * 100}%)` }}
             >
-              {reviews.map((review, index) => (
-                <div key={index} className="w-full flex-shrink-0 px-4">
+              {(reviews || []).map((review: any) => (
+                <div key={`${review.name}-${review.time}`} className="w-full flex-shrink-0 px-4">
                   <div className="bg-white rounded-2xl p-8 shadow-xl border border-gray-100 relative overflow-hidden group hover:shadow-2xl transition-all duration-500">
                     {/* Background decoration */}
                     <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-yellow-100 to-transparent rounded-full opacity-50 transform translate-x-16 -translate-y-16 group-hover:scale-150 transition-transform duration-700"></div>
@@ -138,7 +118,7 @@ export default function GoogleReviews() {
                       <div className="flex items-center">
                         <div className="w-12 h-12 flex items-center justify-center bg-gradient-to-r from-gray-600 to-red-500 rounded-full mr-4 group-hover:scale-110 transition-transform duration-300">
                           <span className="text-white font-bold text-lg">
-                            {review.name.charAt(0)}
+                            {review.name?.charAt(0)}
                           </span>
                         </div>
                         <div>
@@ -161,9 +141,9 @@ export default function GoogleReviews() {
 
           {/* Navigation dots */}
           <div className="flex justify-center mt-8 space-x-3">
-            {reviews.map((_, index) => (
+            {(reviews || []).map((review: any, index: number) => (
               <button
-                key={index}
+                key={`dot-${review.name}-${review.time}`}
                 onClick={() => setCurrentReview(index)}
                 className={`w-3 h-3 rounded-full transition-all duration-300 cursor-pointer transform hover:scale-125 ${
                   index === currentReview 
@@ -176,17 +156,17 @@ export default function GoogleReviews() {
 
           {/* Navigation arrows */}
           <button
-            onClick={() => setCurrentReview((prev) => (prev - 1 + reviews.length) % reviews.length)}
+            onClick={() => setCurrentReview((prev) => (prev - 1 + (reviews.length || 1)) % (reviews.length || 1))}
             className="absolute left-0 top-1/2 transform -translate-y-1/2 -translate-x-4 w-12 h-12 flex items-center justify-center bg-white rounded-full shadow-lg border border-gray-200 hover:shadow-xl transition-all duration-300 cursor-pointer group hover:scale-110"
-            aria-label="Vorherige Bewertung anzeigen"
+            aria-label={home.reviewsPrevAria}
           >
             <i className="ri-arrow-left-line text-gray-600 group-hover:text-gray-800 transition-colors duration-300"></i>
           </button>
           
           <button
-            onClick={() => setCurrentReview((prev) => (prev + 1) % reviews.length)}
+            onClick={() => setCurrentReview((prev) => (prev + 1) % (reviews.length || 1))}
             className="absolute right-0 top-1/2 transform -translate-y-1/2 translate-x-4 w-12 h-12 flex items-center justify-center bg-white rounded-full shadow-lg border border-gray-200 hover:shadow-xl transition-all duration-300 cursor-pointer group hover:scale-110"
-            aria-label="Nächste Bewertung anzeigen"
+            aria-label={home.reviewsNextAria}
           >
             <i className="ri-arrow-right-line text-gray-600 group-hover:text-gray-800 transition-colors duration-300"></i>
           </button>
@@ -198,10 +178,10 @@ export default function GoogleReviews() {
             <div className="absolute inset-0 bg-gradient-to-r from-gray-700/90 to-red-600/90"></div>
             <div className="relative z-10">
               <h3 className="text-2xl font-bold mb-4">
-                Werden Sie unser nächster zufriedener Kunde!
+                {home.reviewsCtaTitle}
               </h3>
               <p className="text-gray-100 mb-6 text-lg">
-                Über 500 zufriedene Kunden vertrauen bereits auf unseren Service
+                {home.reviewsCtaSubtitle}
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <a 
@@ -209,14 +189,14 @@ export default function GoogleReviews() {
                   className="group bg-white text-gray-700 hover:bg-gray-100 px-8 py-4 rounded-lg font-semibold transition-all duration-300 whitespace-nowrap cursor-pointer inline-flex items-center justify-center transform hover:scale-105"
                 >
                   <i className="ri-car-line mr-2 transform group-hover:rotate-12 transition-transform duration-300"></i>
-                  Fahrzeuge entdecken
+                  {home.reviewsCtaVehicles}
                 </a>
                 <a 
                   href="/kontakt"
                   className="group border-2 border-white text-white hover:bg-white hover:text-gray-700 px-8 py-4 rounded-lg font-semibold transition-all duration-300 whitespace-nowrap cursor-pointer inline-flex items-center justify-center transform hover:scale-105"
                 >
                   <i className="ri-phone-line mr-2 transform group-hover:rotate-12 transition-transform duration-300"></i>
-                  Jetzt kontaktieren
+                  {home.reviewsCtaContact}
                 </a>
               </div>
             </div>

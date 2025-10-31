@@ -1,26 +1,28 @@
 'use client';
+import { useLanguage } from '../../context/LanguageContext';
 
 export default function WillkommenSection() {
+  const { dict } = useLanguage();
   const highlights = [
     {
       icon: 'ri-time-line',
-      title: 'Über 10 Jahre Erfahrung',
-      description: 'Langjährige Expertise im Fahrzeughandel'
+      title: dict.ueberuns.willkommen.highlights.experienceTitle,
+      description: dict.ueberuns.willkommen.highlights.experienceDesc
     },
     {
       icon: 'ri-shield-check-line',
-      title: 'Geprüfte Fahrzeuge',
-      description: 'Jedes Fahrzeug wird sorgfältig kontrolliert'
+      title: dict.ueberuns.willkommen.highlights.checkedTitle,
+      description: dict.ueberuns.willkommen.highlights.checkedDesc
     },
     {
       icon: 'ri-money-euro-circle-line',
-      title: 'Faire Preise',
-      description: 'Transparente und ehrliche Preisgestaltung'
+      title: dict.ueberuns.willkommen.highlights.fairTitle,
+      description: dict.ueberuns.willkommen.highlights.fairDesc
     },
     {
       icon: 'ri-user-heart-line',
-      title: 'Persönliche Beratung',
-      description: 'Individuelle Betreuung für jeden Kunden'
+      title: dict.ueberuns.willkommen.highlights.personalTitle,
+      description: dict.ueberuns.willkommen.highlights.personalDesc
     }
   ];
 
@@ -31,16 +33,16 @@ export default function WillkommenSection() {
           {/* Content */}
           <div>
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-8">
-              Willkommen bei der <span className="text-red-600">Autogalerie Nord</span>
+              {dict.ueberuns.willkommen.titlePrefix} <span className="text-red-600">Autogalerie Nord</span>
             </h2>
             
             <div className="space-y-6 text-lg text-gray-600 leading-relaxed">
               <p>
-                Seit unserer Gründung sind wir Ihr vertrauensvoller Partner für hochwertige Gebrauchtwagen in Norddeutschland. Mit Leidenschaft und Expertise helfen wir Ihnen dabei, das perfekte Fahrzeug für Ihre Bedürfnisse zu finden.
+                {dict.ueberuns.willkommen.paragraph1}
               </p>
               
               <p>
-                Unser erfahrenes Team steht Ihnen mit kompetenter Beratung zur Seite und sorgt dafür, dass Sie sich beim Autokauf rundum wohlfühlen. Transparenz, Fairness und Qualität sind die Grundpfeiler unseres Handelns.
+                {dict.ueberuns.willkommen.paragraph2}
               </p>
             </div>
 
@@ -81,7 +83,7 @@ export default function WillkommenSection() {
             <div className="absolute -bottom-6 -right-6 bg-red-600 text-white px-6 py-4 rounded-2xl shadow-xl transform rotate-3 hover:rotate-0 transition-transform duration-300">
               <div className="text-center">
                 <div className="text-2xl font-bold">70+</div>
-                <div className="text-sm">Fahrzeuge</div>
+                <div className="text-sm">{dict.ueberuns.willkommen.badgeVehiclesLabel}</div>
               </div>
             </div>
           </div>

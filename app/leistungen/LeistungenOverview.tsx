@@ -2,15 +2,26 @@
 'use client';
 
 import Link from 'next/link';
+import { useLanguage } from '../../context/LanguageContext';
 
 export default function LeistungenOverview() {
-  const leistungen = [
+  const { dict } = useLanguage();
+  type LeistungItem = {
+    title: string;
+    description: string;
+    icon: string;
+    href: string;
+    features: string[];
+    image: string;
+  };
+
+  const leistungen: LeistungItem[] = [
     {
-      title: 'Finanzierung',
-      description: 'Maßgeschneiderte Finanzierungslösungen für Ihren Traumwagen. Faire Konditionen und schnelle Abwicklung.',
+      title: dict.leistungen?.cards?.finance?.title || 'Finanzierung',
+      description: dict.leistungen?.cards?.finance?.description || 'Maßgeschneiderte Finanzierungslösungen für Ihren Traumwagen. Faire Konditionen und schnelle Abwicklung.',
       icon: 'ri-bank-card-line',
       href: '/leistungen/finanzierung',
-      features: [
+      features: dict.leistungen?.cards?.finance?.features || [
         'Individuelle Finanzierungsberatung',
         'Attraktive Zinssätze',
         'Flexible Laufzeiten',
@@ -19,11 +30,11 @@ export default function LeistungenOverview() {
       image: '/images/Finanzierung-Autogalerie Nord.webp'
     },
     {
-      title: 'Zulassungsservice',
-      description: 'Wir übernehmen alle Formalitäten rund um die Zulassung Ihres Fahrzeugs - schnell und unkompliziert.',
+      title: dict.leistungen?.cards?.registration?.title || 'Zulassungsservice',
+      description: dict.leistungen?.cards?.registration?.description || 'Wir übernehmen alle Formalitäten rund um die Zulassung Ihres Fahrzeugs – schnell und unkompliziert.',
       icon: 'ri-file-text-line',
       href: '/leistungen/zulassungsservice',
-      features: [
+      features: dict.leistungen?.cards?.registration?.features || [
         'Komplette Zulassungsabwicklung',
         'Kennzeichenreservierung',
         'Ummeldung bei Umzug',
@@ -32,11 +43,11 @@ export default function LeistungenOverview() {
       image: '/images/Zulassungsservice-Autogalerie Nord.webp'
     },
     {
-      title: 'Import & Export',
-      description: 'Internationale Fahrzeugbeschaffung und weltweiter Export. Wir machen den globalen Fahrzeughandel möglich.',
+      title: dict.leistungen?.cards?.importExport?.title || 'Import & Export',
+      description: dict.leistungen?.cards?.importExport?.description || 'Internationale Fahrzeugbeschaffung und weltweiter Export. Wir machen den globalen Fahrzeughandel möglich.',
       icon: 'ri-ship-line',
       href: '/leistungen/import-export',
-      features: [
+      features: dict.leistungen?.cards?.importExport?.features || [
         'Weltweite Fahrzeugbeschaffung',
         'Export in alle Länder',
         'Verzollungsservice',
@@ -45,11 +56,11 @@ export default function LeistungenOverview() {
       image: '/images/Import und Export- Autogalerie Nord.webp'
     },
     {
-      title: 'Kommissionsverkauf',
-      description: 'Verkaufen Sie Ihr Fahrzeug professionell über uns. Maximaler Erlös bei minimalem Aufwand für Sie.',
+      title: dict.leistungen?.cards?.consignment?.title || 'Kommissionsverkauf',
+      description: dict.leistungen?.cards?.consignment?.description || 'Verkaufen Sie Ihr Fahrzeug professionell über uns. Maximaler Erlös bei minimalem Aufwand für Sie.',
       icon: 'ri-auction-line',
       href: '/leistungen/kommissionsverkauf',
-      features: [
+      features: dict.leistungen?.cards?.consignment?.features || [
         'Professionelle Fahrzeugvermarktung',
         'Maximaler Verkaufspreis',
         'Komplette Verkaufsabwicklung',
@@ -65,10 +76,10 @@ export default function LeistungenOverview() {
         {/* Section Header */}
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
-            Umfassende Services für alle Ihre Bedürfnisse
+            {dict.leistungen?.overviewTitle || 'Umfassende Services für alle Ihre Bedürfnisse'}
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Entdecken Sie unser vollständiges Leistungsspektrum - von der Fahrzeugfinanzierung bis hin zum internationalen Handel
+            {dict.leistungen?.overviewSubtitle || 'Entdecken Sie unser vollständiges Leistungsspektrum – von der Fahrzeugfinanzierung bis hin zum internationalen Handel'}
           </p>
         </div>
 
@@ -103,7 +114,7 @@ export default function LeistungenOverview() {
                     href={leistung.href}
                     className="inline-flex items-center bg-red-600 hover:bg-red-700 text-white px-8 py-4 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105 hover:shadow-xl whitespace-nowrap cursor-pointer"
                   >
-                    Mehr erfahren
+                    {dict.leistungen?.moreLinkLabel || 'Mehr erfahren'}
                     <i className="ri-arrow-right-line ml-2"></i>
                   </Link>
                 </div>
@@ -127,10 +138,10 @@ export default function LeistungenOverview() {
         {/* Bottom CTA */}
         <div className="mt-20 text-center bg-gradient-to-r from-red-50 to-red-100 rounded-3xl p-12">
           <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">
-            Haben Sie Fragen zu unseren Leistungen?
+            {dict.leistungen?.bottomCtaTitle || 'Haben Sie Fragen zu unseren Leistungen?'}
           </h3>
           <p className="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
-            Unser Expertenteam berät Sie gerne persönlich und findet die optimale Lösung für Ihre Anforderungen.
+            {dict.leistungen?.bottomCtaSubtitle || 'Unser Expertenteam berät Sie gerne persönlich und findet die optimale Lösung für Ihre Anforderungen.'}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a 
@@ -138,14 +149,14 @@ export default function LeistungenOverview() {
               className="bg-red-600 hover:bg-red-700 text-white px-8 py-4 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105 hover:shadow-xl whitespace-nowrap cursor-pointer inline-flex items-center justify-center"
             >
               <i className="ri-phone-line mr-2"></i>
-              Jetzt anrufen
+              {dict.leistungen?.ctaCall || 'Jetzt anrufen'}
             </a>
             <a 
               href="mailto:info@autogalerie-nord.de"
               className="border-2 border-red-600 text-red-600 hover:bg-red-600 hover:text-white px-8 py-4 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105 whitespace-nowrap cursor-pointer inline-flex items-center justify-center"
             >
               <i className="ri-mail-line mr-2"></i>
-              E-Mail schreiben
+              {dict.leistungen?.ctaEmail || 'E-Mail schreiben'}
             </a>
           </div>
         </div>
