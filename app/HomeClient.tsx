@@ -17,7 +17,7 @@ export default function HomeClient() {
   const [isClient, setIsClient] = useState(false);
   const [currentHeadline, setCurrentHeadline] = useState(0);
   const [isKontaktOpen, setIsKontaktOpen] = useState(false);
-  const videoRef = useRef<HTMLVideoElement | null>(null);
+  
 
   // SEO-optimierte Headlines für den Slider
   const headlines = [
@@ -59,28 +59,7 @@ export default function HomeClient() {
     };
   }, []);
 
-  useEffect(() => {
-    const v = videoRef.current;
-    if (!v) return;
-    v.muted = true;
-    v.defaultMuted = true;
-    v.setAttribute('playsinline', 'true');
-    v.setAttribute('webkit-playsinline', 'true');
-    const tryPlay = async () => {
-      try {
-        if (v.paused) await v.play();
-      } catch (err) {
-        const onInteract = () => {
-          v.play().catch(() => {});
-          document.removeEventListener('touchend', onInteract);
-          document.removeEventListener('click', onInteract);
-        };
-        document.addEventListener('touchend', onInteract, { once: true });
-        document.addEventListener('click', onInteract, { once: true });
-      }
-    };
-    tryPlay();
-  }, []);
+  
 
   const heroParticles = [
     { left: '15%', top: '20%', delay: '0s', duration: '4s' },
@@ -96,31 +75,19 @@ export default function HomeClient() {
       {/* Hero Section */}
       <section 
         className="relative min-h-[95vh] lg:min-h-[90vh] xl:min-h-[85vh] 2xl:min-h-[80vh] bg-cover bg-center bg-no-repeat overflow-hidden"
-        
+        style={{ backgroundImage: 'url("/images/1x/Autogalerie%20Nord%20Hero%20Startseite.webp")' }}
       >
         {/* LCP-optimiertes Hero-Bild */}
         <img
-          src="/images/hero-premium.webp"
-          alt="Premium Fahrzeuge bei Autogalerie Nord - Hochwertige Gebrauchtwagen"
+          src="/images/1x/Autogalerie%20Nord%20Hero%20Startseite.webp"
+          alt="Autogalerie Nord – Hero Startseite Hintergrundbild"
           className="hidden"
           fetchPriority="high"
           loading="eager"
           decoding="sync"
         />
         
-        {/* Hintergrundvideo mit Autoplay */}
-        <video
-          ref={videoRef}
-          className="absolute inset-0 w-full h-full object-cover z-0"
-          src="/images/Hero%20Imagevideo%20autogalerie%20Nord.mp4"
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="auto"
-          controls={false}
-          aria-hidden="true"
-        />
+        {/* Hintergrundbild aktiv: Video entfernt */}
         
         {/* Gradient Overlays */}
         <div className="absolute inset-0 bg-gradient-to-r from-black/40 via-transparent to-black/20"></div>
