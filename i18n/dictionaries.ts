@@ -25,17 +25,36 @@ export type HomeDictionary = {
 };
 
 export type QuickSearchDictionary = {
+  // Used by multiple quicksearch components
   searchTitle: string;
   manufacturerLabel: string;
   allManufacturers: string;
   modelLabel: string;
   allModels: string;
   vehiclesSuffix: string;
+  // Keys required by QuickSearchWidget
+  title: string;
+  subtitle: string;
+  categoryLabel: string;
+  allCategories: string;
+  priceMaxLabel: string;
+  allPrices: string;
+  mileageMaxLabel: string;
+  allMileage: string;
+  registerFromLabel: string;
+  allYears: string;
+  fuellingsLabel: string;
+  allFuellings: string;
+  showVehicles: string;
+  advancedSearch: string;
+  reset: string;
 };
 
+// Top-level dictionary type: known sections plus flexible index signature for other pages
 export type DictionaryTop = {
   home: HomeDictionary;
   quicksearch: QuickSearchDictionary;
+  [key: string]: any;
 };
 
 const de: DictionaryTop = {
@@ -85,6 +104,21 @@ const de: DictionaryTop = {
     modelLabel: "Modell",
     allModels: "Alle Modelle",
     vehiclesSuffix: "Fahrzeuge anzeigen",
+    title: "Fahrzeuge finden",
+    subtitle: "Filtern Sie nach Kategorie, Hersteller und Modell",
+    categoryLabel: "Kategorie",
+    allCategories: "Alle Kategorien",
+    priceMaxLabel: "Preis bis",
+    allPrices: "Alle Preise",
+    mileageMaxLabel: "Kilometer bis",
+    allMileage: "Alle Kilometerstände",
+    registerFromLabel: "Zulassung ab",
+    allYears: "Alle Jahre",
+    fuellingsLabel: "Kraftstoff",
+    allFuellings: "Alle Kraftstoffe",
+    showVehicles: "Fahrzeuge anzeigen",
+    advancedSearch: "Erweiterte Suche",
+    reset: "Zurücksetzen",
   },
 };
 
